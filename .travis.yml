@@ -1,0 +1,17 @@
+language: node_js
+
+sudo: false
+
+cache:
+  apt: true
+  directories:
+    - node_modules
+
+node_js:
+  - "6"
+
+script:
+
+after_script:
+  - npm install coveralls
+  - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
