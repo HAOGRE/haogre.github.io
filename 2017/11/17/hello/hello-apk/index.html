@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/function%20small()%20%7B%20%5Bnative%20code%5D%20%7D?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="脚本," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="apkAlpine Linux 下的包管理工具 使用实例123456apk install xxxapk search xxx # 支持正则apk info xxx # 查看包的详细信息apk show # list local package# 卸载并删除 包apk del openssh openntp vim">
+<meta property="og:type" content="article">
+<meta property="og:title" content="每天学点linux命令">
+<meta property="og:url" content="http://yoursite.com/2017/11/17/hello/hello-apk/index.html">
+<meta property="og:site_name" content="HAOGRE&#39;s blog">
+<meta property="og:description" content="apkAlpine Linux 下的包管理工具 使用实例123456apk install xxxapk search xxx # 支持正则apk info xxx # 查看包的详细信息apk show # list local package# 卸载并删除 包apk del openssh openntp vim">
+<meta property="article:published_time" content="2017-11-17T11:22:31.000Z">
+<meta property="article:modified_time" content="2020-07-15T09:07:00.258Z">
+<meta property="article:author" content="HAOGRE">
+<meta property="article:tag" content="脚本">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/11/17/hello/hello-apk/"/>
+
+
+
+
+
+  <title>每天学点linux命令 | HAOGRE's blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">HAOGRE's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-labs">
+          <a href="/labs" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            实验室
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/17/hello/hello-apk/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="HAOGRE">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jp">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HAOGRE's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">每天学点linux命令</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-17T19:22:31+08:00">
+                2017-11-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="apk"><a href="#apk" class="headerlink" title="apk"></a>apk</h1><p>Alpine Linux 下的包管理工具</p>
+<h2 id="使用实例"><a href="#使用实例" class="headerlink" title="使用实例"></a>使用实例</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">apk install xxx</span><br><span class="line">apk search xxx <span class="comment"># 支持正则</span></span><br><span class="line">apk info xxx <span class="comment"># 查看包的详细信息</span></span><br><span class="line">apk show <span class="comment"># list local package</span></span><br><span class="line"><span class="comment"># 卸载并删除 包</span></span><br><span class="line">apk del openssh openntp vim</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<h3 id="升级"><a href="#升级" class="headerlink" title="升级"></a>升级</h3><p>upgrade命令升级系统已安装的所以软件包（一般包括内核），当然也可指定仅升级部分软件包（通过-u或–upgrade选择指定）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apk update <span class="comment"># 更新最新本地镜像源</span></span><br><span class="line">apk upgrade <span class="comment"># 升级软件</span></span><br><span class="line">apk add --upgrade busybox <span class="comment"># 指定升级部分软件包</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="搜索"><a href="#搜索" class="headerlink" title="搜索"></a>搜索</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">apk search <span class="comment"># 查找所以可用软件包</span></span><br><span class="line">apk search -v <span class="comment"># 查找所以可用软件包及其描述内容</span></span><br><span class="line">apk search -v <span class="string">'acf*'</span> <span class="comment"># 通过软件包名称查找软件包</span></span><br><span class="line">apk search -v -d <span class="string">'docker'</span> <span class="comment"># 通过描述文件查找特定的软件包</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="查看包信息"><a href="#查看包信息" class="headerlink" title="查看包信息"></a>查看包信息</h3><p>info命令用于显示软件包的信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apk info <span class="comment"># 列出所有已安装的软件包</span></span><br><span class="line">apk info -a zlib <span class="comment"># 显示完整的软件包信息</span></span><br><span class="line">apk info --who-owns /sbin/lbu <span class="comment"># 显示指定文件属于的包</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h2><p>还是蛮喜欢 alpine 的，简单纯粹</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">apk add iproute2 <span class="comment"># ss vs netstat</span></span><br><span class="line">ss -ptl</span><br><span class="line">apk add drill <span class="comment"># drill vs nslookup&amp;dig</span></span><br><span class="line"></span><br><span class="line">crond <span class="comment"># 开启 cron 服务</span></span><br><span class="line">crontab -l -e</span><br><span class="line"></span><br><span class="line">apk add xxx</span><br><span class="line">apk search -v xxx</span><br><span class="line">apk info -a xxx</span><br><span class="line">apk info</span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"http://mirrors.aliyun.com/alpine/v3.6/main\nhttp://mirrors.aliyun.com/alpine/v3.6/community"</span> &gt; /etc/apk/repositories</span><br><span class="line">apk update</span><br><span class="line"></span><br><span class="line"><span class="comment"># storage</span></span><br><span class="line">ibu <span class="comment"># alpine local backup</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># network</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"shortname"</span> &gt; /etc/hostname</span><br><span class="line">hostname -F /etc/hostname</span><br><span class="line">/etc/hosts</span><br><span class="line">/etc/resolv.conf <span class="comment"># conig DNS</span></span><br><span class="line">modprobe ipv6 <span class="comment"># enable ipv6</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"ipv6"</span> &gt;&gt; /etc/modules</span><br><span class="line">iface <span class="comment"># config interface</span></span><br><span class="line">apk add iptables ip6tables iptables-doc</span><br><span class="line">/etc/init.d/networking restart <span class="comment"># activate change</span></span><br><span class="line">apke add iputils <span class="comment"># IPv6 traceroute</span></span><br><span class="line">traceroute6 ipv6.google.com</span><br><span class="line">awall <span class="comment"># alpine wall</span></span><br><span class="line"><span class="comment"># setup a openvpn server</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># post-install</span></span><br><span class="line">/etc/apk/repositories</span><br><span class="line">apk add cherokee --update-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted</span><br><span class="line">apk search -v --description <span class="string">'NTP'</span> <span class="comment"># show description and search from description</span></span><br><span class="line">apk info -a zlib</span><br><span class="line">apk info -vv|sort</span><br><span class="line">apk info -r -R <span class="comment"># require / depency</span></span><br><span class="line">apk version -v -l <span class="string">'&lt;'</span> <span class="comment"># show available updates</span></span><br><span class="line">apk upgrade -U -a</span><br><span class="line">apk add -u xxx <span class="comment"># update xxx</span></span><br><span class="line"></span><br><span class="line">/etc/runlevels <span class="comment"># runlevel</span></span><br><span class="line">apk add openrc <span class="comment"># use openrc for init system</span></span><br><span class="line">rc-update add xxx <span class="comment"># set to start on</span></span><br><span class="line">rc-service xxx start <span class="comment"># equal -&gt; /etc/init.d/xxx start</span></span><br><span class="line">rc-status</span><br><span class="line"></span><br><span class="line">adduser xxx</span><br><span class="line">passwd xxx</span><br><span class="line"></span><br><span class="line">apk add ansible <span class="comment"># server</span></span><br><span class="line">ssh-keygen</span><br><span class="line">/etc/ansible/hosts</span><br><span class="line">apk add python <span class="comment"># node</span></span><br><span class="line">ssh-copy-id</span><br><span class="line"></span><br><span class="line">apk add man man-pages mdocml-apropos less less-doc</span><br><span class="line"><span class="built_in">export</span> PAGER=less</span><br><span class="line">/etc/rc.conf <span class="comment"># /etc/rc.conf -&gt; funny character</span></span><br><span class="line">apk add bash bash-doc bash-completion <span class="comment"># bash</span></span><br><span class="line">apk add util-linux pciutils usbutils coreutils binutils findutils grep <span class="comment"># grep / awk</span></span><br><span class="line">apk add build-base gcc abuild binutils binutils-doc gcc-doc <span class="comment"># compile</span></span><br><span class="line">apk add cmake cmake-doc extra-cmake-modules extra-cmake-modules-doc</span><br><span class="line">apk add ccache ccache-doc</span><br><span class="line"></span><br><span class="line">apk add docker <span class="comment"># docker</span></span><br><span class="line">rc-update add docker boot</span><br><span class="line">rc-service docker start</span><br><span class="line">apk add py-pip</span><br><span class="line">pip install docker-compose</span><br><span class="line">ln -s /usr/bin/docker-compose /usr/bin/doc</span><br><span class="line"></span><br><span class="line"><span class="comment"># application</span></span><br><span class="line">apk add openssh <span class="comment"># ssh</span></span><br><span class="line">rc-update add sshd</span><br><span class="line">/etc/init.d/sshd start</span><br><span class="line">/etc/sshd_config</span><br><span class="line">apk add dropbear <span class="comment"># another openssh implementation</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/script/" rel="tag"># 脚本</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/13/hello/hello-fc/" rel="next" title="每天学点linux命令">
+                <i class="fa fa-chevron-left"></i> 每天学点linux命令
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/17/hello/hello-logsave/" rel="prev" title="每天学点linux命令">
+                每天学点linux命令 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jp"
+                alt="HAOGRE" />
+            
+              <p class="site-author-name" itemprop="name">HAOGRE</p>
+              <p class="site-description motion-element" itemprop="description">a hexo blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">662</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#apk"><span class="nav-number">1.</span> <span class="nav-text">apk</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用实例"><span class="nav-number">1.1.</span> <span class="nav-text">使用实例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#升级"><span class="nav-number">1.1.1.</span> <span class="nav-text">升级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#搜索"><span class="nav-number">1.1.2.</span> <span class="nav-text">搜索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看包信息"><span class="nav-number">1.1.3.</span> <span class="nav-text">查看包信息</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#笔记"><span class="nav-number">1.2.</span> <span class="nav-text">笔记</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HAOGRE</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

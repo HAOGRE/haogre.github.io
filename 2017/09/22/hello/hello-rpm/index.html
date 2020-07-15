@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/function%20small()%20%7B%20%5Bnative%20code%5D%20%7D?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="脚本," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="rpmRPM软件包的管理工具 补充说明rpm命令 是RPM软件包的管理工具。rpm原本是Red Hat Linux发行版专门用来管理Linux各项套件的程序，由于它遵循GPL规则且功能强大方便，因而广受欢迎。逐渐受到其他发行版的采用。RPM套件管理方式的出现，让Linux易于安装，升级，间接提升了Linux的适用度。 语法1rpm(选项)(参数)  选项">
+<meta property="og:type" content="article">
+<meta property="og:title" content="每天学点linux命令">
+<meta property="og:url" content="http://yoursite.com/2017/09/22/hello/hello-rpm/index.html">
+<meta property="og:site_name" content="HAOGRE&#39;s blog">
+<meta property="og:description" content="rpmRPM软件包的管理工具 补充说明rpm命令 是RPM软件包的管理工具。rpm原本是Red Hat Linux发行版专门用来管理Linux各项套件的程序，由于它遵循GPL规则且功能强大方便，因而广受欢迎。逐渐受到其他发行版的采用。RPM套件管理方式的出现，让Linux易于安装，升级，间接提升了Linux的适用度。 语法1rpm(选项)(参数)  选项">
+<meta property="article:published_time" content="2017-09-22T15:26:27.000Z">
+<meta property="article:modified_time" content="2020-07-15T09:07:00.584Z">
+<meta property="article:author" content="HAOGRE">
+<meta property="article:tag" content="脚本">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/22/hello/hello-rpm/"/>
+
+
+
+
+
+  <title>每天学点linux命令 | HAOGRE's blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">HAOGRE's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-labs">
+          <a href="/labs" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            实验室
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/22/hello/hello-rpm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="HAOGRE">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jp">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HAOGRE's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">每天学点linux命令</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-22T23:26:27+08:00">
+                2017-09-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="rpm"><a href="#rpm" class="headerlink" title="rpm"></a>rpm</h1><p>RPM软件包的管理工具</p>
+<h2 id="补充说明"><a href="#补充说明" class="headerlink" title="补充说明"></a>补充说明</h2><p><strong>rpm命令</strong> 是RPM软件包的管理工具。rpm原本是Red Hat Linux发行版专门用来管理Linux各项套件的程序，由于它遵循GPL规则且功能强大方便，因而广受欢迎。逐渐受到其他发行版的采用。RPM套件管理方式的出现，让Linux易于安装，升级，间接提升了Linux的适用度。</p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm(选项)(参数)</span><br></pre></td></tr></table></figure>
+
+<h3 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h3><a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">-a：查询所有套件；</span><br><span class="line">-b&lt;完成阶段&gt;&lt;套件档&gt;+或-t &lt;完成阶段&gt;&lt;套件档&gt;+：设置包装套件的完成阶段，并指定套件档的文件名称；</span><br><span class="line">-c：只列出组态配置文件，本参数需配合&quot;-l&quot;参数使用；</span><br><span class="line">-d：只列出文本文件，本参数需配合&quot;-l&quot;参数使用；</span><br><span class="line">-e&lt;套件档&gt;或--erase&lt;套件档&gt;：删除指定的套件；</span><br><span class="line">-f&lt;文件&gt;+：查询拥有指定文件的套件；</span><br><span class="line">-h或--hash：套件安装时列出标记；</span><br><span class="line">-i：显示套件的相关信息；</span><br><span class="line">-i&lt;套件档&gt;或--install&lt;套件档&gt;：安装指定的套件档；</span><br><span class="line">-l：显示套件的文件列表；</span><br><span class="line">-p&lt;套件档&gt;+：查询指定的RPM套件档；</span><br><span class="line">-q：使用询问模式，当遇到任何问题时，rpm指令会先询问用户；</span><br><span class="line">-R：显示套件的关联性信息；</span><br><span class="line">-s：显示文件状态，本参数需配合&quot;-l&quot;参数使用；</span><br><span class="line">-U&lt;套件档&gt;或--upgrade&lt;套件档&gt;：升级指定的套件档；</span><br><span class="line">-v：显示指令执行过程；</span><br><span class="line">-vv：详细显示指令执行过程，便于排错。</span><br></pre></td></tr></table></figure>
+
+<h3 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h3><p>软件包：指定要操纵的rpm软件包。</p>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p> <strong>如何安装rpm软件包</strong></p>
+<p>rpm软件包的安装可以使用程序rpm来完成。执行下面的命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh your-package.rpm</span><br></pre></td></tr></table></figure>
+
+<p>其中your-package.rpm是你要安装的rpm包的文件名，一般置于当前目录下。</p>
+<p>安装过程中可能出现下面的警告或者提示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">... conflict with ...</span><br></pre></td></tr></table></figure>
+
+<p>可能是要安装的包里有一些文件可能会覆盖现有的文件，缺省时这样的情况下是无法正确安装的可以用<code>rpm --force -i</code>强制安装即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">... is needed by ...</span><br><span class="line">... is not installed ...</span><br></pre></td></tr></table></figure>
+
+<p>此包需要的一些软件你没有安装可以用<code>rpm --nodeps -i</code>来忽略此信息，也就是说<code>rpm -i --force --nodeps</code>可以忽略所有依赖关系和文件问题，什么包都能安装上，但这种强制安装的软件包不能保证完全发挥功能。</p>
+<p> <strong>如何安装.src.rpm软件包</strong></p>
+<p>有些软件包是以.src.rpm结尾的，这类软件包是包含了源代码的rpm包，在安装时需要进行编译。这类软件包有两种安装方法：</p>
+<p>方法一：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">rpm -i your-package.src.rpm</span><br><span class="line">cd &#x2F;usr&#x2F;src&#x2F;redhat&#x2F;SPECS</span><br><span class="line">rpmbuild -bp your-package.specs             #一个和你的软件包同名的specs文件</span><br><span class="line">cd &#x2F;usr&#x2F;src&#x2F;redhat&#x2F;BUILD&#x2F;your-package&#x2F;      #一个和你的软件包同名的目录</span><br><span class="line">.&#x2F;configure                                 #这一步和编译普通的源码软件一样，可以加上参数</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+
+<p>方法二：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rpm -i you-package.src.rpm</span><br><span class="line">cd &#x2F;usr&#x2F;src&#x2F;redhat&#x2F;SPECS</span><br></pre></td></tr></table></figure>
+
+<p>前两步和方法一相同</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpmbuild -bb your-package.specs       #一个和你的软件包同名的specs文件</span><br></pre></td></tr></table></figure>
+
+<p>这时在<code>/usr/src/redhat/RPM/i386/</code>（根据具体包的不同，也可能是i686,noarch等等）在这个目录下，有一个新的rpm包，这个是编译好的二进制文件。</p>
+<p>执行<code>rpm -i new-package.rpm</code>即可安装完成。</p>
+<p> <strong>如何卸载rpm软件包</strong></p>
+<p>使用命令<code>rpm -e</code>包名，包名可以包含版本号等信息，但是不可以有后缀.rpm，比如卸载软件包proftpd-1.2.8-1，可以使用下列格式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rpm -e proftpd-1.2.8-1</span><br><span class="line">rpm -e proftpd-1.2.8</span><br><span class="line">rpm -e proftpd-</span><br><span class="line">rpm -e proftpd</span><br></pre></td></tr></table></figure>
+
+<p>不可以是下列格式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rpm -e proftpd-1.2.8-1.i386.rpm</span><br><span class="line">rpm -e proftpd-1.2.8-1.i386</span><br><span class="line">rpm -e proftpd-1.2</span><br><span class="line">rpm -e proftpd-1</span><br></pre></td></tr></table></figure>
+
+<p>有时会出现一些错误或者警告：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">... is needed by ...</span><br></pre></td></tr></table></figure>
+
+<p>这说明这个软件被其他软件需要，不能随便卸载，可以用rpm -e –nodeps强制卸载</p>
+<p> <strong>如何不安装但是获取rpm包中的文件</strong></p>
+<p>使用工具rpm2cpio和cpio</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rpm2cpio xxx.rpm | cpio -vi</span><br><span class="line">rpm2cpio xxx.rpm | cpio -idmv</span><br><span class="line">rpm2cpio xxx.rpm | cpio --extract --make-directories</span><br></pre></td></tr></table></figure>
+
+<p>参数i和extract相同，表示提取文件。v表示指示执行进程，d和make-directory相同，表示根据包中文件原来的路径建立目录，m表示保持文件的更新时间。</p>
+<p> <strong>如何查看与rpm包相关的文件和其他信息</strong></p>
+<p>下面所有的例子都假设使用软件包mysql-3.23.54a-11</p>
+<p>1、我的系统中安装了那些rpm软件包。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa 讲列出所有安装过的包</span><br></pre></td></tr></table></figure>
+
+<p>如果要查找所有安装过的包含某个字符串sql的软件包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa | grep sql</span><br></pre></td></tr></table></figure>
+
+<p>2、如何获得某个软件包的文件全名。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -q mysql</span><br></pre></td></tr></table></figure>
+
+<p>可以获得系统中安装的mysql软件包全名，从中可以获得当前软件包的版本等信息。这个例子中可以得到信息mysql-3.23.54a-11</p>
+<p>3、一个rpm包中的文件安装到那里去了？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -ql 包名</span><br></pre></td></tr></table></figure>
+
+<p>注意这里的是不包括.rpm后缀的软件包的名称，也就是说只能用mysql或者mysql-3.23.54a-11而不是mysql-3.23.54a-11.rpm。如果只是想知道可执行程序放到那里去了，也可以用which，比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">which mysql</span><br></pre></td></tr></table></figure>
+
+<p>4、一个rpm包中包含那些文件。</p>
+<ul>
+<li>一个没有安装过的软件包，使用<code>rpm -qlp  **** .rpm</code></li>
+<li>一个已经安装过的软件包，还可以使用<code>rpm -ql  **** .rpm</code></li>
+</ul>
+<p>5、如何获取关于一个软件包的版本，用途等相关信息？</p>
+<ul>
+<li>一个没有安装过的软件包，使用<code>rpm -qip  **** .rpm</code></li>
+<li>一个已经安装过的软件包，还可以使用<code>rpm -qi  **** .rpm</code></li>
+</ul>
+<p>6、某个程序是哪个软件包安装的，或者哪个软件包包含这个程序。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rpm -qf &#96;which 程序名&#96;    #返回软件包的全名</span><br><span class="line">rpm -qif &#96;which 程序名&#96;   #返回软件包的有关信息</span><br><span class="line">rpm -qlf &#96;which 程序名&#96;   #返回软件包的文件列表</span><br></pre></td></tr></table></figure>
+
+<p>注意，这里不是引号，而是<code>，就是键盘左上角的那个键。也可以使用</code>rpm -qilf`，同时输出软件包信息和文件列表。</p>
+<p>7、某个文件是哪个软件包安装的，或者哪个软件包包含这个文件。</p>
+<p>注意，前一个问题中的方法，只适用与可执行的程序，而下面的方法，不仅可以用于可执行程序，也可以用于普通的任何文件。前提是知道这个文件名。首先获得这个程序的完整路径，可以用whereis或者which，然后使用<code>rpm -qf</code>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">whereis ftptop</span><br><span class="line">ftptop: &#x2F;usr&#x2F;bin&#x2F;ftptop &#x2F;usr&#x2F;share&#x2F;man&#x2F;man1&#x2F;ftptop.1.gz</span><br><span class="line"></span><br><span class="line">rpm -qf &#x2F;usr&#x2F;bin&#x2F;ftptop</span><br><span class="line">proftpd-1.2.8-1</span><br><span class="line"></span><br><span class="line">rpm -qf &#x2F;usr&#x2F;share&#x2F;doc&#x2F;proftpd-1.2.8&#x2F;rfc&#x2F;rfc0959.txt</span><br><span class="line">proftpd-1.2.8-1</span><br></pre></td></tr></table></figure>
+
+<h2 id="更多实例"><a href="#更多实例" class="headerlink" title="更多实例"></a>更多实例</h2><blockquote>
+<p>库依赖: <a href="http://rpmfind.net/" target="_blank" rel="noopener">http://rpmfind.net/</a></p>
+</blockquote>
+<p>源码包 -&gt; 编译 -&gt; 二进制包(rpm 包 / 系统默认包)</p>
+<p>rpm 命名规则: 软件(软件名, 软件版本) + 系统(os 版本, os 位数)<br>rpm 校验: SM5DLUGT -&gt; size modified(类型/权限) md5 device L(文件路径) user group time(modified time)</p>
+<p>yum: 解决 rpm 依赖的问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># rpm</span><br><span class="line">mysql57-community-release-el6-8.noarch.rpm # 一个 rpm 包的例子</span><br><span class="line">&#x2F;var&#x2F;lib&#x2F;rpm&#x2F; # 包全名 -&gt; 包名 的数据库</span><br><span class="line"></span><br><span class="line">rpm -Uivh --dodeps xxx # upgrade install verbose hash</span><br><span class="line">rpm -qilpfa|grep xxx # query info list(rpm包安装后的文件位置) package(rpm 包) file(文件属于哪个rpm文件) all</span><br><span class="line">rpm -e # erase</span><br><span class="line">rpm -V # verify</span><br><span class="line">rpm2cpio | cpio -idv</span><br><span class="line"></span><br><span class="line"># rpm 默认安装位置</span><br><span class="line">&#x2F;etc&#x2F;           配置文件</span><br><span class="line">&#x2F;usr&#x2F;bin&#x2F;       可执行文件</span><br><span class="line">&#x2F;urs&#x2F;lib&#x2F;       程序使用的函数库</span><br><span class="line">&#x2F;usr&#x2F;share&#x2F;doc&#x2F; 使用手册</span><br><span class="line">&#x2F;usr&#x2F;share&#x2F;man&#x2F; manual</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/script/" rel="tag"># 脚本</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/20/hello/hello-startx/" rel="next" title="每天学点linux命令">
+                <i class="fa fa-chevron-left"></i> 每天学点linux命令
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/23/hello/hello-mkinitrd/" rel="prev" title="每天学点linux命令">
+                每天学点linux命令 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jp"
+                alt="HAOGRE" />
+            
+              <p class="site-author-name" itemprop="name">HAOGRE</p>
+              <p class="site-description motion-element" itemprop="description">a hexo blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">662</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#rpm"><span class="nav-number">1.</span> <span class="nav-text">rpm</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#补充说明"><span class="nav-number">1.1.</span> <span class="nav-text">补充说明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#语法"><span class="nav-number">1.1.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选项"><span class="nav-number">1.1.2.</span> <span class="nav-text">选项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数"><span class="nav-number">1.1.3.</span> <span class="nav-text">参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例"><span class="nav-number">1.1.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更多实例"><span class="nav-number">1.2.</span> <span class="nav-text">更多实例</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HAOGRE</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

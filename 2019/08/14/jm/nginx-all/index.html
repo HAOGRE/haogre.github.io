@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/function%20small()%20%7B%20%5Bnative%20code%5D%20%7D?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="中间件," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="nginxNginx作为后端绕不开的中间件是或多或少要用得到的，优秀的反代功能对本地调试也有不少作用。 前段时间F5收购Nginx的新闻也着实有些无厘头的感觉。 干硬件的牛逼~（此处有破音">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nginx-看这一篇就够了">
+<meta property="og:url" content="http://yoursite.com/2019/08/14/jm/nginx-all/index.html">
+<meta property="og:site_name" content="HAOGRE&#39;s blog">
+<meta property="og:description" content="nginxNginx作为后端绕不开的中间件是或多或少要用得到的，优秀的反代功能对本地调试也有不少作用。 前段时间F5收购Nginx的新闻也着实有些无厘头的感觉。 干硬件的牛逼~（此处有破音">
+<meta property="og:image" content="http://yoursite.com/uploads/jm/nginx-art.png">
+<meta property="og:image" content="http://yoursite.com/uploads/jm/keepalived.jpg">
+<meta property="article:published_time" content="2019-08-14T06:27:40.000Z">
+<meta property="article:modified_time" content="2020-07-15T09:07:00.691Z">
+<meta property="article:author" content="HAOGRE">
+<meta property="article:tag" content="中间件">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/uploads/jm/nginx-art.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/08/14/jm/nginx-all/"/>
+
+
+
+
+
+  <title>nginx-看这一篇就够了 | HAOGRE's blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">HAOGRE's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-labs">
+          <a href="/labs" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            实验室
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/14/jm/nginx-all/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="HAOGRE">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jp">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HAOGRE's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">nginx-看这一篇就够了</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-14T14:27:40+08:00">
+                2019-08-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" itemprop="url" rel="index">
+                    <span itemprop="name">中间件</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/nginx/" itemprop="url" rel="index">
+                    <span itemprop="name">nginx</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/nginx/%E7%9C%8B%E8%BF%99%E4%B8%80%E7%AF%87%E5%B0%B1%E5%A4%9F%E4%BA%86/" itemprop="url" rel="index">
+                    <span itemprop="name">看这一篇就够了</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a>nginx</h1><p>Nginx作为后端绕不开的中间件是或多或少要用得到的，优秀的反代功能对本地调试也有不少作用。</p>
+<p>前段时间F5收购Nginx的新闻也着实有些无厘头的感觉。</p>
+<p>干硬件的牛逼~（此处有破音</p>
+<a id="more"></a>
+<h2 id="nginx-基础架构"><a href="#nginx-基础架构" class="headerlink" title="nginx 基础架构"></a>nginx 基础架构</h2><p>众所周知，nginx性能高，而nginx的高性能与其架构是分不开的。那么nginx究竟是怎么样的呢？这一节我们先来初识一下nginx框架吧。</p>
+<p>nginx在启动后，在unix系统中会以daemon的方式在后台运行，后台进程包含一个master进程和多个worker进程。我们也可以手动地关掉后台模式，让nginx在前台运行，并且通过配置让nginx取消master进程，从而可以使nginx以单进程方式运行。很显然，生产环境下我们肯定不会这么做，所以关闭后台模式，一般是用来调试用的，在后面的章节里面，我们会详细地讲解如何调试nginx。所以，我们可以看到，nginx是以多进程的方式来工作的，当然nginx也是支持多线程的方式的，只是我们主流的方式还是多进程的方式，也是nginx的默认方式。nginx采用多进程的方式有诸多好处，所以我就主要讲解nginx的多进程模式吧。</p>
+<p>刚才讲到，nginx在启动后，会有一个master进程和多个worker进程。master进程主要用来管理worker进程，包含：接收来自外界的信号，向各worker进程发送信号，监控worker进程的运行状态，当worker进程退出后(异常情况下)，会自动重新启动新的worker进程。而基本的网络事件，则是放在worker进程中来处理了。多个worker进程之间是对等的，他们同等竞争来自客户端的请求，各进程互相之间是独立的。一个请求，只可能在一个worker进程中处理，一个worker进程，不可能处理其它进程的请求。worker进程的个数是可以设置的，一般我们会设置与机器cpu核数一致，这里面的原因与nginx的进程模型以及事件处理模型是分不开的。nginx的进程模型，可以由下图来表示：</p>
+<p><img src="/uploads/jm/nginx-art.png" alt="redis-caching-avalanche"></p>
+<p>nginx进程模型<br>在nginx启动后，如果我们要操作nginx，要怎么做呢？从上文中我们可以看到，master来管理worker进程，所以我们只需要与master进程通信就行了。master进程会接收来自外界发来的信号，再根据信号做不同的事情。所以我们要控制nginx，只需要通过kill向master进程发送信号就行了。比如kill -HUP pid，则是告诉nginx，从容地重启nginx，我们一般用这个信号来重启nginx，或重新加载配置，因为是从容地重启，因此服务是不中断的。master进程在接收到HUP信号后是怎么做的呢？首先master进程在接到信号后，会先重新加载配置文件，然后再启动新的worker进程，并向所有老的worker进程发送信号，告诉他们可以光荣退休了。新的worker在启动后，就开始接收新的请求，而老的worker在收到来自master的信号后，就不再接收新的请求，并且在当前进程中的所有未处理完的请求处理完成后，再退出。当然，直接给master进程发送信号，这是比较老的操作方式，nginx在0.8版本之后，引入了一系列命令行参数，来方便我们管理。比如，./nginx -s reload，就是来重启nginx，./nginx -s stop，就是来停止nginx的运行。如何做到的呢？我们还是拿reload来说，我们看到，执行命令时，我们是启动一个新的nginx进程，而新的nginx进程在解析到reload参数后，就知道我们的目的是控制nginx来重新加载配置文件了，它会向master进程发送信号，然后接下来的动作，就和我们直接向master进程发送信号一样了。</p>
+<p>现在，我们知道了当我们在操作nginx的时候，nginx内部做了些什么事情，那么，worker进程又是如何处理请求的呢？我们前面有提到，worker进程之间是平等的，每个进程，处理请求的机会也是一样的。当我们提供80端口的http服务时，一个连接请求过来，每个进程都有可能处理这个连接，怎么做到的呢？首先，每个worker进程都是从master进程fork过来，在master进程里面，先建立好需要listen的socket（listenfd）之后，然后再fork出多个worker进程。所有worker进程的listenfd会在新连接到来时变得可读，为保证只有一个进程处理该连接，所有worker进程在注册listenfd读事件前抢accept_mutex，抢到互斥锁的那个进程注册listenfd读事件，在读事件里调用accept接受该连接。当一个worker进程在accept这个连接之后，就开始读取请求，解析请求，处理请求，产生数据后，再返回给客户端，最后才断开连接，这样一个完整的请求就是这样的了。我们可以看到，一个请求，完全由worker进程来处理，而且只在一个worker进程中处理。</p>
+<p>那么，nginx采用这种进程模型有什么好处呢？当然，好处肯定会很多了。首先，对于每个worker进程来说，独立的进程，不需要加锁，所以省掉了锁带来的开销，同时在编程以及问题查找时，也会方便很多。其次，采用独立的进程，可以让互相之间不会影响，一个进程退出后，其它进程还在工作，服务不会中断，master进程则很快启动新的worker进程。当然，worker进程的异常退出，肯定是程序有bug了，异常退出，会导致当前worker上的所有请求失败，不过不会影响到所有请求，所以降低了风险。当然，好处还有很多，大家可以慢慢体会。</p>
+<p>上面讲了很多关于nginx的进程模型，接下来，我们来看看nginx是如何处理事件的。</p>
+<p>有人可能要问了，nginx采用多worker的方式来处理请求，每个worker里面只有一个主线程，那能够处理的并发数很有限啊，多少个worker就能处理多少个并发，何来高并发呢？非也，这就是nginx的高明之处，nginx采用了异步非阻塞的方式来处理请求，也就是说，nginx是可以同时处理成千上万个请求的。想想apache的常用工作方式（apache也有异步非阻塞版本，但因其与自带某些模块冲突，所以不常用），每个请求会独占一个工作线程，当并发数上到几千时，就同时有几千的线程在处理请求了。这对操作系统来说，是个不小的挑战，线程带来的内存占用非常大，线程的上下文切换带来的cpu开销很大，自然性能就上不去了，而这些开销完全是没有意义的。</p>
+<p>为什么nginx可以采用异步非阻塞的方式来处理呢，或者异步非阻塞到底是怎么回事呢？我们先回到原点，看看一个请求的完整过程。首先，请求过来，要建立连接，然后再接收数据，接收数据后，再发送数据。具体到系统底层，就是读写事件，而当读写事件没有准备好时，必然不可操作，如果不用非阻塞的方式来调用，那就得阻塞调用了，事件没有准备好，那就只能等了，等事件准备好了，你再继续吧。阻塞调用会进入内核等待，cpu就会让出去给别人用了，对单线程的worker来说，显然不合适，当网络事件越多时，大家都在等待呢，cpu空闲下来没人用，cpu利用率自然上不去了，更别谈高并发了。好吧，你说加进程数，这跟apache的线程模型有什么区别，注意，别增加无谓的上下文切换。所以，在nginx里面，最忌讳阻塞的系统调用了。不要阻塞，那就非阻塞喽。非阻塞就是，事件没有准备好，马上返回EAGAIN，告诉你，事件还没准备好呢，你慌什么，过会再来吧。好吧，你过一会，再来检查一下事件，直到事件准备好了为止，在这期间，你就可以先去做其它事情，然后再来看看事件好了没。虽然不阻塞了，但你得不时地过来检查一下事件的状态，你可以做更多的事情了，但带来的开销也是不小的。所以，才会有了异步非阻塞的事件处理机制，具体到系统调用就是像select/poll/epoll/kqueue这样的系统调用。它们提供了一种机制，让你可以同时监控多个事件，调用他们是阻塞的，但可以设置超时时间，在超时时间之内，如果有事件准备好了，就返回。这种机制正好解决了我们上面的两个问题，拿epoll为例(在后面的例子中，我们多以epoll为例子，以代表这一类函数)，当事件没准备好时，放到epoll里面，事件准备好了，我们就去读写，当读写返回EAGAIN时，我们将它再次加入到epoll里面。这样，只要有事件准备好了，我们就去处理它，只有当所有事件都没准备好时，才在epoll里面等着。这样，我们就可以并发处理大量的并发了，当然，这里的并发请求，是指未处理完的请求，线程只有一个，所以同时能处理的请求当然只有一个了，只是在请求间进行不断地切换而已，切换也是因为异步事件未准备好，而主动让出的。这里的切换是没有任何代价，你可以理解为循环处理多个准备好的事件，事实上就是这样的。与多线程相比，这种事件处理方式是有很大的优势的，不需要创建线程，每个请求占用的内存也很少，没有上下文切换，事件处理非常的轻量级。并发数再多也不会导致无谓的资源浪费（上下文切换）。更多的并发数，只是会占用更多的内存而已。 我之前有对连接数进行过测试，在24G内存的机器上，处理的并发请求数达到过200万。现在的网络服务器基本都采用这种方式，这也是nginx性能高效的主要原因。</p>
+<p>我们之前说过，推荐设置worker的个数为cpu的核数，在这里就很容易理解了，更多的worker数，只会导致进程来竞争cpu资源了，从而带来不必要的上下文切换。而且，nginx为了更好的利用多核特性，提供了cpu亲缘性的绑定选项，我们可以将某一个进程绑定在某一个核上，这样就不会因为进程的切换带来cache的失效。像这种小的优化在nginx中非常常见，同时也说明了nginx作者的苦心孤诣。比如，nginx在做4个字节的字符串比较时，会将4个字符转换成一个int型，再作比较，以减少cpu的指令数等等。</p>
+<p>现在，知道了nginx为什么会选择这样的进程模型与事件模型了。对于一个基本的web服务器来说，事件通常有三种类型，网络事件、信号、定时器。从上面的讲解中知道，网络事件通过异步非阻塞可以很好的解决掉。如何处理信号与定时器？</p>
+<p>首先，信号的处理。对nginx来说，有一些特定的信号，代表着特定的意义。信号会中断掉程序当前的运行，在改变状态后，继续执行。如果是系统调用，则可能会导致系统调用的失败，需要重入。关于信号的处理，大家可以学习一些专业书籍，这里不多说。对于nginx来说，如果nginx正在等待事件（epoll_wait时），如果程序收到信号，在信号处理函数处理完后，epoll_wait会返回错误，然后程序可再次进入epoll_wait调用。</p>
+<p>另外，再来看看定时器。由于epoll_wait等函数在调用的时候是可以设置一个超时时间的，所以nginx借助这个超时时间来实现定时器。nginx里面的定时器事件是放在一颗维护定时器的红黑树里面，每次在进入epoll_wait前，先从该红黑树里面拿到所有定时器事件的最小时间，在计算出epoll_wait的超时时间后进入epoll_wait。所以，当没有事件产生，也没有中断信号时，epoll_wait会超时，也就是说，定时器事件到了。这时，nginx会检查所有的超时事件，将他们的状态设置为超时，然后再去处理网络事件。由此可以看出，当我们写nginx代码时，在处理网络事件的回调函数时，通常做的第一个事情就是判断超时，然后再去处理网络事件。</p>
+<h2 id="nginx-高可用"><a href="#nginx-高可用" class="headerlink" title="nginx 高可用"></a>nginx 高可用</h2><h3 id="API高可用方案"><a href="#API高可用方案" class="headerlink" title="API高可用方案"></a>API高可用方案</h3><p>Nginx 自带负载均衡功能，并且当 Nginx 后端某个服务器挂掉后，Nginx 会自动剔除该服务器，将请求转发到可用的服务器，通过这种方式实现了后端 API 服务的高可用（HA）。但是 Nginx 是单点的，如果 Nginx 挂了，后端的所有服务器就都不能访问，所以在实际生产环境中，也需要对 Nginx 做高可用。</p>
+<p>Keepalived 是一个高性能的服务器高可用或热备解决方案，Keepalived 主要来防止服务器单点故障的发生问题，可以通过 Keepalived 对前端 Nginx 实现高可用。Keepalived + Nginx 的高可用方案具有如下特点：</p>
+<ul>
+<li>服务功能强大</li>
+<li>维护简单</li>
+</ul>
+<h3 id="Keepalived简介"><a href="#Keepalived简介" class="headerlink" title="Keepalived简介"></a>Keepalived简介</h3><p>Keepalived 以 VRRP 协议为基础来实现高可用性。VRRP（Virtual Router Redundancy Protocol，虚拟路由冗余协议）是用于实现路由器冗余的协议，它将两台或多台路由器设备虚拟成一个设备，对外提供虚拟路由器 IP（一个或多个），如下图所示。</p>
+<p><img src="/uploads/jm/keepalived.jpg" alt="redis-caching-avalanche"></p>
+<p>在上图中，将 Nginx + Keepalived 部署在两台服务器上，拥有两个真实的 IP（IP1 和 IP2），通过一定的技术（如 LVS）虚拟出一个虚拟 IP（VIP），外界请求通过访问 VIP 来访问服务。在两台 Nginx + Keepalived 的服务器上，同一时间只有一台会接管 VIP（叫做 Master）提供服务，另一台（叫做 Slave）会检测 Master 的心跳，当发现 Master 停止心跳后，Slave 会自动接管 VIP 以提供服务（此时，Slave 变成 Master）。通过这种方式来实现 Nginx 的高可用,Nginx 可以对后台 API 服务器做高可用，这样通过 Nginx + Keepalived 的组合方案就实现了整个 API 集群的高可用。</p>
+<h2 id="nginx-负载均衡"><a href="#nginx-负载均衡" class="headerlink" title="nginx 负载均衡"></a>nginx 负载均衡</h2><p>Nginx的五种负载均衡策略<br>Nginx可以根据客户端IP进行负载均衡，在upstream里设置ip_hash，就可以针对同一个C类地址段中的客户端选择同一个后端服务器，除非那个后端服务器宕了才会换一个。</p>
+<p>nginx的upstream目前支持的5种方式的分配</p>
+<h3 id="轮询（默认）​"><a href="#轮询（默认）​" class="headerlink" title="轮询（默认）​"></a>轮询（默认）​</h3><p>每个请求按时间顺序逐一分配到不同的后端服务器，如果后端服务器down掉，能自动剔除。</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">upstream</span> backserver &#123; </span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.0.14</span>; </span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.0.15</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="指定权重"><a href="#指定权重" class="headerlink" title="指定权重"></a>指定权重</h3><p>指定轮询几率，weight和访问比率成正比，用于后端服务器性能不均的情况。 </p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">upstream</span> backserver &#123; </span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.0.14</span> weight=<span class="number">10</span>; </span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.0.15</span> weight=<span class="number">10</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="ip-hash-ip绑定"><a href="#ip-hash-ip绑定" class="headerlink" title="ip_hash(ip绑定)"></a>ip_hash(ip绑定)</h3><p>每个请求按访问ip的hash结果分配，这样每个访客固定访问一个后端服务器，可以解决session的问题。</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">upstream</span> backserver &#123; </span><br><span class="line">    ip_hash; </span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.0.14:88</span>; </span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.0.15:80</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="fair（第三方）"><a href="#fair（第三方）" class="headerlink" title="fair（第三方）"></a>fair（第三方）</h3><p>按后端服务器的响应时间来分配请求，响应时间短的优先分配。</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">upstream</span> backserver &#123; </span><br><span class="line">    <span class="attribute">server</span> server1; </span><br><span class="line">    <span class="attribute">server</span> server2; </span><br><span class="line">    fair; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="url-hash（第三方）"><a href="#url-hash（第三方）" class="headerlink" title="url_hash（第三方）"></a>url_hash（第三方）</h3><p>按访问url的hash结果来分配请求，使每个url定向到同一个后端服务器，后端服务器为缓存时比较有效。 </p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">upstream</span> backserver &#123; </span><br><span class="line">    <span class="attribute">server</span> squid1:<span class="number">3128</span>; </span><br><span class="line">    <span class="attribute">server</span> squid2:<span class="number">3128</span>; </span><br><span class="line">    <span class="attribute">hash</span> <span class="variable">$request_uri</span>; </span><br><span class="line">    <span class="attribute">hash_method</span> crc32; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在需要使用负载均衡的server中增加 </p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">proxy_pass</span> http://backserver/; </span><br><span class="line"></span><br><span class="line"><span class="attribute">upstream</span> backserver&#123; </span><br><span class="line">    ip_hash; </span><br><span class="line">    server 127.0.0.1:9090 down; (down 表示单前的server暂时不参与负载) </span><br><span class="line">    server 127.0.0.1:8080 weight=2; (weight 默认为1.weight越大，负载的权重就越大) </span><br><span class="line">    <span class="attribute">server</span> <span class="number">127.0.0.1:6060</span>; </span><br><span class="line">    server 127.0.0.1:7070 backup; (其它所有的非backup机器down或者忙的时候，请求backup机器)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>max_fails ：允许请求失败的次数默认为1.当超过最大次数时，返回proxy_next_upstream 模块定义的错误 </p>
+<p>fail_timeout:max_fails次失败后，暂停的时间</p>
+<h2 id="nginx-缓存机制"><a href="#nginx-缓存机制" class="headerlink" title="nginx 缓存机制"></a>nginx 缓存机制</h2><p>Nginx缓存的基本思路</p>
+<p>利用请求的局部性原理，将请求过的内容在本地建立一个副本，下次访问时不再连接到后端服务器，直接响应本地内容</p>
+<p>Nginx服务器启动后，会对本地磁盘上的缓存文件进行扫描，在内存中建立缓存索引，并有专门的进程对缓存文件进行过期判断、更新等进行管理</p>
+<p>对于缓存，我们大概会有以下问题：</p>
+<p>（1）缓存文件放在哪儿？</p>
+<p>（2）缓存的空间大小是否可以限定?</p>
+<p>（3）如何指定哪些请求被缓存？</p>
+<p>（4）缓存的有效期是多久？</p>
+<p>（5）对于某些请求，是否可以不走缓存？</p>
+<p>解决这些问题后，nginx的缓存也就基本配置完成了，下面看详细配置过程</p>
+<p>开启缓存</p>
+<p>要使用缓存，首先要使用 proxy_cache_path 这个指令（必须放在 http 上下文的顶层位置），然后在目标上下文中使用 proxy_cache 指令</p>
+<p>配置示例</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="attribute">proxy_cache_path</span> /data/nginx/cache keys_zone=one:<span class="number">10m</span>;</span><br><span class="line">    <span class="section">server</span> &#123;</span><br><span class="line">        <span class="attribute">proxy_cache</span> one;</span><br><span class="line">        <span class="attribute">location</span> / &#123;</span><br><span class="line">            <span class="attribute">proxy_pass</span> http://localhost:8000;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>proxy_cache_path 有两个必填参数，第一个参数为 缓存目录，第二个参数keys_zone指定缓存名称和占用内存空间的大小（注：示例中的10m是对内存中缓存内容元数据信息大小的限制，如果想限制缓存总量大小，需要用 max_size 参数）</p>
+<p>proxy_cache 的参数为之前指定的缓存名称</p>
+<p>缓存管理的相关进程</p>
+<p>在缓存工作中有两个附加进程：</p>
+<p>（1）缓存管理器</p>
+<p>定期检查缓存状态，看缓存总量是否超出限制，如果超出，就移除其中最少使用的部分</p>
+<p>（2）缓存加载器</p>
+<p>加载器只在nginx启动后运行一次，把缓存内容的元数据信息加载到内存空间，如果一次性加载全部缓存信息，会大量消耗资源，使nginx在启动后的几分钟里变慢，为避免此问题，有3种加载策略：</p>
+<p>loader_threshold – 指定每次加载执行的时间</p>
+<p>loader_files – 每次最多加载的数量</p>
+<p>loader_sleeps – 每次加载的延时</p>
+<p>例如：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">proxy_cache_path</span> /data/nginx/cache keys_zone=one:<span class="number">10m</span> loader_threshold=<span class="number">300</span> loader_files=<span class="number">200</span>;</span><br><span class="line"></span><br><span class="line">指定缓存哪些请求</span><br><span class="line"></span><br><span class="line">nginx默认会缓存所有 get 和 head 方法的请求结果，缓存的key默认使用请求字符串</span><br><span class="line"></span><br><span class="line">（1）自定义key</span><br><span class="line"></span><br><span class="line">例如 proxy_cache_key "$host$request_uri$cookie_user";</span><br><span class="line"></span><br><span class="line">（2）指定请求至少被发送了多少次以上时才缓存，可以防止低频请求被缓存</span><br><span class="line"></span><br><span class="line">例如 proxy_cache_min_uses 5;</span><br><span class="line"></span><br><span class="line">（3）指定哪些方法的请求被缓存</span><br><span class="line"></span><br><span class="line">例如 proxy_cache_methods GET HEAD POST;</span><br><span class="line"></span><br><span class="line">缓存有效期</span><br><span class="line"></span><br><span class="line">默认情况下，缓存内容是长期存留的，除非缓存的总量超出限制</span><br><span class="line"></span><br><span class="line">可以指定缓存有效时间，例如</span><br><span class="line"></span><br><span class="line">proxy_cache_valid 200 302 10m; //响应状态码为200 302时，10分钟有效</span><br><span class="line"></span><br><span class="line">proxy_cache_valid any 5m; //对应任何状态码，5分钟有效</span><br><span class="line"></span><br><span class="line">绕开缓存</span><br><span class="line"></span><br><span class="line">例如 proxy_cache_bypass $cookie_nocache $arg_nocache$arg_comment;</span><br><span class="line"></span><br><span class="line">如果任何一个参数值不为空，或者不等于0，nginx就不会查找缓存，直接进行代理转发</span><br></pre></td></tr></table></figure>
+
+<p>综合示例</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    ...</span><br><span class="line">    // 缓存目录：/data/nginx/cache</span><br><span class="line">    // 缓存名称：one</span><br><span class="line">    // 缓存占用内存空间：10m</span><br><span class="line">    // 加载器每次迭代过程最多执行300毫秒</span><br><span class="line">    // 加载器每次迭代过程中最多加载200个文件</span><br><span class="line">    // 缓存硬盘空间最多为 200m</span><br><span class="line">    <span class="attribute">proxy_cache_path</span> /data/nginx/cache keys_zone=one:<span class="number">10m</span> loader_threshold=<span class="number">300</span> </span><br><span class="line">                    loader_files=<span class="number">200</span> max_size=<span class="number">200m</span>;</span><br><span class="line">    <span class="section">server</span> &#123;</span><br><span class="line">        <span class="attribute">listen</span> <span class="number">8080</span>;</span><br><span class="line">        // 使用名称为one的缓存</span><br><span class="line">        <span class="attribute">proxy_cache</span> one; </span><br><span class="line">        <span class="attribute">location</span> / &#123;</span><br><span class="line">            // 此location中使用默认的缓存配置</span><br><span class="line">            <span class="attribute">proxy_pass</span> http://backend1;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="attribute">location</span> /some/path &#123;</span><br><span class="line">            <span class="attribute">proxy_pass</span> http://backend2;</span><br><span class="line">        // 缓存有效期为1分钟</span><br><span class="line">            <span class="attribute">proxy_cache_valid</span> any <span class="number">1m</span>;</span><br><span class="line">            // 被请求3次以上时才缓存</span><br><span class="line">            <span class="attribute">proxy_cache_min_uses</span> <span class="number">3</span>;</span><br><span class="line">        // 请求中有下面参数值时不走缓存</span><br><span class="line">            <span class="attribute">proxy_cache_bypass</span> <span class="variable">$cookie_nocache</span> <span class="variable">$arg_nocache</span><span class="variable">$arg_comment</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="tag"># 中间件</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/07/dp/b-Strategy/" rel="next" title="策略模式-看这一篇就够了">
+                <i class="fa fa-chevron-left"></i> 策略模式-看这一篇就够了
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/08/16/Proxmox/" rel="prev" title="Proxmox">
+                Proxmox <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jp"
+                alt="HAOGRE" />
+            
+              <p class="site-author-name" itemprop="name">HAOGRE</p>
+              <p class="site-description motion-element" itemprop="description">a hexo blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">662</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#nginx"><span class="nav-number">1.</span> <span class="nav-text">nginx</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#nginx-基础架构"><span class="nav-number">1.1.</span> <span class="nav-text">nginx 基础架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nginx-高可用"><span class="nav-number">1.2.</span> <span class="nav-text">nginx 高可用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#API高可用方案"><span class="nav-number">1.2.1.</span> <span class="nav-text">API高可用方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Keepalived简介"><span class="nav-number">1.2.2.</span> <span class="nav-text">Keepalived简介</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nginx-负载均衡"><span class="nav-number">1.3.</span> <span class="nav-text">nginx 负载均衡</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#轮询（默认）​"><span class="nav-number">1.3.1.</span> <span class="nav-text">轮询（默认）​</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指定权重"><span class="nav-number">1.3.2.</span> <span class="nav-text">指定权重</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ip-hash-ip绑定"><span class="nav-number">1.3.3.</span> <span class="nav-text">ip_hash(ip绑定)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fair（第三方）"><span class="nav-number">1.3.4.</span> <span class="nav-text">fair（第三方）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#url-hash（第三方）"><span class="nav-number">1.3.5.</span> <span class="nav-text">url_hash（第三方）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nginx-缓存机制"><span class="nav-number">1.4.</span> <span class="nav-text">nginx 缓存机制</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HAOGRE</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
