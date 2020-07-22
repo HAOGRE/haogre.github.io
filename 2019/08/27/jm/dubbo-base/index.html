@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="中间件," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Dubbo 基础架构    节点 角色说明    Provider 暴露服务的服务提供方   Consumer 调用远程服务的服务消费方   Registry 服务注册与发现的注册中心   Monitor 统计服务的调用次数和调用时间的监控中心   Container 服务运行容器   RegistryDubbo支持多种注册中心，推荐使用Zookeeper  Zookeeper 注册中心 Naco">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dubbo-base">
+<meta property="og:url" content="http://yoursite.com/2019/08/27/jm/dubbo-base/index.html">
+<meta property="og:site_name" content="HAOGRE&#39;s blog">
+<meta property="og:description" content="Dubbo 基础架构    节点 角色说明    Provider 暴露服务的服务提供方   Consumer 调用远程服务的服务消费方   Registry 服务注册与发现的注册中心   Monitor 统计服务的调用次数和调用时间的监控中心   Container 服务运行容器   RegistryDubbo支持多种注册中心，推荐使用Zookeeper  Zookeeper 注册中心 Naco">
+<meta property="og:image" content="http://yoursite.com/uploads/jm/dubbo.png">
+<meta property="og:image" content="http://yoursite.com/uploads/jm/zookeeper-dubbo.jpg">
+<meta property="og:image" content="http://yoursite.com/uploads/jm/dubbo-framework.jpg">
+<meta property="article:published_time" content="2019-08-28T02:39:44.000Z">
+<meta property="article:modified_time" content="2020-07-22T07:50:44.082Z">
+<meta property="article:author" content="HAOGRE">
+<meta property="article:tag" content="中间件">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/uploads/jm/dubbo.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/08/27/jm/dubbo-base/"/>
+
+
+
+
+
+  <title>dubbo-base | HAOGRE's blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">HAOGRE's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-labs">
+          <a href="/labs" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-flask"></i> <br />
+            
+            实验室
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/27/jm/dubbo-base/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="HAOGRE">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HAOGRE's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">dubbo-base</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-27T22:39:44-04:00">
+                2019-08-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" itemprop="url" rel="index">
+                    <span itemprop="name">中间件</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/dubbo/" itemprop="url" rel="index">
+                    <span itemprop="name">dubbo</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/dubbo/%E7%9C%8B%E8%BF%99%E4%B8%80%E7%AF%87%E5%B0%B1%E5%A4%9F%E4%BA%86/" itemprop="url" rel="index">
+                    <span itemprop="name">看这一篇就够了</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Dubbo-基础架构"><a href="#Dubbo-基础架构" class="headerlink" title="Dubbo 基础架构"></a>Dubbo 基础架构</h1><p><img src="/uploads/jm/dubbo.png" alt="dubbo-arch"></p>
+<table>
+<thead>
+<tr>
+<th>节点</th>
+<th>角色说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Provider</td>
+<td>暴露服务的服务提供方</td>
+</tr>
+<tr>
+<td>Consumer</td>
+<td>调用远程服务的服务消费方</td>
+</tr>
+<tr>
+<td>Registry</td>
+<td>服务注册与发现的注册中心</td>
+</tr>
+<tr>
+<td>Monitor</td>
+<td>统计服务的调用次数和调用时间的监控中心</td>
+</tr>
+<tr>
+<td>Container</td>
+<td>服务运行容器</td>
+</tr>
+</tbody></table>
+<h2 id="Registry"><a href="#Registry" class="headerlink" title="Registry"></a>Registry</h2><p>Dubbo支持多种注册中心，推荐使用Zookeeper</p>
+<ul>
+<li>Zookeeper 注册中心</li>
+<li>Nacos 注册中心</li>
+<li>Redis 注册中心</li>
+<li>Multicast 注册中心</li>
+<li>Simple 注册中心</li>
+</ul>
+<a id="more"></a>
+
+<h3 id="zk注册中心"><a href="#zk注册中心" class="headerlink" title="zk注册中心"></a>zk注册中心</h3><p><img src="/uploads/jm/zookeeper-dubbo.jpg" alt="dubbo-arch"></p>
+<h2 id="Provider"><a href="#Provider" class="headerlink" title="Provider"></a>Provider</h2><h2 id="Consumer"><a href="#Consumer" class="headerlink" title="Consumer"></a>Consumer</h2><h2 id="Monitor"><a href="#Monitor" class="headerlink" title="Monitor"></a>Monitor</h2><h2 id="Container"><a href="#Container" class="headerlink" title="Container"></a>Container</h2><p><img src="/uploads/jm/dubbo-framework.jpg" alt="dubbo-framework"></p>
+<p>源码目录结构</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── codestyle</span><br><span class="line">├── dubbo-all</span><br><span class="line">├── dubbo-bom</span><br><span class="line">├── dubbo-cluster</span><br><span class="line">│   └── src</span><br><span class="line">├── dubbo-common</span><br><span class="line">│   └── src</span><br><span class="line">├── dubbo-compatible</span><br><span class="line">│   └── src</span><br><span class="line">├── dubbo-config</span><br><span class="line">│   ├── dubbo-config-api</span><br><span class="line">│   └── dubbo-config-spring</span><br><span class="line">├── dubbo-configcenter</span><br><span class="line">│   ├── dubbo-configcenter-api</span><br><span class="line">│   ├── dubbo-configcenter-apollo</span><br><span class="line">│   ├── dubbo-configcenter-consul</span><br><span class="line">│   ├── dubbo-configcenter-etcd</span><br><span class="line">│   ├── dubbo-configcenter-nacos</span><br><span class="line">│   └── dubbo-configcenter-zookeeper</span><br><span class="line">├── dubbo-container</span><br><span class="line">│   ├── dubbo-container-api</span><br><span class="line">│   ├── dubbo-container-log4j</span><br><span class="line">│   ├── dubbo-container-logback</span><br><span class="line">│   └── dubbo-container-spring</span><br><span class="line">├── dubbo-demo</span><br><span class="line">│   ├── dubbo-demo-annotation</span><br><span class="line">│   ├── dubbo-demo-api</span><br><span class="line">│   ├── dubbo-demo-interface</span><br><span class="line">│   └── dubbo-demo-xml</span><br><span class="line">├── dubbo-dependencies</span><br><span class="line">│   └── dubbo-dependencies-zookeeper</span><br><span class="line">├── dubbo-dependencies-bom</span><br><span class="line">├── dubbo-distribution</span><br><span class="line">│   └── src</span><br><span class="line">├── dubbo-filter</span><br><span class="line">│   ├── dubbo-filter-cache</span><br><span class="line">│   └── dubbo-filter-validation</span><br><span class="line">├── dubbo-metadata-report</span><br><span class="line">│   ├── dubbo-metadata-definition</span><br><span class="line">│   ├── dubbo-metadata-definition-protobuf</span><br><span class="line">│   ├── dubbo-metadata-report-api</span><br><span class="line">│   ├── dubbo-metadata-report-consul</span><br><span class="line">│   ├── dubbo-metadata-report-etcd</span><br><span class="line">│   ├── dubbo-metadata-report-nacos</span><br><span class="line">│   ├── dubbo-metadata-report-redis</span><br><span class="line">│   └── dubbo-metadata-report-zookeeper</span><br><span class="line">├── dubbo-monitor</span><br><span class="line">│   ├── dubbo-monitor-api</span><br><span class="line">│   └── dubbo-monitor-default</span><br><span class="line">├── dubbo-plugin</span><br><span class="line">│   └── dubbo-qos</span><br><span class="line">├── dubbo-registry</span><br><span class="line">│   ├── dubbo-registry-api</span><br><span class="line">│   ├── dubbo-registry-consul</span><br><span class="line">│   ├── dubbo-registry-default</span><br><span class="line">│   ├── dubbo-registry-etcd3</span><br><span class="line">│   ├── dubbo-registry-multicast</span><br><span class="line">│   ├── dubbo-registry-multiple</span><br><span class="line">│   ├── dubbo-registry-nacos</span><br><span class="line">│   ├── dubbo-registry-redis</span><br><span class="line">│   ├── dubbo-registry-sofa</span><br><span class="line">│   └── dubbo-registry-zookeeper</span><br><span class="line">├── dubbo-remoting</span><br><span class="line">│   ├── dubbo-remoting-api</span><br><span class="line">│   ├── dubbo-remoting-etcd3</span><br><span class="line">│   ├── dubbo-remoting-grizzly</span><br><span class="line">│   ├── dubbo-remoting-http</span><br><span class="line">│   ├── dubbo-remoting-mina</span><br><span class="line">│   ├── dubbo-remoting-netty</span><br><span class="line">│   ├── dubbo-remoting-netty4</span><br><span class="line">│   ├── dubbo-remoting-p2p</span><br><span class="line">│   └── dubbo-remoting-zookeeper</span><br><span class="line">├── dubbo-rpc</span><br><span class="line">│   ├── dubbo-rpc-api</span><br><span class="line">│   ├── dubbo-rpc-dubbo</span><br><span class="line">│   ├── dubbo-rpc-hessian</span><br><span class="line">│   ├── dubbo-rpc-http</span><br><span class="line">│   ├── dubbo-rpc-http-invoker</span><br><span class="line">│   ├── dubbo-rpc-injvm</span><br><span class="line">│   ├── dubbo-rpc-memcached</span><br><span class="line">│   ├── dubbo-rpc-native-thrift</span><br><span class="line">│   ├── dubbo-rpc-redis</span><br><span class="line">│   ├── dubbo-rpc-rest</span><br><span class="line">│   ├── dubbo-rpc-rmi</span><br><span class="line">│   ├── dubbo-rpc-thrift</span><br><span class="line">│   ├── dubbo-rpc-webservice</span><br><span class="line">│   └── dubbo-rpc-xml</span><br><span class="line">└── dubbo-serialization</span><br><span class="line">    ├── dubbo-serialization-api</span><br><span class="line">    ├── dubbo-serialization-avro</span><br><span class="line">    ├── dubbo-serialization-fastjson</span><br><span class="line">    ├── dubbo-serialization-fst</span><br><span class="line">    ├── dubbo-serialization-gson</span><br><span class="line">    ├── dubbo-serialization-hessian2</span><br><span class="line">    ├── dubbo-serialization-jdk</span><br><span class="line">    ├── dubbo-serialization-kryo</span><br><span class="line">    ├── dubbo-serialization-native-hession</span><br><span class="line">    ├── dubbo-serialization-protobuf-json</span><br><span class="line">    ├── dubbo-serialization-protostuff</span><br><span class="line">    └── dubbo-serialization-test</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="tag"># 中间件</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/26/jm/mq-base/" rel="next" title="mq-base">
+                <i class="fa fa-chevron-left"></i> mq-base
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/23/classic-soft/" rel="prev" title="经典排序">
+                经典排序 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="HAOGRE" />
+            
+              <p class="site-author-name" itemprop="name">HAOGRE</p>
+              <p class="site-description motion-element" itemprop="description">a hexo blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">662</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Dubbo-基础架构"><span class="nav-number">1.</span> <span class="nav-text">Dubbo 基础架构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Registry"><span class="nav-number">1.1.</span> <span class="nav-text">Registry</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#zk注册中心"><span class="nav-number">1.1.1.</span> <span class="nav-text">zk注册中心</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Provider"><span class="nav-number">1.2.</span> <span class="nav-text">Provider</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Consumer"><span class="nav-number">1.3.</span> <span class="nav-text">Consumer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Monitor"><span class="nav-number">1.4.</span> <span class="nav-text">Monitor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Container"><span class="nav-number">1.5.</span> <span class="nav-text">Container</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HAOGRE</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

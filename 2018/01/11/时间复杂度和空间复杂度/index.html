@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="后端," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="源起作为一个非科班出身的IT从业者，总是有心去研究计算机底层知识相关的技术。内存机制，文件系统，磁盘机制，CPU工作原理等等，是看了又忘，忘了又看，往复循环也算是理解了那么一点点皮毛。leetcode上的算法题目也是刷过那么一点点的，倒是关于算法的复杂度的知识从来都是一掠而过，就在此系统记录一下相关知识。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法时间复杂度和空间复杂度">
+<meta property="og:url" content="http://yoursite.com/2018/01/11/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%92%8C%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/index.html">
+<meta property="og:site_name" content="HAOGRE&#39;s blog">
+<meta property="og:description" content="源起作为一个非科班出身的IT从业者，总是有心去研究计算机底层知识相关的技术。内存机制，文件系统，磁盘机制，CPU工作原理等等，是看了又忘，忘了又看，往复循环也算是理解了那么一点点皮毛。leetcode上的算法题目也是刷过那么一点点的，倒是关于算法的复杂度的知识从来都是一掠而过，就在此系统记录一下相关知识。">
+<meta property="og:image" content="http://yoursite.com/uploads/sjfzd.png">
+<meta property="article:published_time" content="2018-01-12T02:37:46.000Z">
+<meta property="article:modified_time" content="2020-07-22T07:50:44.104Z">
+<meta property="article:author" content="HAOGRE">
+<meta property="article:tag" content="后端">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/uploads/sjfzd.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/11/时间复杂度和空间复杂度/"/>
+
+
+
+
+
+  <title>算法时间复杂度和空间复杂度 | HAOGRE's blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">HAOGRE's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-labs">
+          <a href="/labs" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-flask"></i> <br />
+            
+            实验室
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/11/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%92%8C%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="HAOGRE">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HAOGRE's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">算法时间复杂度和空间复杂度</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-11T21:37:46-05:00">
+                2018-01-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/programming/" itemprop="url" rel="index">
+                    <span itemprop="name">编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="源起"><a href="#源起" class="headerlink" title="源起"></a>源起</h2><p>作为一个非科班出身的IT从业者，总是有心去研究计算机底层知识相关的技术。内存机制，文件系统，磁盘机制，CPU工作原理等等，是看了又忘，忘了又看，往复循环也算是理解了那么一点点皮毛。<a href="https://leetcode.com" target="_blank" rel="noopener">leetcode</a>上的算法题目也是刷过那么一点点的，倒是关于算法的复杂度的知识从来都是一掠而过，就在此系统记录一下相关知识。</p>
+<a id="more"></a>
+
+<h2 id="时间复杂度-amp-空间复杂度-定义"><a href="#时间复杂度-amp-空间复杂度-定义" class="headerlink" title="时间复杂度&amp;空间复杂度 定义"></a>时间复杂度&amp;空间复杂度 定义</h2><h3 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h3><p>在计算机科学中，算法的时间复杂度是一个函数，它定量描述了该算法的运行时间。这是一个代表算法输入值的字符串的长度的函数。时间复杂度常用大O符号表述，不包括这个函数的低阶项和首项系数。使用这种方式时，时间复杂度可被称为是渐近的，亦即考察输入值大小趋近无穷时的情况。例如，如果一个算法对于任何大小为 n （必须比 n0 大）的输入，它至多需要 5n3 + 3n 的时间运行完毕，那么它的渐近时间复杂度是 O(n3)。</p>
+<p>为了计算时间复杂度，我们通常会估计算法的操作单元数量，每个单元运行的时间都是相同的。因此，总运行时间和算法的操作单元数量最多相差一个常量系数。</p>
+<p>相同大小的不同输入值仍可能造成算法的运行时间不同，因此我们通常使用算法的最坏情况复杂度，记为 T(n) ，定义为任何大小的输入 n 所需的最大运行时间。另一种较少使用的方法是平均情况复杂度，通常有特别指定才会使用。时间复杂度可以用函数 T(n) 的自然特性加以分类，举例来说，有着 T(n) = O(n) 的算法被称作“线性时间算法”；而 T(n) = O(Mn) 和 Mn= O(T(n)) ，其中 M ≥ n &gt; 1 的算法被称作“指数时间算法”</p>
+<h3 id="空间复杂度"><a href="#空间复杂度" class="headerlink" title="空间复杂度"></a>空间复杂度</h3><p>算法的空间复杂度是指算法需要消耗的空间资源。其计算和表示方法与时间复杂度类似，一般都用复杂度的渐近性来表示。同时间复杂度相比，空间复杂度的分析要简单得多。</p>
+<h3 id="定义小节"><a href="#定义小节" class="headerlink" title="定义小节"></a>定义小节</h3><p>读完这定义真有删库跑路的冲动了。<br>精诚所至金石为开，继续学下去吧。</p>
+<h2 id="cheetsheet-常见时间复杂度列表"><a href="#cheetsheet-常见时间复杂度列表" class="headerlink" title="cheetsheet (常见时间复杂度列表)"></a>cheetsheet (常见时间复杂度列表)</h2><h3 id="数据复杂度对照表"><a href="#数据复杂度对照表" class="headerlink" title="数据复杂度对照表"></a>数据复杂度对照表</h3><p>以下表格统整了一些常用的时间复杂度类别。表中，poly(x) = xO(1)，也就是 x 的多项式。<br><img src="/uploads/sjfzd.png" alt="数据复杂度对照表"></p>
+<h2 id="为什么要进行算法分析"><a href="#为什么要进行算法分析" class="headerlink" title="为什么要进行算法分析"></a>为什么要进行算法分析</h2><h3 id="预测算法所需的资源"><a href="#预测算法所需的资源" class="headerlink" title="预测算法所需的资源"></a>预测算法所需的资源</h3><pre><code>- 计算时间（CPU 消耗）
+- 内存空间（RAM 消耗）
+- 通信时间（带宽消耗）</code></pre><h3 id="预测算法的运行时间"><a href="#预测算法的运行时间" class="headerlink" title="预测算法的运行时间"></a>预测算法的运行时间</h3><pre><code>- 在给定输入规模时，所执行的基本操作数量。
+- 或者称为算法复杂度（Algorithm Complexity）</code></pre><h2 id="复杂度计算实例🌰"><a href="#复杂度计算实例🌰" class="headerlink" title="复杂度计算实例🌰"></a>复杂度计算实例🌰</h2><h3 id="常数时间"><a href="#常数时间" class="headerlink" title="常数时间"></a>常数时间</h3><p>若算法的T(n) = O(log n)，则称其具有对数时间。由于计算机使用二进制的记数系统，对数常常以2为底（即log2 n，有时写作lg n）。然而，由对数的换底公式，loga n和logb n只有一个常数因子不同，这个因子在大O记法中被丢弃。因此记作O（log n），而不论对数的底是多少，是对数时间算法的标准记法。</p>
+<p>常见的具有对数时间的算法有<a href="https://zh.wikipedia.org/wiki/%E4%BA%8C%E5%8F%89%E6%A0%91" target="_blank" rel="noopener">二叉树</a>的相关操作和<a href="https://zh.wikipedia.org/wiki/%E4%BA%8C%E5%88%86%E6%90%9C%E7%B4%A2%E7%AE%97%E6%B3%95" target="_blank" rel="noopener">二分搜索</a>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">稍后更新</span><br></pre></td></tr></table></figure>
+
+<p>如果T(n)=O(c)，其中 c是一个常数，这记法等价于标准记法T(n)=O(1)</p>
+<h3 id="对数时间"><a href="#对数时间" class="headerlink" title="对数时间"></a>对数时间</h3><p>若算法的T(n) = O(log n)，则称其具有对数时间。由于计算机使用二进制的记数系统，对数常常以2为底（即log2 n，有时写作lg n）。然而，由对数的换底公式，loga n和logb n只有一个常数因子不同，这个因子在大O记法中被丢弃。因此记作O（log n），而不论对数的底是多少，是对数时间算法的标准记法。</p>
+<p>常见的具有对数时间的算法有二叉树的相关操作和二分搜索。</p>
+<p>对数时间的算法是非常有效的，因为每增加一个输入，其所需要的额外计算时间会变小。</p>
+<p>递归地将字符串砍半并且输出是这个类别函数的一个简单例子。它需要O（log n）的时间因为每次输出之前我们都将字符串砍半。 这意味着，如果我们想增加输出的次数，我们需要将字符串长度加倍。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">稍后更新</span><br></pre></td></tr></table></figure>
+
+<h3 id="幂对数时间"><a href="#幂对数时间" class="headerlink" title="幂对数时间"></a>幂对数时间</h3><p>这个真是不记得了<br>对于某个常数k，若算法的T(n) = O((log n)k)，则称其具有幂对数时间。例如，矩阵链排序可以通过一个PRAM模型.[3]被在幂对数时间内解决。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">稍后更新</span><br></pre></td></tr></table></figure>
+
+<h3 id="次线性时间"><a href="#次线性时间" class="headerlink" title="次线性时间"></a>次线性时间</h3><p>对于一个算法，若其匹配T(n) = o(n)，则其时间复杂度为次线性时间（sub-linear time或sublinear time）。实际上除了匹配以上定义的算法，其他一些算法也拥有次线性时间的时间复杂度。例如有O(n½) 葛罗佛搜索算法。</p>
+<p>常见的非合次线性时间算法都采用了诸如平行处理（就像NC1 matrix行列式计算那样）、非古典处理（如同葛罗佛搜索那样），又或者选择性地对有保证的输入结构作出假设（如幂对数时间的二分搜索）。不过，一些情况，例如在头 log(n) 比特中每个字符串有一个比特作为索引的字符串组就可能依赖于输入的每个比特，但又匹配次线性时间的条件。</p>
+<p>“次线性时间算法”通常指那些不匹配前一段的描述的算法。它们通常运行于传统电脑架构系列并且不容许任何对输入的事先假设。[4]但是它们可以是随机化算法，而且必须是真随机算法除了特殊情况</p>
+<h3 id="线性时间"><a href="#线性时间" class="headerlink" title="线性时间"></a>线性时间</h3><p>这个略<br>如果一个算法的时间复杂度为O(n)，则称这个算法具有线性时间，或O(n)时间。非正式地说，这意味着对于足够大的输入，运行时间增加的大小与输入成线性关系。例如，一个计算列表所有元素的和的程序，需要的时间与列表的长度成正比。这个描述是稍微不准确的，因为运行时间可能显著偏离一个精确的比例，尤其是对于较小的n。</p>
+<h3 id="线性对数（准线性）时间"><a href="#线性对数（准线性）时间" class="headerlink" title="线性对数（准线性）时间"></a>线性对数（准线性）时间</h3><p>这个略<br>若一个算法时间复杂度T(n) = O(nlog n)，则称这个算法具有线性对数时间。因此，从其表达式我们也可以看到，线性对数时间增长得比线性时间要快，但是对于任何含有n，且n的幂指数大于1的多项式时间来说，线性对数时间却增长得慢。</p>
+<h2 id="相关学习地址"><a href="#相关学习地址" class="headerlink" title="相关学习地址"></a>相关学习地址</h2><p>附录拓展:</p>
+<ul>
+<li><a href="https://zh.wikipedia.org/wiki/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6" target="_blank" rel="noopener">WIKI:时间复杂度</a></li>
+<li><a href="https://zh.wikipedia.org/wiki/%E7%AE%97%E6%B3%95#%25E7%25A9%25BA%25E9%2597%25B4%25E5%25A4%258D%25E6%259D%2582%25E5%25BA%25A6" target="_blank" rel="noopener">WIKI:空间复杂度</a></li>
+<li><a href="https://www.coursera.org/learn/algorithms-part1" target="_blank" rel="noopener">coursera算法课part1</a></li>
+<li><a href="http://blog.csdn.net/zolalad/article/details/11848739" target="_blank" rel="noopener">BLOG:总结</a></li>
+<li><a href="https://www.google.com/?gws_rd=ssl" target="_blank" rel="noopener">Google</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/s/" rel="tag"># 后端</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/10/hello/hello-apropos/" rel="next" title="每天学点linux命令">
+                <i class="fa fa-chevron-left"></i> 每天学点linux命令
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/14/hello/hello-dpkg-statoverride/" rel="prev" title="每天学点linux命令">
+                每天学点linux命令 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="HAOGRE" />
+            
+              <p class="site-author-name" itemprop="name">HAOGRE</p>
+              <p class="site-description motion-element" itemprop="description">a hexo blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">662</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#源起"><span class="nav-number">1.</span> <span class="nav-text">源起</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#时间复杂度-amp-空间复杂度-定义"><span class="nav-number">2.</span> <span class="nav-text">时间复杂度&amp;空间复杂度 定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#时间复杂度"><span class="nav-number">2.1.</span> <span class="nav-text">时间复杂度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#空间复杂度"><span class="nav-number">2.2.</span> <span class="nav-text">空间复杂度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义小节"><span class="nav-number">2.3.</span> <span class="nav-text">定义小节</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cheetsheet-常见时间复杂度列表"><span class="nav-number">3.</span> <span class="nav-text">cheetsheet (常见时间复杂度列表)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据复杂度对照表"><span class="nav-number">3.1.</span> <span class="nav-text">数据复杂度对照表</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要进行算法分析"><span class="nav-number">4.</span> <span class="nav-text">为什么要进行算法分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#预测算法所需的资源"><span class="nav-number">4.1.</span> <span class="nav-text">预测算法所需的资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预测算法的运行时间"><span class="nav-number">4.2.</span> <span class="nav-text">预测算法的运行时间</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复杂度计算实例🌰"><span class="nav-number">5.</span> <span class="nav-text">复杂度计算实例🌰</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常数时间"><span class="nav-number">5.1.</span> <span class="nav-text">常数时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对数时间"><span class="nav-number">5.2.</span> <span class="nav-text">对数时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#幂对数时间"><span class="nav-number">5.3.</span> <span class="nav-text">幂对数时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#次线性时间"><span class="nav-number">5.4.</span> <span class="nav-text">次线性时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线性时间"><span class="nav-number">5.5.</span> <span class="nav-text">线性时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线性对数（准线性）时间"><span class="nav-number">5.6.</span> <span class="nav-text">线性对数（准线性）时间</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关学习地址"><span class="nav-number">6.</span> <span class="nav-text">相关学习地址</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HAOGRE</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
