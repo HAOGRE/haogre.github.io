@@ -266,6 +266,254 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/04/hello/hello-dmidecode/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="HAOGRE">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HAOGRE's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/06/04/hello/hello-dmidecode/" itemprop="url">每天学点linux命令</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-04T06:28:41+08:00">
+                2016-06-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="dmidecode"><a href="#dmidecode" class="headerlink" title="dmidecode"></a>dmidecode</h1><p>在Linux系统下获取有关硬件方面的信息</p>
+<h2 id="补充说明"><a href="#补充说明" class="headerlink" title="补充说明"></a>补充说明</h2><p><strong>dmidecode命令</strong> 可以让你在Linux系统下获取有关硬件方面的信息。dmidecode的作用是将DMI数据库中的信息解码，以可读的文本方式显示。由于DMI信息可以人为修改，因此里面的信息不一定是系统准确的信息。dmidecode遵循SMBIOS/DMI标准，其输出的信息包括BIOS、系统、主板、处理器、内存、缓存等等。</p>
+<p>DMI（Desktop Management Interface,DMI）就是帮助收集电脑系统信息的管理系统，DMI信息的收集必须在严格遵照SMBIOS规范的前提下进行。SMBIOS（System Management BIOS）是主板或系统制造者以标准格式显示产品管理信息所需遵循的统一规范。SMBIOS和DMI是由行业指导机构Desktop Management Task Force(DMTF)起草的开放性的技术标准，其中DMI设计适用于任何的平台和操作系统。</p>
+<p>DMI充当了管理工具和系统层之间接口的角色。它建立了标准的可管理系统更加方便了电脑厂商和用户对系统的了解。DMI的主要组成部分是Management Information Format(MIF)数据库。这个数据库包括了所有有关电脑系统和配件的信息。通过DMI，用户可以获取序列号、电脑厂商、串口信息以及其它系统配件信息。</p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- more --&gt;</span><br><span class="line">dmidecode [选项]</span><br></pre></td></tr></table></figure>
+
+<h3 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-d：(default:&#x2F;dev&#x2F;mem)从设备文件读取信息，输出内容与不加参数标准输出相同。</span><br><span class="line">-h：显示帮助信息。</span><br><span class="line">-s：只显示指定DMI字符串的信息。(string)</span><br><span class="line">-t：只显示指定条目的信息。(type)</span><br><span class="line">-u：显示未解码的原始条目内容。</span><br><span class="line">--dump-bin file：将DMI数据转储到一个二进制文件中。</span><br><span class="line">--from-dump FILE：从一个二进制文件读取DMI数据。</span><br><span class="line">-V：显示版本信息。</span><br></pre></td></tr></table></figure>
+
+<p> <strong>dmidecode参数string及type列表：</strong> </p>
+<p>（1）Valid string keywords are：</p>
+<ul>
+<li>bios-vendor</li>
+<li>bios-version</li>
+<li>bios-release-date</li>
+<li>system-manufacturer</li>
+<li>system-product-name</li>
+<li>system-version</li>
+<li>system-serial-number</li>
+<li>system-uuid</li>
+<li>baseboard-manufacturer</li>
+<li>baseboard-product-name</li>
+<li>baseboard-version</li>
+<li>baseboard-serial-number</li>
+<li>baseboard-asset-tag</li>
+<li>chassis-manufacturer</li>
+<li>chassis-type</li>
+<li>chassis-version</li>
+<li>chassis-serial-number</li>
+<li>chassis-asset-tag</li>
+<li>processor-family</li>
+<li>processor-manufacturer</li>
+<li>processor-version</li>
+<li>processor-frequency</li>
+</ul>
+<p>（2）Valid type keywords are：</p>
+<ul>
+<li>bios</li>
+<li>system</li>
+<li>baseboard</li>
+<li>chassis</li>
+<li>processor</li>
+<li>memory</li>
+<li>Cache</li>
+<li>connector</li>
+<li>slot</li>
+</ul>
+<p>（3）type全部编码列表：</p>
+<ul>
+<li>BIOS</li>
+<li>System</li>
+<li>Base Board</li>
+<li>Chassis</li>
+<li>Processor</li>
+<li>Memory Controller</li>
+<li>Memory Module</li>
+<li>Cache</li>
+<li>Port Connector</li>
+<li>System Slots</li>
+<li>On Board Devices</li>
+<li>OEM Strings</li>
+<li>System Configuration Options</li>
+<li>BIOS Language</li>
+<li>Group Associations</li>
+<li>System Event Log</li>
+<li>Physical Memory Array</li>
+<li>Memory Device</li>
+<li>32-bit Memory Error</li>
+<li>Memory Array Mapped Address</li>
+<li>Memory Device Mapped Address</li>
+<li>Built-in Pointing Device</li>
+<li>Portable Battery</li>
+<li>System Reset</li>
+<li>Hardware Security</li>
+<li>System Power Controls</li>
+<li>Voltage Probe</li>
+<li>Cooling Device</li>
+<li>Temperature Probe</li>
+<li>Electrical Current Probe</li>
+<li>Out-of-band Remote Access</li>
+<li>Boot Integrity Services</li>
+<li>System Boot</li>
+<li>64-bit Memory Error</li>
+<li>Management Device</li>
+<li>Management Device Component</li>
+<li>Management Device Threshold Data</li>
+<li>Memory Channel</li>
+<li>IPMI Device</li>
+<li>Power Supply</li>
+<li>Additional Information</li>
+<li>Onboard Device</li>
+</ul>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">dmidecode -t 1  <span class="comment"># 查看服务器信息</span></span><br><span class="line">dmidecode | grep <span class="string">'Product Name'</span> <span class="comment"># 查看服务器型号 </span></span><br><span class="line">dmidecode |grep <span class="string">'Serial Number'</span> <span class="comment"># 查看主板的序列号 </span></span><br><span class="line">dmidecode -t 2  <span class="comment"># 查看主板信息</span></span><br><span class="line">dmidecode -s system-serial-number <span class="comment"># 查看系统序列号 </span></span><br><span class="line">dmidecode -t memory <span class="comment"># 查看内存信息 </span></span><br><span class="line">dmidecode -t 11 <span class="comment"># 查看OEM信息 </span></span><br><span class="line">dmidecode -t 17 <span class="comment"># 查看内存条数</span></span><br><span class="line">dmidecode -t 16 <span class="comment"># 查询内存信息</span></span><br><span class="line">dmidecode -t 4  <span class="comment"># 查看CPU信息</span></span><br><span class="line"></span><br><span class="line">cat /proc/scsi/scsi <span class="comment"># 查看服务器硬盘信息</span></span><br></pre></td></tr></table></figure>
+
+<p>不带选项执行dmidecode命令通常会输出所有的硬件信息。dmidecode命令有个很有用的选项-t，可以按指定类型输出相关信息，假如要获得处理器方面的信息，则可以执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# dmidecode -t processor</span><br><span class="line"># dmidecode 2.11</span><br><span class="line">SMBIOS 2.5 present.</span><br><span class="line"></span><br><span class="line">Handle 0x0001, DMI type 4, 40 bytes</span><br><span class="line">Processor Information</span><br><span class="line">        Socket Designation: Node 1 Socket 1</span><br><span class="line">        Type: Central Processor</span><br><span class="line">        Family: Xeon MP</span><br><span class="line">        Manufacturer: Intel(R) Corporation</span><br><span class="line">        id: C2 06 02 00 FF FB EB BF</span><br><span class="line">        Signature: Type 0, Family 6, Model 44, Stepping 2</span><br><span class="line">        Flags:</span><br><span class="line">                FPU (Floating-point unit on-chip)</span><br><span class="line">                VME (Virtual mode extension)</span><br><span class="line">                DE (Debugging extension)</span><br><span class="line">                PSE (Page size extension)</span><br><span class="line">                TSC (time stamp counter)</span><br><span class="line">                MSR (Model specific registers)</span><br><span class="line">                PAE (Physical address extension)</span><br><span class="line">                MCE (Machine check exception)</span><br><span class="line">                CX8 (CMPXCHG8 instruction supported)</span><br><span class="line">                APIC (On-chip APIC hardware supported)</span><br><span class="line">                SEP (Fast system call)</span><br><span class="line">                MTRR (Memory type range registers)</span><br><span class="line">                PGE (Page global enable)</span><br><span class="line">                MCA (Machine check architecture)</span><br><span class="line">                CMOV (Conditional move instruction supported)</span><br><span class="line">                PAT (Page attribute table)</span><br><span class="line">                PSE-36 (36-bit page size extension)</span><br><span class="line">                CLFSH (CLFLUSH instruction supported)</span><br><span class="line">                DS (Debug store)</span><br><span class="line">                ACPI (ACPI supported)</span><br><span class="line">                MMX (MMX technology supported)</span><br><span class="line">                FXSR (FXSAVE and FXSTOR instructions supported)</span><br><span class="line">                SSE (Streaming SIMD extensions)</span><br><span class="line">                SSE2 (Streaming SIMD extensions 2)</span><br><span class="line">                ss (Self-snoop)</span><br><span class="line">                HTT (Multi-threading)</span><br><span class="line">                TM (Thermal monitor supported)</span><br><span class="line">                PBE (Pending break enabled)</span><br><span class="line">        Version: Intel(R) Xeon(R) CPU           E5620  @ 2.40GHz</span><br><span class="line">        Voltage: 1.2 V</span><br><span class="line">        External Clock: 5866 MHz</span><br><span class="line">        Max Speed: 4400 MHz</span><br><span class="line">        Current Speed: 2400 MHz</span><br><span class="line">        Status: Populated, Enabled</span><br><span class="line">        Upgrade: ZIF Socket</span><br><span class="line">        L1 Cache Handle: 0x0002</span><br><span class="line">        L2 Cache Handle: 0x0003</span><br><span class="line">        L3 Cache Handle: 0x0004</span><br><span class="line">        Serial Number: Not Specified</span><br><span class="line">        Asset Tag: Not Specified</span><br><span class="line">        Part Number: Not Specified</span><br><span class="line">        Core Count: 4</span><br><span class="line">        Core Enabled: 4</span><br><span class="line">        Thread Count: 8</span><br><span class="line">        Characteristics:</span><br><span class="line">                64-bit capable</span><br><span class="line"></span><br><span class="line">Handle 0x0055, DMI type 4, 40 bytes</span><br><span class="line">Processor Information</span><br><span class="line">        Socket Designation: Node 1 Socket 2</span><br><span class="line">        Type: Central Processor</span><br><span class="line">        Family: Xeon MP</span><br><span class="line">        Manufacturer: Not Specified</span><br><span class="line">        ID: 00 00 00 00 00 00 00 00</span><br><span class="line">        Signature: Type 0, Family 0, Model 0, Stepping 0</span><br><span class="line">        Flags: None</span><br><span class="line">        Version: Not Specified</span><br><span class="line">        Voltage: 1.2 V</span><br><span class="line">        External Clock: 5866 MHz</span><br><span class="line">        Max Speed: 4400 MHz</span><br><span class="line">        Current Speed: Unknown</span><br><span class="line">        Status: Unpopulated</span><br><span class="line">        Upgrade: ZIF Socket</span><br><span class="line">        L1 Cache Handle: Not Provided</span><br><span class="line">        L2 Cache Handle: Not Provided</span><br><span class="line">        L3 Cache Handle: Not Provided</span><br><span class="line">        Serial Number: Not Specified</span><br><span class="line">        Asset Tag: Not Specified</span><br><span class="line">        Part Number: Not Specified</span><br><span class="line">        Characteristics: None</span><br></pre></td></tr></table></figure>
+
+<p>查看内存的插槽数，已经使用多少插槽。每条内存多大，已使用内存多大</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dmidecode|grep -P -A5 <span class="string">"Memory\s+Device"</span>|grep Size|grep -v Range </span><br><span class="line"></span><br><span class="line"><span class="comment">#   Size: 2048 MB</span></span><br><span class="line"><span class="comment">#   Size: 2048 MB</span></span><br><span class="line"><span class="comment">#   Size: 4096 MB</span></span><br><span class="line"><span class="comment">#   Size: No Module Installed</span></span><br></pre></td></tr></table></figure>
+
+<p>查看内存支持的最大内存容量</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dmidecode|grep -P <span class="string">'Maximum\s+Capacity'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#  Maximum Capacity: 16 GB</span></span><br></pre></td></tr></table></figure>
+
+<p>查看内存的频率</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">dmidecode|grep -A16 <span class="string">"Memory Device"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#   Memory Device</span></span><br><span class="line"><span class="comment">#     Array Handle: 0x1000</span></span><br><span class="line"><span class="comment">#     Error Information Handle: Not Provided</span></span><br><span class="line"><span class="comment">#     Total Width: 72 bits</span></span><br><span class="line"><span class="comment">#     Data Width: 64 bits</span></span><br><span class="line"><span class="comment">#     Size: 2048 MB</span></span><br><span class="line"><span class="comment">#     Form Factor: DIMM</span></span><br><span class="line"><span class="comment">#     Set: 1</span></span><br><span class="line"><span class="comment">#     Locator: DIMM_A1</span></span><br><span class="line"><span class="comment">#     Bank Locator: Not Specified</span></span><br><span class="line"><span class="comment">#     Type: DDR3</span></span><br><span class="line"><span class="comment">#     Type Detail: Synchronous Unbuffered (Unregistered)</span></span><br><span class="line"><span class="comment">#     Speed: 1333 MHz</span></span><br><span class="line"><span class="comment">#     Manufacturer: 00CE000080CE</span></span><br><span class="line"><span class="comment">#     Serial Number: 4830F3E1</span></span><br><span class="line"><span class="comment">#     Asset Tag: 01093200</span></span><br><span class="line"><span class="comment">#     Part Number: M391B5673EH1-CH9</span></span><br><span class="line"><span class="comment">#   --</span></span><br><span class="line"><span class="comment">#   Memory Device</span></span><br><span class="line"><span class="comment">#     Array Handle: 0x1000</span></span><br><span class="line"><span class="comment">#     Error Information Handle: Not Provided</span></span><br><span class="line"><span class="comment">#     Total Width: 72 bits</span></span><br><span class="line"><span class="comment">#     Data Width: 64 bits</span></span><br><span class="line"><span class="comment">#     Size: 2048 MB</span></span><br><span class="line"><span class="comment">#     Form Factor: DIMM</span></span><br><span class="line"><span class="comment">#     Set: 1</span></span><br><span class="line"><span class="comment">#     Locator: DIMM_A2</span></span><br><span class="line"><span class="comment">#     Bank Locator: Not Specified</span></span><br><span class="line"><span class="comment">#     Type: DDR3</span></span><br><span class="line"><span class="comment">#     Type Detail: Synchronous Unbuffered (Unregistered)</span></span><br><span class="line"><span class="comment">#     Speed: 1333 MHz</span></span><br><span class="line"><span class="comment">#     Manufacturer: 00AD000080AD</span></span><br><span class="line"><span class="comment">#     Serial Number: 1BA1F0B5</span></span><br><span class="line"><span class="comment">#     Asset Tag: 01110900</span></span><br><span class="line"><span class="comment">#     Part Number: HMT325U7BFR8C-H9</span></span><br><span class="line"><span class="comment">#   --</span></span><br><span class="line"></span><br><span class="line">dmidecode|grep -A16 <span class="string">"Memory Device"</span>|grep <span class="string">'Speed'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#  Speed: 1333 MHz</span></span><br><span class="line"><span class="comment">#  Speed: 1333 MHz</span></span><br><span class="line"><span class="comment">#  Speed: 1333 MHz</span></span><br><span class="line"><span class="comment">#  Speed: Unknown</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/28/hello/hello-join/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1620,183 +1868,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/13/hello/hello-lsblk/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="HAOGRE">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="HAOGRE's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/05/13/hello/hello-lsblk/" itemprop="url">每天学点linux命令</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-13T23:07:33+08:00">
-                2016-05-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="lsblk"><a href="#lsblk" class="headerlink" title="lsblk"></a>lsblk</h1><p>列出块设备信息</p>
-<h2 id="补充说明"><a href="#补充说明" class="headerlink" title="补充说明"></a>补充说明</h2><p><strong>lsblk命令</strong> 用于列出所有可用块设备的信息，而且还能显示他们之间的依赖关系，但是它不会列出RAM盘的信息。块设备有硬盘，闪存盘，cd-ROM等等。lsblk命令包含在util-linux-ng包中，现在该包改名为util-linux。这个包带了几个其它工具，如dmesg。要安装lsblk，请在此处下载util-linux包。Fedora用户可以通过命令<code>sudo yum install util-linux-ng</code>来安装该包。</p>
-<h3 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">-a, --all            显示所有设备。</span><br><span class="line">-b, --bytes          以bytes方式显示设备大小。</span><br><span class="line">-d, --nodeps         不显示 slaves 或 holders。</span><br><span class="line">-D, --discard        print discard capabilities。</span><br><span class="line">&lt;!-- more --&gt;</span><br><span class="line">-e, --exclude &lt;list&gt; 排除设备 (default: RAM disks)。</span><br><span class="line">-f, --fs             显示文件系统信息。</span><br><span class="line">-h, --help           显示帮助信息。</span><br><span class="line">-i, --ascii          use ascii characters only。</span><br><span class="line">-m, --perms          显示权限信息。</span><br><span class="line">-l, --list           使用列表格式显示。</span><br><span class="line">-n, --noheadings     不显示标题。</span><br><span class="line">-o, --output &lt;list&gt;  输出列。</span><br><span class="line">-P, --pairs          使用key&#x3D;&quot;value&quot;格式显示。</span><br><span class="line">-r, --raw            使用原始格式显示。</span><br><span class="line">-t, --topology       显示拓扑结构信息。</span><br></pre></td></tr></table></figure>
-
-<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p>lsblk命令默认情况下将以树状列出所有块设备。打开终端，并输入以下命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">lsblk</span><br><span class="line"></span><br><span class="line">NAME   MAJ:MIN rm   SIZE RO type mountpoint</span><br><span class="line">sda      8:0    0 232.9G  0 disk </span><br><span class="line">├─sda1   8:1    0  46.6G  0 part &#x2F;</span><br><span class="line">├─sda2   8:2    0     1K  0 part </span><br><span class="line">├─sda5   8:5    0   190M  0 part &#x2F;boot</span><br><span class="line">├─sda6   8:6    0   3.7G  0 part [SWAP]</span><br><span class="line">├─sda7   8:7    0  93.1G  0 part &#x2F;data</span><br><span class="line">└─sda8   8:8    0  89.2G  0 part &#x2F;personal</span><br><span class="line">sr0     11:0    1  1024M  0 rom</span><br></pre></td></tr></table></figure>
-
-<p>7个栏目名称如下：</p>
-<ol>
-<li><strong>NAME</strong> ：这是块设备名。</li>
-<li><strong>MAJ:MIN</strong> ：本栏显示主要和次要设备号。</li>
-<li><strong>RM</strong> ：本栏显示设备是否可移动设备。注意，在本例中设备sdb和sr0的RM值等于1，这说明他们是可移动设备。</li>
-<li><strong>SIZE</strong> ：本栏列出设备的容量大小信息。例如298.1G表明该设备大小为298.1GB，而1K表明该设备大小为1KB。</li>
-<li><strong>RO</strong> ：该项表明设备是否为只读。在本案例中，所有设备的RO值为0，表明他们不是只读的。</li>
-<li><strong>TYPE</strong> ：本栏显示块设备是否是磁盘或磁盘上的一个分区。在本例中，sda和sdb是磁盘，而sr0是只读存储（rom）。</li>
-<li><strong>MOUNTPOINT</strong> ：本栏指出设备挂载的挂载点。</li>
-</ol>
-<p>默认选项不会列出所有空设备。要查看这些空设备，请使用以下命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsblk -a</span><br></pre></td></tr></table></figure>
-
-<p>lsblk命令也可以用于列出一个特定设备的拥有关系，同时也可以列出组和模式。可以通过以下命令来获取这些信息：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsblk -m</span><br></pre></td></tr></table></figure>
-
-<p>该命令也可以只获取指定设备的信息。这可以通过在提供给lsblk命令的选项后指定设备名来实现。例如，你可能对了解以字节显示你的磁盘驱动器大小比较感兴趣，那么你可以通过运行以下命令来实现：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lsblk -b &#x2F;dev&#x2F;sda</span><br><span class="line"></span><br><span class="line">等价于</span><br><span class="line"></span><br><span class="line">lsblk --bytes &#x2F;dev&#x2F;sda</span><br></pre></td></tr></table></figure>
-
-<p>你也可以组合几个选项来获取指定的输出。例如，你也许想要以列表格式列出设备，而不是默认的树状格式。你可能也对移除不同栏目名称的标题感兴趣。可以将两个不同的选项组合，以获得期望的输出，命令如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsblk -nl</span><br></pre></td></tr></table></figure>
-
-<p>要获取SCSI设备的列表，你只能使用-S选项。该选项是大写字母S，不能和-s选项混淆，该选项是用来以颠倒的顺序打印依赖的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsblk -S</span><br></pre></td></tr></table></figure>
-
-<p>lsblk列出SCSI设备，而-s是逆序选项（将设备和分区的组织关系逆转过来显示），其将给出如下输出。输入命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsblk -s</span><br></pre></td></tr></table></figure>
-
-
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1851,7 +1922,7 @@
               
                 <a href="/archives%7C%7C%20archive">
               
-                  <span class="site-state-item-count">663</span>
+                  <span class="site-state-item-count">664</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
