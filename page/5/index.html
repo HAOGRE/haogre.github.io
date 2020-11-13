@@ -266,7 +266,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/11/cs-notes/Java-%E5%9F%BA%E7%A1%80/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/11/cs-notes/Java-IO/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="HAOGRE">
@@ -285,7 +285,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/07/11/cs-notes/Java-%E5%9F%BA%E7%A1%80/" itemprop="url">Java-基础</a></h1>
+                <a class="post-title-link" href="/2019/07/11/cs-notes/Java-IO/" itemprop="url">Java-IO</a></h1>
         
 
         <div class="post-meta">
@@ -358,20 +358,19 @@
 
       
         
-          <h1 id="一、数据类型"><a href="#一、数据类型" class="headerlink" title="一、数据类型"></a>一、数据类型</h1><h2 id="包装类型"><a href="#包装类型" class="headerlink" title="包装类型"></a>包装类型</h2><p>八个基本类型：</p>
+          <h1 id="一、概览"><a href="#一、概览" class="headerlink" title="一、概览"></a>一、概览</h1><p>Java 的 I/O 大概可以分成以下几类：</p>
 <ul>
-<li>boolean/1</li>
-<li>byte/8</li>
-<li>char/16</li>
-<li>short/16</li>
-<li>int/32</li>
-<li>float/32</li>
-<li>long/64</li>
-<li>double/64</li>
+<li>磁盘操作：File</li>
+<li>字节操作：InputStream 和 OutputStream</li>
+<li>字符操作：Reader 和 Writer</li>
+<li>对象操作：Serializable</li>
+<li>网络操作：Socket</li>
+<li>新的输入/输出：NIO</li>
 </ul>
+<h1 id="二、磁盘操作"><a href="#二、磁盘操作" class="headerlink" title="二、磁盘操作"></a>二、磁盘操作</h1><p>File 类可以用于表示文件和目录的信息，但是它不表示文件的内容。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/07/11/cs-notes/Java-%E5%9F%BA%E7%A1%80/#more" rel="contents">
+            <a class="btn" href="/2019/07/11/cs-notes/Java-IO/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -422,7 +421,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/11/cs-notes/Java-%E5%B9%B6%E5%8F%91/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/11/cs-notes/%E5%89%91%E6%8C%87-offer-%E9%A2%98%E8%A7%A3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="HAOGRE">
@@ -441,7 +440,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/07/11/cs-notes/Java-%E5%B9%B6%E5%8F%91/" itemprop="url">Java-并发</a></h1>
+                <a class="post-title-link" href="/2019/07/11/cs-notes/%E5%89%91%E6%8C%87-offer-%E9%A2%98%E8%A7%A3/" itemprop="url">剑指-offer-题解</a></h1>
         
 
         <div class="post-meta">
@@ -514,14 +513,13 @@
 
       
         
-          <h1 id="一、线程状态转换"><a href="#一、线程状态转换" class="headerlink" title="一、线程状态转换"></a>一、线程状态转换</h1><div align="center"> <img src="/uploads/cs-notes//ace830df-9919-48ca-91b5-60b193f593d2.png" width=""/> </div><br>
-
-<h2 id="新建（New）"><a href="#新建（New）" class="headerlink" title="新建（New）"></a>新建（New）</h2><p>创建后尚未启动。</p>
-<h2 id="可运行（Runnable）"><a href="#可运行（Runnable）" class="headerlink" title="可运行（Runnable）"></a>可运行（Runnable）</h2><p>可能正在运行，也可能正在等待 CPU 时间片。</p>
-<p>包含了操作系统线程状态中的 Running 和 Ready。</p>
+          <h1 id="2-实现-Singleton"><a href="#2-实现-Singleton" class="headerlink" title="2. 实现 Singleton"></a>2. 实现 Singleton</h1><p><a href="https://github.com/CyC2018/Interview-Notebook/blob/master/notes/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.md" target="_blank" rel="noopener">单例模式</a></p>
+<h1 id="3-数组中重复的数字"><a href="#3-数组中重复的数字" class="headerlink" title="3. 数组中重复的数字"></a>3. 数组中重复的数字</h1><p><a href="https://www.nowcoder.com/practice/623a5ac0ea5b4e5f95552655361ae0a8?tpId=13&tqId=11203&tPage=1&rp=1&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking" target="_blank" rel="noopener">NowCoder</a></p>
+<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>在一个长度为 n 的数组里的所有数字都在 0 到 n-1 的范围内。数组中某些数字是重复的，但不知道有几个数字是重复的，也不知道每个数字重复几次。请找出数组中任意一个重复的数字。例如，如果输入长度为 7 的数组 {2, 3, 1, 0, 2, 5}，那么对应的输出是第一个重复的数字 2。</p>
+<p>要求复杂度为 O(N) + O(1)，也就是时间复杂度 O(N)，空间复杂度 O(1)。因此不能使用排序的方法，也不能使用额外的标记数组。牛客网讨论区这一题的首票答案使用 nums[i] + length 来将元素标记，这么做会有加法溢出问题。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/07/11/cs-notes/Java-%E5%B9%B6%E5%8F%91/#more" rel="contents">
+            <a class="btn" href="/2019/07/11/cs-notes/%E5%89%91%E6%8C%87-offer-%E9%A2%98%E8%A7%A3/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
