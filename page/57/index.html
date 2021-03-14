@@ -266,6 +266,171 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/02/20/hello/hello-ar/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="HAOGRE">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HAOGRE's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/02/20/hello/hello-ar/" itemprop="url">每天学点linux命令</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-20T22:24:48+08:00">
+                2016-02-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="ar"><a href="#ar" class="headerlink" title="ar"></a>ar</h1><p>建立或修改备存文件，或是从备存文件中抽取文件</p>
+<h2 id="补充说明"><a href="#补充说明" class="headerlink" title="补充说明"></a>补充说明</h2><p><strong>ar命令</strong> 是一个建立或修改备存文件，或是从备存文件中抽取文件的工具，ar可让您集合许多文件，成为单一的备存文件。在备存文件中，所有成员文件皆保有原来的属性与权限</p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ab(选项)(参数)</span><br><span class="line">Usage: ar [emulation options] [-]&#123;dmpqrstx&#125;[abcDfilMNoPsSTuvV] [--plugin &lt;name&gt;] [member-name] [count] archive-file file...</span><br><span class="line">       ar -M [&lt;mri-脚本]</span><br><span class="line">&lt;!-- more --&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">d            - 从归档文件中删除文件</span><br><span class="line">m[ab]        - 在归档文件中移动文件</span><br><span class="line">p            - 打印在归档文件中找到的文件</span><br><span class="line">q[f]         - 将文件快速追加到归档文件中</span><br><span class="line">r[ab][f][u]  - 替换归档文件中已有的文件或加入新文件</span><br><span class="line">s            - act as ranlib</span><br><span class="line">t            - 显示归档文件的内容</span><br><span class="line">x[o]         - 从归档文件中分解文件</span><br><span class="line">特定命令修饰符：</span><br><span class="line">[a]          - 将文件置于 [成员名] 之后</span><br><span class="line">[b]          - 将文件置于 [成员名] 之前 (于 [i] 相同)</span><br><span class="line">[D]          - use zero for timestamps and uids&#x2F;gids</span><br><span class="line">[U]          - use actual timestamps and uids&#x2F;gids (default)</span><br><span class="line">[N]          - use instance [count] of name</span><br><span class="line">[f]          - truncate inserted file names</span><br><span class="line">[P]          - 在匹配时使用完整的路径名</span><br><span class="line">[o]          - 保留原来的日期</span><br><span class="line">[u]          - 只替换比当前归档内容更新的文件</span><br><span class="line">通用修饰符：</span><br><span class="line">[c]          - 不在必须创建库的时候给出警告</span><br><span class="line">[s]          - 创建归档索引 (cf. ranlib)</span><br><span class="line">[S]          - 不要创建符号表</span><br><span class="line">[T]          - 做一个压缩档案</span><br><span class="line">[v]          - 输出较多信息</span><br><span class="line">[V]          - 显示版本号</span><br><span class="line">@&lt;file&gt;      - 从&lt;file&gt;读取选项</span><br><span class="line">--target&#x3D;BFDNAME - 将目标对象格式指定为BFDNAME</span><br></pre></td></tr></table></figure>
+
+<p>选项参数 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--plugin &lt;p&gt; - load the specified plugin</span><br></pre></td></tr></table></figure>
+
+<p>ar：支持的目标： elf64-x86-64 elf32-i386 elf32-x86-64 a.out-i386-linux pei-i386 pei-x86-64 elf64-l1om elf64-k1om elf64-little elf64-big elf32-little elf32-big plugin srec symbolsrec verilog tekhex binary ihex</p>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p>打包文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ls   &#x2F;&#x2F;显示当前目录文件   </span><br><span class="line">a.c	b.c d.c   install.log	  qte</span><br><span class="line">anaconda-ks.cfg c.c Desktop </span><br><span class="line"></span><br><span class="line">[root@localhost ~]# ar rv one.bak a.c b.c &#x2F;&#x2F;打包 a.c b.c文件 </span><br><span class="line">ar: 正在创建 one.bak</span><br><span class="line">a - a.c</span><br><span class="line">a - b.c</span><br></pre></td></tr></table></figure>
+
+<p>打包多个文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ar rv two.bak *.c  &#x2F;&#x2F;打包以.c结尾的文件  </span><br><span class="line">ar: 正在创建 two.bak</span><br><span class="line">a - a.c</span><br><span class="line">a - b.c</span><br><span class="line">a - c.c</span><br><span class="line">a - d.c</span><br></pre></td></tr></table></figure>
+
+<p>显示打包文件的内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ar t two.bak    </span><br><span class="line">a.c</span><br><span class="line">b.c</span><br><span class="line">c.c</span><br><span class="line">d.c</span><br></pre></td></tr></table></figure>
+
+<p>删除打包文件的成员文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ar d two.bak a.c b.c c.c  </span><br><span class="line">[root@localhost ~]# ar t two.bak       </span><br><span class="line">d.c</span><br></pre></td></tr></table></figure>
+
+
+
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/02/17/hello/hello-pvdisplay/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1595,171 +1760,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/01/27/hello/hello-install/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="HAOGRE">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="HAOGRE's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/01/27/hello/hello-install/" itemprop="url">每天学点linux命令</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-27T07:30:31+08:00">
-                2016-01-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="install"><a href="#install" class="headerlink" title="install"></a>install</h1><p>安装或升级软件或备份数据</p>
-<h2 id="补充说明"><a href="#补充说明" class="headerlink" title="补充说明"></a>补充说明</h2><p><strong>install命令</strong> 的作用是安装或升级软件或备份数据，它的使用权限是所有用户。install命令和cp命令类似，都可以将文件/目录拷贝到指定的地点。但是，install允许你控制目标文件的属性。install通常用于程序的makefile，使用它来将程序拷贝到目标（安装）目录。</p>
-<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">install [OPTION]... [-T] SOURCE DEST</span><br><span class="line">install [OPTION]... SOURCE... DIRECTORY</span><br><span class="line">install [OPTION]... -t DIRECTORY SOURCE...</span><br><span class="line">install [OPTION]... -d DIRECTORY...</span><br><span class="line">&lt;!-- more --&gt;</span><br></pre></td></tr></table></figure>
-
-<p>在前两种格式中，会将&lt;来源&gt;复制至&lt;目的地&gt;或将多个&lt;来源&gt;文件复制至已存在的&lt;目录&gt;，同时设定权限模式及所有者/所属组。在第三种格式中，会创建所有指定的目录及它们的主目录。长选项必须用的参数在使用短选项时也是必须的。</p>
-<h3 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">--backup[&#x3D;CONTROL]：为每个已存在的目的地文件进行备份。</span><br><span class="line">-b：类似 --backup，但不接受任何参数。</span><br><span class="line">-c：(此选项不作处理)。</span><br><span class="line">-d，--directory：所有参数都作为目录处理，而且会创建指定目录的所有主目录。</span><br><span class="line">-D：创建&lt;目的地&gt;前的所有主目录，然后将&lt;来源&gt;复制至 &lt;目的地&gt;；在第一种使用格式中有用。</span><br><span class="line">-g，--group&#x3D;组：自行设定所属组，而不是进程目前的所属组。</span><br><span class="line">-m，--mode&#x3D;模式：自行设定权限模式 (像chmod)，而不是rwxr-xr-x。</span><br><span class="line">-o，--owner&#x3D;所有者：自行设定所有者 (只适用于超级用户)。</span><br><span class="line">-p，--preserve-timestamps：以&lt;来源&gt;文件的访问&#x2F;修改时间作为相应的目的地文件的时间属性。</span><br><span class="line">-s，--strip：用strip命令删除symbol table，只适用于第一及第二种使用格式。</span><br><span class="line">-S，--suffix&#x3D;后缀：自行指定备份文件的&lt;后缀&gt;。</span><br><span class="line">-v，--verbose：处理每个文件&#x2F;目录时印出名称。</span><br><span class="line">--help：显示此帮助信息并离开。</span><br><span class="line">--version：显示版本信息并离开。</span><br></pre></td></tr></table></figure>
-
-<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">install -d [option] DIRECTORY [DIRECTORY...]</span><br></pre></td></tr></table></figure>
-
-<p>支持多个，类似<code>mkdir -p</code>支持递归。例如：<code>install -d a/b/c e/f</code>结果和<code>mkdir -p a/b/c e/f</code>一样。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">install [option] SOURCE DEST</span><br></pre></td></tr></table></figure>
-
-<p> <strong>复制SOURCE文件（测试不能是目录）到DEST file（文件）：</strong> </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">install a&#x2F;e c</span><br><span class="line">结果类似：</span><br><span class="line">cp a&#x2F;e c    #注意c必须是文件。</span><br></pre></td></tr></table></figure>
-
-<p> <strong>有用选项<code>-D</code>：</strong> </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">install -D x a&#x2F;b&#x2F;c</span><br><span class="line">效果类似：</span><br><span class="line">mkdir -p a&#x2F;b &amp;&amp; cp x a&#x2F;b&#x2F;c</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">install [option] SOURCE [SOURCE...] DIRECTORY</span><br></pre></td></tr></table></figure>
-
-<p> <strong>复制多个SOURCE文件到目的目录：</strong> </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">install a&#x2F;* d</span><br></pre></td></tr></table></figure>
-
-<p>其中d是目录。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1814,7 +1814,7 @@
               
                 <a href="/archives%7C%7C%20archive">
               
-                  <span class="site-state-item-count">665</span>
+                  <span class="site-state-item-count">666</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1836,7 +1836,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
