@@ -1,0 +1,48 @@
+---
+import { getCollection } from "astro:content";
+import { getSortedPosts } from "@/utils/getSortedPosts";
+import { getPostSlug } from "@/utils/getPostPaths";
+import Page from "../../[...slug]/index.astro";
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection("posts");
+  const sortedPosts = getSortedPosts(allPosts);
+
+  // For each slug, prefer the English translation; fall back to the Chinese post.
+  const bySlug = new Map<string, (typeof sortedPosts)[number]>();
+  for (const post of sortedPosts) {
+    const slug = getPostSlug(post.id, post.filePath);
+    const existing = bySlug.get(slug);
+    if (!existing || post.data.lang === "en") {
+      bySlug.set(slug, post);
+    }
+  }
+
+  const dedupedPosts = [...bySlug.values()];
+
+  return dedupedPosts.map((post, index) => ({
+    params: { slug: getPostSlug(post.id, post.filePath) },
+    props: {
+      post,
+      prevPost:
+        index > 0
+          ? {
+              id: dedupedPosts[index - 1].id,
+              title: dedupedPosts[index - 1].data.title,
+              filePath: dedupedPosts[index - 1].filePath,
+            }
+          : null,
+      nextPost:
+        index < dedupedPosts.length - 1
+          ? {
+              id: dedupedPosts[index + 1].id,
+              title: dedupedPosts[index + 1].data.title,
+              filePath: dedupedPosts[index + 1].filePath,
+            }
+          : null,
+    },
+  }));
+}
+---
+
+<Page {...Astro.props} />

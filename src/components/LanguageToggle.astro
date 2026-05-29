@@ -1,0 +1,35 @@
+---
+import LinkButton from "./LinkButton.astro";
+import IconWorld from "@/assets/icons/IconWorld.svg";
+import {
+  getAlternateLocale,
+  getLocalizedPathname,
+  normalizeLocale,
+} from "@/i18n/locales";
+import { useTranslations } from "@/i18n";
+import config from "@/config";
+
+const locale = normalizeLocale(Astro.currentLocale ?? config.site.lang);
+const targetLocale = getAlternateLocale(locale);
+const t = useTranslations(locale);
+
+const targetUrl = `${getLocalizedPathname(
+  Astro.url.pathname,
+  locale,
+  targetLocale
+)}${Astro.url.search}`;
+
+const ariaLabel =
+  targetLocale === "en" ? t.a11y.switchToEnglish : t.a11y.switchToChinese;
+---
+
+<LinkButton
+  href={targetUrl}
+  hreflang={targetLocale}
+  class="focus-outline hover:text-accent relative size-8"
+  aria-label={ariaLabel}
+  title={ariaLabel}
+>
+  <IconWorld class="absolute top-1/2 left-1/2 size-5 -translate-x-1/2 -translate-y-1/2" />
+  <span class="sr-only">{ariaLabel}</span>
+</LinkButton>

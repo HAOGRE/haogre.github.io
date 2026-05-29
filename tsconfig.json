@@ -1,0 +1,34 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": [
+    "dist",
+    "public/pagefind",
+    "2013",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "about",
+    "about copy",
+    "archives",
+    "categories",
+    "css",
+    "images",
+    "js",
+    "labs",
+    "lib",
+    "page",
+    "tags",
+    "uploads"
+  ],
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/astro-paper.config": ["./astro-paper.config"]
+    }
+  }
+}
