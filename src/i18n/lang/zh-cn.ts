@@ -31,7 +31,7 @@ export default {
     socialLinks: "链接",
     featured: "精选",
     intro:
-      "技术、系统与生活笔记。这里从旧 Hexo 站点迁移到 AstroPaper，先把文章、归档、标签、搜索和旧链接都稳稳接住。",
+      "就是生活的全部",
     archivePrompt: "可以从最近文章开始，也可以直接看",
     archiveLink: "归档",
     archiveSuffix: "。",

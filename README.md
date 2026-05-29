@@ -2,10 +2,6 @@
 
 This repository powers [blog.haogre.com](https://blog.haogre.com/).
 
-The site has been migrated from a generated Hexo/NexT static export to
-[AstroPaper](https://github.com/satnaing/astro-paper). Legacy article URLs are
-kept, so old links such as `/2021/03/14/def/SLA/` still resolve directly.
-
 ## Commands
 
 ```bash

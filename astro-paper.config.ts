@@ -3,8 +3,8 @@ import { defineAstroPaperConfig } from "./src/types/config";
 export default defineAstroPaperConfig({
   site: {
     url: "https://blog.haogre.com/",
-    title: "HAOGRE's blog",
-    description: "技术、系统与生活笔记。",
+    title: "HAOGRE",
+    description: "简简单单平平凡凡的记录",
     author: "HAOGRE",
     profile: "https://blog.haogre.com/about/",
     ogImage: "default-og.jpg",
