@@ -13,15 +13,23 @@
  * Requires ANTHROPIC_API_KEY or DEEPSEEK_API_KEY to be set in your environment.
  */
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from "fs";
+import {
+  copyFileSync,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  writeFileSync,
+} from "fs";
 import { join, basename, extname, dirname, resolve } from "path";
 import { fileURLToPath } from "url";
-import { execFileSync } from "child_process";
+import { execFileSync, spawn } from "child_process";
+import { createInterface } from "readline/promises";
 import Anthropic from "@anthropic-ai/sdk";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 const POSTS_DIR = join(ROOT, "src/content/posts");
+const UPLOADS_DIR = join(ROOT, "public/uploads");
 const DEEPSEEK_BASE_URL =
   process.env.DEEPSEEK_BASE_URL || "https://api.deepseek.com";
 
@@ -136,6 +144,153 @@ function parseClaudeJson(text) {
     }
     throw new Error("Claude did not return valid JSON.");
   }
+}
+
+function isHttpUrl(src) {
+  return /^https?:\/\//i.test(src);
+}
+
+function isDataUrl(src) {
+  return /^data:/i.test(src);
+}
+
+function getImageRefs(body) {
+  const refs = [];
+  const imagePattern = /!\[([^\]]*)\]\((<[^>]+>|[^)\s]+)([^)]*)\)/g;
+  let match;
+
+  while ((match = imagePattern.exec(body)) !== null) {
+    const rawSrc = match[2].trim();
+    const src = rawSrc.replace(/^<|>$/g, "");
+    refs.push({
+      raw: match[0],
+      alt: match[1],
+      src,
+      rest: match[3] || "",
+    });
+  }
+
+  return refs;
+}
+
+function getImageBasename(src) {
+  try {
+    return basename(decodeURIComponent(new URL(src).pathname));
+  } catch {
+    return basename(decodeURIComponent(src));
+  }
+}
+
+function sanitizeFileName(name) {
+  const ext = extname(name);
+  const stem = basename(name, ext)
+    .replace(/[^A-Za-z0-9._-]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return `${stem || "image"}${ext || ".png"}`;
+}
+
+function buildSourceImageMap(body) {
+  const map = new Map();
+  for (const ref of getImageRefs(body)) {
+    map.set(ref.src, ref.src);
+    map.set(getImageBasename(ref.src), ref.src);
+  }
+  return map;
+}
+
+function resolveImageSource(src, sourceImageMap, sourceFilePath) {
+  if (isDataUrl(src) || src.startsWith("/")) return null;
+  if (isHttpUrl(src)) return src;
+
+  const mapped = sourceImageMap.get(src) || sourceImageMap.get(getImageBasename(src));
+  if (mapped) return mapped;
+
+  return resolve(dirname(sourceFilePath), src);
+}
+
+async function fetchWithTimeout(url, timeoutMs = 30000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const resp = await fetch(url, {
+      signal: controller.signal,
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/537.36",
+      },
+    });
+
+    if (!resp.ok) {
+      throw new Error(`HTTP ${resp.status}`);
+    }
+
+    return Buffer.from(await resp.arrayBuffer());
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function materializeImage({ resolvedSrc, outputPath }) {
+  if (isHttpUrl(resolvedSrc)) {
+    const bytes = await fetchWithTimeout(resolvedSrc);
+    writeFileSync(outputPath, bytes);
+    return;
+  }
+
+  if (!existsSync(resolvedSrc)) {
+    throw new Error(`Local image does not exist: ${resolvedSrc}`);
+  }
+
+  copyFileSync(resolvedSrc, outputPath);
+}
+
+async function localizeImages({ bodies, sourceBody, sourceFilePath, datePath, slug }) {
+  const sourceImageMap = buildSourceImageMap(sourceBody);
+  const uploadDir = join(UPLOADS_DIR, datePath, slug);
+  const publicPrefix = `/uploads/${datePath}/${slug}`;
+  const srcToPublicPath = new Map();
+  const usedNames = new Set();
+
+  for (const body of Object.values(bodies)) {
+    for (const ref of getImageRefs(body)) {
+      if (srcToPublicPath.has(ref.src)) continue;
+
+      const resolvedSrc = resolveImageSource(ref.src, sourceImageMap, sourceFilePath);
+      if (!resolvedSrc) continue;
+
+      mkdirSync(uploadDir, { recursive: true });
+
+      const baseName = sanitizeFileName(getImageBasename(resolvedSrc));
+      let fileName = baseName;
+      let index = 2;
+      while (usedNames.has(fileName)) {
+        const ext = extname(baseName);
+        const stem = basename(baseName, ext);
+        fileName = `${stem}-${index}${ext}`;
+        index += 1;
+      }
+      usedNames.add(fileName);
+
+      const outputPath = join(uploadDir, fileName);
+      await materializeImage({ resolvedSrc, outputPath });
+      srcToPublicPath.set(ref.src, `${publicPrefix}/${fileName}`);
+    }
+  }
+
+  const localizedBodies = {};
+  for (const [key, body] of Object.entries(bodies)) {
+    localizedBodies[key] = body.replace(
+      /!\[([^\]]*)\]\((<[^>]+>|[^)\s]+)([^)]*)\)/g,
+      (full, alt, rawSrc, rest) => {
+        const src = rawSrc.trim().replace(/^<|>$/g, "");
+        const localized = srcToPublicPath.get(src);
+        return localized ? `![${alt}](${localized}${rest})` : full;
+      }
+    );
+  }
+
+  return { bodies: localizedBodies, assets: [...srcToPublicPath.values()] };
 }
 
 function run(command, args) {
@@ -262,11 +417,61 @@ async function callLLM({ provider, model, title, body, sourceLang, slug }) {
   return callAnthropic({ prompt, model });
 }
 
+function waitForExit(child) {
+  return new Promise(resolve => {
+    child.once("exit", () => resolve());
+  });
+}
+
+async function previewBeforePublish({ datePath, slug }) {
+  if (!process.stdin.isTTY) {
+    throw new Error(
+      "Local preview confirmation requires an interactive terminal. Re-run in your terminal, or pass --yes to skip preview."
+    );
+  }
+
+  console.log("\nStarting local preview server...");
+  const child = spawn("npm", ["run", "dev", "--", "--host", "127.0.0.1"], {
+    cwd: ROOT,
+    stdio: ["ignore", "pipe", "pipe"],
+  });
+  let origin = "http://localhost:4321";
+
+  child.stdout.on("data", chunk => {
+    const text = chunk.toString();
+    process.stdout.write(text);
+    const match = text.match(/https?:\/\/(?:localhost|127\.0\.0\.1):\d+/);
+    if (match) origin = match[0].replace("127.0.0.1", "localhost");
+  });
+  child.stderr.on("data", chunk => process.stderr.write(chunk));
+
+  await new Promise(resolve => setTimeout(resolve, 2500));
+
+  const previewUrl = `${origin}/${datePath}/${slug}/`;
+  console.log(`\nPreview URL: ${previewUrl}`);
+  console.log("Check the local page, especially images and layout.");
+
+  const rl = createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+  const answer = await rl.question("Publish after local preview? [y/N] ");
+  rl.close();
+
+  child.kill("SIGTERM");
+  await waitForExit(child);
+
+  if (!/^y(es)?$/i.test(answer.trim())) {
+    throw new Error("Publish cancelled after local preview.");
+  }
+}
+
 // --- main ------------------------------------------------------------------
 
 async function main() {
   const args = process.argv.slice(2);
   const isDraft = args.includes("--draft");
+  const skipPreview = args.includes("--yes");
   const fileArg = args.find(arg => !arg.startsWith("--"));
   const filePath = fileArg ? resolve(fileArg) : "";
 
@@ -320,6 +525,13 @@ async function main() {
   const descriptionEn = requiredText(meta.description_en, "description_en");
   const bodyZh = requiredText(meta.body_zh, "body_zh");
   const bodyEn = requiredText(meta.body_en, "body_en");
+  const localized = await localizeImages({
+    bodies: { zh: bodyZh, en: bodyEn },
+    sourceBody: cleanBody,
+    sourceFilePath: filePath,
+    datePath,
+    slug,
+  });
 
   const zhDir = join(POSTS_DIR, datePath);
   const enDir = join(POSTS_DIR, "en", datePath);
@@ -339,7 +551,7 @@ async function main() {
       draft: isDraft,
       tags: tagsZh,
       description: descriptionZh,
-    })}\n\n${bodyZh}\n`
+    })}\n\n${localized.bodies.zh}\n`
   );
   console.log(`Wrote Chinese post: ${zhRel}`);
 
@@ -352,9 +564,14 @@ async function main() {
       lang: "en",
       tags: tagsEn,
       description: descriptionEn,
-    })}\n\n${bodyEn}\n`
+    })}\n\n${localized.bodies.en}\n`
   );
   console.log(`Wrote English post: ${enRel}`);
+
+  if (localized.assets.length > 0) {
+    console.log("\nLocalized images:");
+    for (const asset of localized.assets) console.log(`- ${asset}`);
+  }
 
   if (Array.isArray(meta.review_notes) && meta.review_notes.length > 0) {
     console.log("\nEditorial notes:");
@@ -369,8 +586,12 @@ async function main() {
     return;
   }
 
+  if (!skipPreview) {
+    await previewBeforePublish({ datePath, slug });
+  }
+
   console.log("\nCommitting and pushing...");
-  git(["add", zhRel, enRel]);
+  git(["add", zhRel, enRel, `public/uploads/${datePath}/${slug}`]);
   git(["commit", "-m", `add: ${titleZh}`]);
   git(["push"]);
 

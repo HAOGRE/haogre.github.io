@@ -27,7 +27,11 @@ DEEPSEEK_API_KEY=... npm run publish -- /path/to/article.md
 ```
 
 `npm run publish` accepts either Chinese or English Markdown, creates both
-language versions, runs the production build, then commits and pushes only when
-the build passes. Set `LLM_PROVIDER=anthropic` with `ANTHROPIC_API_KEY` to use
-Anthropic instead, or set `DEEPSEEK_MODEL` / `ANTHROPIC_MODEL` to override the
-default model.
+language versions, downloads article images into `public/uploads/`, runs the
+production build, starts `npm run dev` for local preview, then commits and
+pushes only after you confirm the preview. Set `LLM_PROVIDER=anthropic` with
+`ANTHROPIC_API_KEY` to use Anthropic instead, or set `DEEPSEEK_MODEL` /
+`ANTHROPIC_MODEL` to override the default model.
+
+Use `--yes` only when you intentionally want to skip the interactive preview
+confirmation.

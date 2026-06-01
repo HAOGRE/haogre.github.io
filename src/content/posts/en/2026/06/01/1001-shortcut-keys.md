@@ -120,13 +120,13 @@ We use macOS’s system feature to customize Typora’s key bindings on macOS.
 
 1. Open `System Preference` → `Keyboard`, select tab `Shortcuts`. Select `App Shortcuts` in the left panel.
 
-   ![Snip20160814_1](https://support.typora.io/media/custom-key-binding/Snip20160814_1.png)
+   ![Snip20160814_1](/uploads/2026/06/01/1001-shortcut-keys/Snip20160814_1.png)
 
 2. Click the “+” button, a dialog sheet will pop up. Select “Typora.app” from the `Application` field, then enter the exact name of the menu command you want to add and then type the shortcut key combination you want to assign.
 
    For example, assuming you want to add/change the shortcut key to pin Typora’s window, you can fill the dialog box as follows:
 
-   ![Snip20160814_5](https://support.typora.io/media/custom-key-binding/Snip20160814_5.png)
+   ![Snip20160814_5](/uploads/2026/06/01/1001-shortcut-keys/Snip20160814_5.png)
 
    Then Command+Shift+P will be the shortcut key combination for the menu command “Always On Top”.
 
@@ -134,17 +134,17 @@ We use macOS’s system feature to customize Typora’s key bindings on macOS.
 
 1. Open `Menu` → `Preference` in Typora, then click “Open Advanced Settings”.
 
-   ![sshot-1](https://support.typora.io/media/custom-key-binding/sshot-1.png)
+   ![sshot-1](/uploads/2026/06/01/1001-shortcut-keys/sshot-1.png)
 
 2. Open and edit `conf.user.json` from the opened “File Explorer”. If there’s no such file, create one.
 
 3. Set or add a JSON object which represents a key binding, for example:
 
-   ![Snip20160814_7](https://support.typora.io/media/custom-key-binding/Snip20160814_7.png)
+   ![Snip20160814_7](/uploads/2026/06/01/1001-shortcut-keys/Snip20160814_7.png)
 
 4. Restart Typora. The new key binding will be applied.
 
-   ![sshot-2](https://support.typora.io/media/custom-key-binding/sshot-2.png)
+   ![sshot-2](/uploads/2026/06/01/1001-shortcut-keys/sshot-2.png)
 
 You can set or change shortcut keys for menu items in the menu bar in the native window style.
 
