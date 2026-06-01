@@ -19,3 +19,15 @@ npm run preview
 - Static assets from the old site are copied to `public/uploads/` and
   `public/images/`.
 - `public/CNAME` keeps GitHub Pages bound to `blog.haogre.com`.
+
+## Publishing
+
+```bash
+DEEPSEEK_API_KEY=... npm run publish -- /path/to/article.md
+```
+
+`npm run publish` accepts either Chinese or English Markdown, creates both
+language versions, runs the production build, then commits and pushes only when
+the build passes. Set `LLM_PROVIDER=anthropic` with `ANTHROPIC_API_KEY` to use
+Anthropic instead, or set `DEEPSEEK_MODEL` / `ANTHROPIC_MODEL` to override the
+default model.
