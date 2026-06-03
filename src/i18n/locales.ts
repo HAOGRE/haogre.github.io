@@ -16,6 +16,21 @@ export const LOCALE_SWITCH_LABEL: Record<SupportedLocale, string> = {
   en: "En",
 };
 
+const TAG_SLUGS = {
+  "zh-cn": {
+    随笔: "musings",
+    碎片: "fragments",
+    其他: "miscellaneous",
+    病历: "health-notes",
+  },
+  en: {
+    musings: "随笔",
+    fragments: "碎片",
+    miscellaneous: "其他",
+    "health-notes": "病历",
+  },
+} as const;
+
 export function isSupportedLocale(locale: string): locale is SupportedLocale {
   return SUPPORTED_LOCALES.includes(locale as SupportedLocale);
 }
@@ -41,11 +56,38 @@ export function getLogicalPathname(
   return normalized || "/";
 }
 
+function decodePathSegment(segment: string): string {
+  try {
+    return decodeURIComponent(segment);
+  } catch {
+    return segment;
+  }
+}
+
+function getLocalizedTagRoute(
+  route: string,
+  currentLocale: SupportedLocale
+): string {
+  const tagMatch = route.match(/^tags\/([^/]+)(\/.*)?$/);
+  if (!tagMatch) return route;
+
+  const tag = decodePathSegment(tagMatch[1]);
+  const mappedTag =
+    TAG_SLUGS[currentLocale][tag as keyof typeof TAG_SLUGS[typeof currentLocale]];
+  if (!mappedTag) return route;
+
+  return `tags/${mappedTag}${tagMatch[2] ?? ""}`;
+}
+
 export function getLocalizedPathname(
   pathname: string,
   currentLocale: string | undefined,
   targetLocale: string | undefined
 ): string {
-  const route = getLogicalPathname(pathname, currentLocale).replace(/^\/+/, "");
-  return getRelativeLocaleUrl(normalizeLocale(targetLocale), route);
+  const locale = normalizeLocale(currentLocale);
+  const target = normalizeLocale(targetLocale);
+  const logicalRoute = getLogicalPathname(pathname, locale).replace(/^\/+/, "");
+  const route =
+    locale === target ? logicalRoute : getLocalizedTagRoute(logicalRoute, locale);
+  return getRelativeLocaleUrl(target, route);
 }
