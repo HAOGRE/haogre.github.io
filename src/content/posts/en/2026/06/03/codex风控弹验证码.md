@@ -1,18 +1,18 @@
 ---
 author: "HAOGRE"
 pubDatetime: 2026-06-03T12:36:16.335Z
-title: "Codex Risk Control Phone Verification: What to Do When Your Old Phone Number Is No Longer in Use"
+title: "Codex 2FA/Phone Verification Prompt: What If Your Old Phone Number Is Gone?"
 featured: false
 draft: false
 lang: en
 tags:
   - "musings"
-description: "OpenAI does not allow changing the account-linked phone number, but you can bind a new number in MFA settings. This article explains how to handle Codex risk control verification."
+description: "What to do when Codex asks for 2FA or phone verification but your old OpenAI phone number is no longer available."
 ---
 
-## Codex Risk Control Phone Verification: What to Do When Your Old Phone Number Is No Longer in Use
+## Codex 2FA/Phone Verification Prompt: What If Your Old Phone Number Is Gone?
 
-Recently, several posts on V2EX discussed the same issue: Codex suddenly requires phone verification during login or authorization, but many old accounts were registered with temporary numbers or numbers no longer in use. While ChatGPT web access still works, Codex gets stuck, revealing that the old number has become a risk point.
+Recently, several posts on V2EX discussed the same issue: Codex suddenly shows a 2FA or phone verification prompt during login or authorization, but many old accounts were registered with temporary numbers or numbers no longer in use. While ChatGPT web access still works, Codex gets stuck, revealing that the old number has become a risk point.
 
 First, the conclusion: OpenAI currently does not support changing the "account-linked phone number." If your old number is deactivated, there is no option in settings to replace it. What you can do in advance, while still logged in, is to enable `Text message` MFA in ChatGPT's security settings and bind it to a phone number where you can reliably receive SMS or WhatsApp verification codes.
 
