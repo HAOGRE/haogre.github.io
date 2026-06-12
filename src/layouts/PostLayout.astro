@@ -1,5 +1,6 @@
 ---
 import Layout from "./Layout.astro";
+import type { SupportedLocale } from "@/i18n/locales";
 import config from "@/config";
 
 type Props = {
@@ -7,14 +8,22 @@ type Props = {
   description?: string;
   ogImage?: string;
   canonicalURL?: string;
+  alternateURLs?: Partial<Record<SupportedLocale, string>>;
   pubDatetime?: Date;
   modDatetime?: Date | null;
 };
 
 const { site } = config;
 
-const { title, description, ogImage, canonicalURL, pubDatetime, modDatetime } =
-  Astro.props;
+const {
+  title,
+  description,
+  ogImage,
+  canonicalURL,
+  alternateURLs,
+  pubDatetime,
+  modDatetime,
+} = Astro.props;
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -33,7 +42,7 @@ const structuredData = {
 };
 ---
 
-<Layout {title} {description} {ogImage} {canonicalURL}>
+<Layout {title} {description} {ogImage} {canonicalURL} {alternateURLs}>
   <Fragment slot="head">
     <!-- Override og:type for article pages -->
     <meta property="og:type" content="article" />

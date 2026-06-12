@@ -7,10 +7,23 @@ import Page from "../../[...slug]/index.astro";
 export async function getStaticPaths() {
   const allPosts = await getCollection("posts");
   const sortedPosts = getSortedPosts(allPosts);
+  const enTranslationKeys = new Set(
+    sortedPosts
+      .filter(post => post.data.lang === "en" && post.data.translationKey)
+      .map(post => post.data.translationKey)
+  );
+  const routePosts = sortedPosts.filter(
+    post =>
+      post.data.lang === "en" ||
+      !(
+        post.data.translationKey &&
+        enTranslationKeys.has(post.data.translationKey)
+      )
+  );
 
   // For each slug, prefer the English translation; fall back to the Chinese post.
   const bySlug = new Map<string, (typeof sortedPosts)[number]>();
-  for (const post of sortedPosts) {
+  for (const post of routePosts) {
     const slug = getPostSlug(post.id, post.filePath);
     const existing = bySlug.get(slug);
     if (!existing || post.data.lang === "en") {

@@ -25,6 +25,7 @@ import { fileURLToPath } from "url";
 import { execFileSync, spawn } from "child_process";
 import { createInterface } from "readline/promises";
 import Anthropic from "@anthropic-ai/sdk";
+import slugify from "slugify";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -106,6 +107,9 @@ function buildFrontmatter(fields) {
   lines.push(`featured: false`);
   lines.push(`draft: ${fields.draft}`);
   if (fields.lang) lines.push(`lang: ${fields.lang}`);
+  if (fields.translationKey) {
+    lines.push(`translationKey: "${yamlEscape(fields.translationKey)}"`);
+  }
   lines.push(`tags:`);
   for (const t of fields.tags) lines.push(`  - "${t}"`);
   lines.push(`description: "${yamlEscape(fields.description)}"`);
@@ -198,6 +202,15 @@ function sanitizeFileName(name) {
     .replace(/[^A-Za-z0-9._-]+/g, "-")
     .replace(/^-+|-+$/g, "");
   return `${stem || "image"}${ext || ".png"}`;
+}
+
+function slugifyRouteSegment(value, fallback) {
+  const slug = slugify(value, {
+    lower: true,
+    strict: true,
+    trim: true,
+  });
+  return slug || fallback;
 }
 
 function buildSourceImageMap(body) {
@@ -541,6 +554,8 @@ async function main() {
   const tagsEn = tagsZh.map(tag => TAGS[tag] ?? "musings");
   const titleZh = requiredText(meta.title_zh || title, "title_zh");
   const titleEn = requiredText(meta.title_en || title, "title_en");
+  const translationKey = slug;
+  const enSlug = slugifyRouteSegment(titleEn, slug);
   const descriptionZh = requiredText(meta.description_zh, "description_zh");
   const descriptionEn = requiredText(meta.description_en, "description_en");
   const bodyZh = requiredText(meta.body_zh, "body_zh");
@@ -559,9 +574,9 @@ async function main() {
   mkdirSync(enDir, { recursive: true });
 
   const zhFile = join(zhDir, `${slug}.md`);
-  const enFile = join(enDir, `${slug}.md`);
+  const enFile = join(enDir, `${enSlug}.md`);
   const zhRel = `src/content/posts/${datePath}/${slug}.md`;
-  const enRel = `src/content/posts/en/${datePath}/${slug}.md`;
+  const enRel = `src/content/posts/en/${datePath}/${enSlug}.md`;
 
   writeFileSync(
     zhFile,
@@ -569,6 +584,7 @@ async function main() {
       iso,
       title: titleZh,
       draft: isDraft,
+      translationKey,
       tags: tagsZh,
       description: descriptionZh,
     })}\n\n${localized.bodies.zh}\n`
@@ -582,6 +598,7 @@ async function main() {
       title: titleEn,
       draft: isDraft,
       lang: "en",
+      translationKey,
       tags: tagsEn,
       description: descriptionEn,
     })}\n\n${localized.bodies.en}\n`
@@ -616,6 +633,7 @@ async function main() {
   git(["push"]);
 
   console.log(`\nPublished: https://blog.haogre.com/${datePath}/${slug}/`);
+  console.log(`English: https://blog.haogre.com/en/${datePath}/${enSlug}/`);
 }
 
 main().catch(err => {

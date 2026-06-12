@@ -5,6 +5,7 @@ title: "One Sentence That Made My App's Design Soar"
 featured: false
 draft: false
 lang: en
+translationKey: "Fable一句话让设计原地起飞"
 tags:
   - "musings"
 description: "I told AI 'Make the design 100x better' and it rebuilt the entire design system—aurora gradients, glassmorphism, custom components—transforming the app completely."

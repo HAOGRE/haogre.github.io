@@ -16,6 +16,7 @@ const posts = defineCollection({
       featured: z.boolean().optional(),
       draft: z.boolean().optional(),
       lang: z.enum(["zh-cn", "en"]).optional(),
+      translationKey: z.string().optional(),
       tags: z.array(z.string()).default(["others"]),
       ogImage: image().or(z.string()).optional(),
       description: z.string(),

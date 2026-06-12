@@ -1,23 +1,56 @@
 ---
 import LinkButton from "./LinkButton.astro";
 import IconWorld from "@/assets/icons/IconWorld.svg";
+import { getCollection } from "astro:content";
 import {
   getAlternateLocale,
+  getLogicalPathname,
   getLocalizedPathname,
   normalizeLocale,
 } from "@/i18n/locales";
 import { useTranslations } from "@/i18n";
+import { getPostSlug, getPostUrl } from "@/utils/getPostPaths";
 import config from "@/config";
 
 const locale = normalizeLocale(Astro.currentLocale ?? config.site.lang);
 const targetLocale = getAlternateLocale(locale);
 const t = useTranslations(locale);
 
-const targetUrl = `${getLocalizedPathname(
+const fallbackTargetUrl = getLocalizedPathname(
   Astro.url.pathname,
   locale,
   targetLocale
-)}${Astro.url.search}`;
+);
+
+function decodePath(path: string): string {
+  try {
+    return decodeURI(path);
+  } catch {
+    return path;
+  }
+}
+
+const posts = await getCollection("posts");
+const logicalPath = decodePath(getLogicalPathname(Astro.url.pathname, locale));
+const currentPost = posts.find(post => {
+  const postLocale = normalizeLocale(post.data.lang);
+  const postPath = getPostSlug(post.id, post.filePath).replace(/\/+$/, "");
+  return postLocale === locale && postPath === logicalPath;
+});
+const translatedPost = currentPost?.data.translationKey
+  ? posts.find(post => {
+      const postLocale = normalizeLocale(post.data.lang);
+      return (
+        postLocale === targetLocale &&
+        post.data.translationKey === currentPost.data.translationKey
+      );
+    })
+  : undefined;
+const targetUrl = `${
+  translatedPost
+    ? getPostUrl(translatedPost.id, translatedPost.filePath, targetLocale)
+    : fallbackTargetUrl
+}${Astro.url.search}`;
 
 const ariaLabel =
   targetLocale === "en" ? t.a11y.switchToEnglish : t.a11y.switchToChinese;

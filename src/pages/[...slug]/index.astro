@@ -14,6 +14,7 @@ import BackButton from "./_components/BackButton.astro";
 import BackToTopButton from "./_components/BackToTopButton.astro";
 import AdjacentPostNav from "./_components/AdjacentPostNav.astro";
 import config from "@/config";
+import { normalizeLocale, type SupportedLocale } from "@/i18n/locales";
 
 export async function getStaticPaths() {
   const posts = await getCollection(
@@ -60,6 +61,7 @@ type Props = {
 
 const { post, prevPost, nextPost } = Astro.props;
 const locale = Astro.currentLocale ?? config.site.lang;
+const postLocale = normalizeLocale(post.data.lang);
 
 const {
   title,
@@ -94,6 +96,25 @@ if (!ogImageUrl && config.features.dynamicOgImage) {
 const ogImage = ogImageUrl
   ? new URL(ogImageUrl, Astro.url.origin).href
   : undefined;
+
+const alternateURLs: Partial<Record<SupportedLocale, string>> = {};
+if (post.data.translationKey) {
+  const allPosts = await getCollection("posts");
+  for (const candidate of allPosts) {
+    if (candidate.data.translationKey !== post.data.translationKey) continue;
+
+    const candidateLocale = normalizeLocale(candidate.data.lang);
+    alternateURLs[candidateLocale] = new URL(
+      getPostUrl(candidate.id, candidate.filePath, candidateLocale),
+      Astro.site ?? Astro.url
+    ).href;
+  }
+} else {
+  alternateURLs[postLocale] = new URL(
+    getPostUrl(post.id, post.filePath, postLocale),
+    Astro.site ?? Astro.url
+  ).href;
+}
 ---
 
 <PostLayout
@@ -101,6 +122,7 @@ const ogImage = ogImageUrl
   description={description}
   ogImage={ogImage}
   canonicalURL={canonicalURL}
+  alternateURLs={alternateURLs}
   pubDatetime={pubDatetime}
   modDatetime={modDatetime}
 >

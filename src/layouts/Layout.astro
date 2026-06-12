@@ -8,6 +8,7 @@ import {
   getLocalizedPathname,
   LOCALE_HREFLANG,
   normalizeLocale,
+  type SupportedLocale,
   SUPPORTED_LOCALES,
 } from "@/i18n/locales";
 import config from "@/config";
@@ -18,6 +19,7 @@ type Props = {
   description?: string;
   ogImage?: string;
   canonicalURL?: string;
+  alternateURLs?: Partial<Record<SupportedLocale, string>>;
 };
 
 const { site } = config;
@@ -27,16 +29,19 @@ const {
   description = site.description,
   ogImage = resolveDefaultOgImagePath(config),
   canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
+  alternateURLs,
 } = Astro.props;
 
 const socialImageURL = new URL(ogImage, Astro.site ?? Astro.url);
 const locale = normalizeLocale(Astro.currentLocale ?? config.site.lang);
 const rssHref = getRelativeLocaleUrl(DEFAULT_LOCALE, "rss.xml");
 const alternateLinks = SUPPORTED_LOCALES.map(targetLocale => ({
-  href: new URL(
-    getLocalizedPathname(Astro.url.pathname, locale, targetLocale),
-    Astro.site ?? Astro.url
-  ).href,
+  href:
+    alternateURLs?.[targetLocale] ??
+    new URL(
+      getLocalizedPathname(Astro.url.pathname, locale, targetLocale),
+      Astro.site ?? Astro.url
+    ).href,
   hreflang: LOCALE_HREFLANG[targetLocale],
 }));
 ---

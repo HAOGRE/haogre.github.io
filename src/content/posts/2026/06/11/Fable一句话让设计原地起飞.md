@@ -4,6 +4,7 @@ pubDatetime: 2026-06-11T12:40:05.467Z
 title: "一句话，让设计原地起飞"
 featured: false
 draft: false
+translationKey: "Fable一句话让设计原地起飞"
 tags:
   - "随笔"
 description: "只对 AI 说了一句“把设计提升 100 倍”，它便重构了整个设计系统，从极光背景到玻璃态组件，让应用焕然一新。"
