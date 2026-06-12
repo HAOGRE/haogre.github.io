@@ -157,6 +157,8 @@ function isDataUrl(src) {
 function getImageRefs(body) {
   const refs = [];
   const imagePattern = /!\[([^\]]*)\]\((<[^>]+>|[^)\s]+)([^)]*)\)/g;
+  const htmlImagePattern =
+    /<img\b[^>]*\bsrc\s*=\s*(["'])(.*?)\1[^>]*>/gi;
   let match;
 
   while ((match = imagePattern.exec(body)) !== null) {
@@ -167,6 +169,15 @@ function getImageRefs(body) {
       alt: match[1],
       src,
       rest: match[3] || "",
+    });
+  }
+
+  while ((match = htmlImagePattern.exec(body)) !== null) {
+    refs.push({
+      raw: match[0],
+      alt: "",
+      src: match[2].trim(),
+      rest: "",
     });
   }
 
@@ -280,14 +291,23 @@ async function localizeImages({ bodies, sourceBody, sourceFilePath, datePath, sl
 
   const localizedBodies = {};
   for (const [key, body] of Object.entries(bodies)) {
-    localizedBodies[key] = body.replace(
-      /!\[([^\]]*)\]\((<[^>]+>|[^)\s]+)([^)]*)\)/g,
-      (full, alt, rawSrc, rest) => {
-        const src = rawSrc.trim().replace(/^<|>$/g, "");
-        const localized = srcToPublicPath.get(src);
-        return localized ? `![${alt}](${localized}${rest})` : full;
-      }
-    );
+    localizedBodies[key] = body
+      .replace(
+        /!\[([^\]]*)\]\((<[^>]+>|[^)\s]+)([^)]*)\)/g,
+        (full, alt, rawSrc, rest) => {
+          const src = rawSrc.trim().replace(/^<|>$/g, "");
+          const localized = srcToPublicPath.get(src);
+          return localized ? `![${alt}](${localized}${rest})` : full;
+        }
+      )
+      .replace(
+        /(<img\b[^>]*\bsrc\s*=\s*)(["'])(.*?)\2/gi,
+        (full, prefix, quote, rawSrc) => {
+          const src = rawSrc.trim();
+          const localized = srcToPublicPath.get(src);
+          return localized ? `${prefix}${quote}${localized}${quote}` : full;
+        }
+      );
   }
 
   return { bodies: localizedBodies, assets: [...srcToPublicPath.values()] };
