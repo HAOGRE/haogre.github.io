@@ -1,23 +1,31 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
 /**
- * Usage: npm run publish -- <path-to-md-file> [--draft]
+ * Usage: npm run publish -- <path-to-md-file> [--draft] [--preview]
  *
  * Drop any .md file here. The script will:
  *   1. Detect whether the source is Chinese or English
- *   2. Ask Claude to proofread/typeset the source language and create the other language
- *   3. Write Chinese and English posts to the Astro content tree
- *   4. Run the local production build
- *   5. Commit and push when the build passes
+ *   2. Ask Claude/DeepSeek to proofread and create the bilingual version
+ *   3. Localize images to public/uploads/
+ *   4. Write Chinese and English posts to the Astro content tree
+ *   5. Commit and push (GitHub Actions handles the build + deploy)
  *
- * Requires ANTHROPIC_API_KEY or DEEPSEEK_API_KEY to be set in your environment.
+ * Flags:
+ *   --draft    Write files only; no commit or push.
+ *   --preview  Run local build + preview server before pushing (opt-in slow path).
+ *   --yes      Skip the interactive confirmation inside --preview mode.
+ *
+ * API keys: set ANTHROPIC_API_KEY or DEEPSEEK_API_KEY in .env.local (gitignored)
+ * or export them in your shell. LLM_PROVIDER=deepseek|anthropic to force a provider.
  */
 
 import {
   copyFileSync,
   existsSync,
   mkdirSync,
+  readdirSync,
   readFileSync,
+  unlinkSync,
   writeFileSync,
 } from "fs";
 import { join, basename, extname, dirname, resolve } from "path";
@@ -31,6 +39,19 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 const POSTS_DIR = join(ROOT, "src/content/posts");
 const UPLOADS_DIR = join(ROOT, "public/uploads");
+
+// Auto-load .env.local (gitignored) so ANTHROPIC_API_KEY / DEEPSEEK_API_KEY
+// can be set once without exporting them in every shell session.
+try {
+  for (const line of readFileSync(join(ROOT, ".env.local"), "utf8").split(/\r?\n/)) {
+    const eqIdx = line.indexOf("=");
+    if (eqIdx < 1 || line.trim().startsWith("#")) continue;
+    const k = line.slice(0, eqIdx).trim();
+    const v = line.slice(eqIdx + 1).trim().replace(/^["']|["']$/g, "");
+    if (k && !(k in process.env)) process.env[k] = v;
+  }
+} catch { /* .env.local is optional */ }
+
 const DEEPSEEK_BASE_URL =
   process.env.DEEPSEEK_BASE_URL || "https://api.deepseek.com";
 
@@ -117,11 +138,68 @@ function buildFrontmatter(fields) {
   return lines.join("\n");
 }
 
-function normalizeTags(tags) {
-  const normalized = Array.isArray(tags)
-    ? tags.filter(tag => VALID_ZH_TAGS.includes(tag))
-    : [];
-  return normalized.length > 0 ? normalized.slice(0, 2) : ["随笔"];
+function normalizeTags(tagsZh) {
+  // Accept any tags the LLM returns (open vocabulary), min 3, max 5
+  if (Array.isArray(tagsZh) && tagsZh.length >= 3) return tagsZh.slice(0, 5);
+  // Pad with fallback tags if LLM returned fewer than 3
+  const base = Array.isArray(tagsZh) ? tagsZh : [];
+  const fallbacks = ["随笔", "碎片", "其他"].filter(t => !base.includes(t));
+  return [...base, ...fallbacks].slice(0, 3);
+}
+
+/**
+ * Delete any .md files in `dir` whose frontmatter translationKey matches,
+ * except the file we're about to write (skipPath). Handles slug changes
+ * across re-runs without requiring manual cleanup.
+ */
+function removeStalePost(dir, translationKey, skipPath) {
+  if (!existsSync(dir)) return;
+  for (const name of readdirSync(dir)) {
+    if (!name.endsWith(".md")) continue;
+    const fullPath = join(dir, name);
+    if (fullPath === skipPath) continue;
+    try {
+      const content = readFileSync(fullPath, "utf-8");
+      if (content.includes(`translationKey: "${translationKey}"`)) {
+        unlinkSync(fullPath);
+        console.log(`Removed stale post: ${fullPath.replace(ROOT + "/", "")}`);
+      }
+    } catch { /* skip */ }
+  }
+}
+
+/** Extract tags list from a post's raw markdown (handles YAML list syntax). */
+function extractTagsFromContent(content) {
+  const m = content.match(/^tags:\s*\n((?:[ \t]+-[ \t]+"[^"]+"\n?)+)/m);
+  if (!m) return [];
+  return [...m[1].matchAll(/[ \t]+-[ \t]+"([^"]+)"/g)].map(x => x[1]);
+}
+
+/**
+ * Collect all Chinese tags currently used across posts (excl. en/ subtree).
+ * Seeds with the hardcoded TAGS so the LLM always sees the canonical set.
+ */
+function collectExistingTags() {
+  const tagSet = new Set(Object.keys(TAGS));
+
+  function scan(dir) {
+    if (!existsSync(dir)) return;
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      if (entry.isDirectory()) {
+        if (entry.name !== "en") scan(join(dir, entry.name));
+      } else if (entry.name.endsWith(".md")) {
+        try {
+          const tags = extractTagsFromContent(
+            readFileSync(join(dir, entry.name), "utf-8")
+          );
+          tags.forEach(t => tagSet.add(t));
+        } catch { /* skip unreadable files */ }
+      }
+    }
+  }
+
+  scan(POSTS_DIR);
+  return [...tagSet];
 }
 
 function requiredText(value, field) {
@@ -355,7 +433,7 @@ function getApiKey(provider) {
     : process.env.ANTHROPIC_API_KEY;
 }
 
-function buildPrompt({ title, body, sourceLang, slug }) {
+function buildPrompt({ title, body, sourceLang, slug, existingTags }) {
   const sourceLabel = sourceLang === "zh-cn" ? "Chinese" : "English";
 
   return `You are the publishing editor for a bilingual personal blog at haogre.com.
@@ -377,8 +455,15 @@ Rules:
 - Keep personal voice natural and restrained. Do not add facts that are not in the source.
 - For Chinese, use natural Simplified Chinese and clean spacing around English terms/numbers when useful.
 - For English, use natural blog English, not literal translation.
-- Pick 1-2 Chinese tags only from: ${VALID_ZH_TAGS.join(", ")}.
 - Descriptions must be concise search/social summaries, not copied opening paragraphs.
+
+Tag rules:
+- Existing tags used in this blog (prefer reusing these): ${existingTags.join(", ")}
+- Choose at least 3 Chinese tags (3-5 total). Prefer existing tags; introduce new ones only when existing tags don't fit.
+- You may introduce up to 2 new Chinese tags if the existing list doesn't cover the content well.
+- tags_en must be a parallel array with the same length as tags_zh.
+- For existing tags, use their established English forms: 随笔→musings, 碎片→fragments, 其他→miscellaneous, 病历→health-notes.
+- For any new tag, provide a clean lowercase English slug (e.g., "indie-hacker", "productivity").
 
 JSON shape:
 {
@@ -386,7 +471,8 @@ JSON shape:
   "title_en": "Final English title",
   "description_zh": "Chinese description, <= 80 Chinese chars",
   "description_en": "English description, <= 120 chars",
-  "tags_zh": ["随笔"],
+  "tags_zh": ["随笔", "其他", "tag3"],
+  "tags_en": ["musings", "miscellaneous", "tag3-en"],
   "body_zh": "Full Chinese markdown body",
   "body_en": "Full English markdown body",
   "review_notes": ["Short human-readable notes about changes or publication risks"]
@@ -444,8 +530,8 @@ async function callDeepSeek({ prompt, model }) {
   return parseClaudeJson(content);
 }
 
-async function callLLM({ provider, model, title, body, sourceLang, slug }) {
-  const prompt = buildPrompt({ title, body, sourceLang, slug });
+async function callLLM({ provider, model, title, body, sourceLang, slug, existingTags }) {
+  const prompt = buildPrompt({ title, body, sourceLang, slug, existingTags });
   if (provider === "deepseek") return callDeepSeek({ prompt, model });
   return callAnthropic({ prompt, model });
 }
@@ -504,7 +590,8 @@ async function previewBeforePublish({ datePath, slug }) {
 async function main() {
   const args = process.argv.slice(2);
   const isDraft = args.includes("--draft");
-  const skipPreview = args.includes("--yes");
+  const withPreview = args.includes("--preview");
+  const skipPreview = args.includes("--yes"); // kept for back-compat; rarely needed now
   const fileArg = args.find(arg => !arg.startsWith("--"));
   const filePath = fileArg ? resolve(fileArg) : "";
 
@@ -537,7 +624,9 @@ async function main() {
 
   console.log(`\nProcessing: "${title}"`);
   console.log(`Source language: ${sourceLang === "zh-cn" ? "Chinese" : "English"}`);
-  console.log(`Publishing mode: ${isDraft ? "draft only" : "build, commit, push"}\n`);
+  console.log(`Publishing mode: ${isDraft ? "draft only (no commit)" : withPreview ? "build + preview + push" : "translate → push (CI builds)"}\n`);
+  const existingTags = collectExistingTags();
+  console.log(`Existing tags: ${existingTags.join(", ")}`);
   console.log(
     `Calling ${provider} (${model}) for translation, proofreading, and formatting...`
   );
@@ -549,9 +638,13 @@ async function main() {
     body: cleanBody,
     sourceLang,
     slug,
+    existingTags,
   });
   const tagsZh = normalizeTags(meta.tags_zh);
-  const tagsEn = tagsZh.map(tag => TAGS[tag] ?? "musings");
+  // Use LLM-provided English tags when available; fall back to known mappings
+  const tagsEn = Array.isArray(meta.tags_en) && meta.tags_en.length === tagsZh.length
+    ? meta.tags_en.slice(0, 3)
+    : tagsZh.map(t => TAGS[t] ?? slugifyRouteSegment(t, "misc"));
   const titleZh = requiredText(meta.title_zh || title, "title_zh");
   const titleEn = requiredText(meta.title_en || title, "title_en");
   const translationKey = slug;
@@ -577,6 +670,11 @@ async function main() {
   const enFile = join(enDir, `${enSlug}.md`);
   const zhRel = `src/content/posts/${datePath}/${slug}.md`;
   const enRel = `src/content/posts/en/${datePath}/${enSlug}.md`;
+
+  // Remove any stale posts from a previous run that share the same translationKey
+  // but may have a different slug (e.g., LLM produced a different English title).
+  removeStalePost(zhDir, translationKey, zhFile);
+  removeStalePost(enDir, translationKey, enFile);
 
   writeFileSync(
     zhFile,
@@ -615,24 +713,31 @@ async function main() {
     for (const note of meta.review_notes) console.log(`- ${note}`);
   }
 
-  console.log("\nRunning production build...");
-  run("npm", ["run", "build"]);
-
   if (isDraft) {
-    console.log("\nSaved as draft. Build passed; no commit or push was made.");
+    console.log("\nSaved as draft. No commit or push was made.");
+    console.log(`Files written to:\n  ${zhRel}\n  ${enRel}`);
     return;
   }
 
-  if (!skipPreview) {
-    await previewBeforePublish({ datePath, slug });
+  if (withPreview) {
+    // Opt-in: local build + manual confirmation before push.
+    // Useful when you want to visually verify layout or translation before going live.
+    console.log("\nRunning production build for local preview...");
+    run("npm", ["run", "build"]);
+    if (!skipPreview) {
+      await previewBeforePublish({ datePath, slug });
+    }
   }
 
   console.log("\nCommitting and pushing...");
-  git(["add", zhRel, enRel, `public/uploads/${datePath}/${slug}`]);
+  const addPaths = [zhRel, enRel];
+  if (localized.assets.length > 0) addPaths.push(`public/uploads/${datePath}/${slug}`);
+  git(["add", ...addPaths]);
   git(["commit", "-m", `add: ${titleZh}`]);
   git(["push"]);
 
-  console.log(`\nPublished: https://blog.haogre.com/${datePath}/${slug}/`);
+  console.log(`\nPushed! GitHub Actions is building the site (~2 min).`);
+  console.log(`Chinese: https://blog.haogre.com/${datePath}/${slug}/`);
   console.log(`English: https://blog.haogre.com/en/${datePath}/${enSlug}/`);
 }
 

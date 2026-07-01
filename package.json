@@ -9,6 +9,7 @@
     "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
     "build": "ASTRO_TELEMETRY_DISABLED=1 astro check && ASTRO_TELEMETRY_DISABLED=1 astro build && pagefind --site dist",
     "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
+    "new": "node scripts/new-post.mjs",
     "publish": "node scripts/publish.mjs",
     "import:legacy": "node scripts/import-legacy-posts.mjs",
     "sync": "ASTRO_TELEMETRY_DISABLED=1 astro sync",

@@ -81,6 +81,15 @@ const homePath = getRelativeLocaleUrl(locale, "");
   <Footer />
 </Layout>
 
+<script is:inline>
+  // Redirect English-language browsers to the English homepage.
+  // Same pattern as zenlocks: read navigator.language, act on it.
+  const lang = navigator.language || "";
+  if (lang.toLowerCase().startsWith("en")) {
+    location.replace("/en/");
+  }
+</script>
+
 <script>
   document.addEventListener("astro:page-load", () => {
     const indexLayout = (document.querySelector("#main-content") as HTMLElement)
