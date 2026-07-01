@@ -83,10 +83,13 @@ const homePath = getRelativeLocaleUrl(locale, "");
 
 <script is:inline>
   // Redirect English-language browsers to the English homepage.
-  // Same pattern as zenlocks: read navigator.language, act on it.
-  const lang = navigator.language || "";
-  if (lang.toLowerCase().startsWith("en")) {
-    location.replace("/en/");
+  // Guard: only run from "/" — Astro View Transitions re-executes is:inline
+  // scripts on every navigation, so without this check it loops forever.
+  if (location.pathname === "/") {
+    const lang = navigator.language || "";
+    if (lang.toLowerCase().startsWith("en")) {
+      location.replace("/en/");
+    }
   }
 </script>
 
