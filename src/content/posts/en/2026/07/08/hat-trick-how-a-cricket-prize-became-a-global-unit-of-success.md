@@ -72,16 +72,8 @@ By step four, the word had transformed from a sports term into a rhetorical unit
 
 This is the common path of all popular words: **from precise to vague, from specialized to general**. The vaguer, the more applicable; the more applicable, the more popular.
 
-## 6. A Word's Side Effect: When It Starts to Refer to Things It Shouldn't
-
-But semantic ambiguity is a double-edged sword.
-
-Because "hat-trick" can describe any "three consecutive terms," it gradually acquired a layer of meaning on the Chinese internet that everyone understands but cannot say openly. After the 2018 constitutional amendment removed term limits for the presidency, "三连" (three consecutive terms) became a sensitive image, and "帽子戏法" also became a term to avoid in certain contexts.
-
-A small reward from a 19th-century English cricket ground, passing through football, hockey, and political headlines, finally ran into censorship on 21st-century Chinese internet. This is an endpoint rarely anticipated in a word's journey: it was banned precisely because it was too popular and too useful—so useful that a rhetoric with an entirely unrelated original meaning could be read as something else.
-
 ## Epilogue
 
-Looking back at that afternoon in Sheffield in 1858, when fans pooled money to buy a hat for Stephenson, they just wanted to say "well done." They probably never imagined that this gesture would leave behind a word, which would travel across oceans, through five or six sports, be translated into Chinese, be used in political headlines, and finally become unspeakable in some contexts.
+Looking back at that afternoon in Sheffield in 1858, when fans pooled money to buy a hat for Stephenson, they just wanted to say "well done." They probably never imagined that this gesture would leave behind a word, which would travel across oceans, through five or six sports, be translated into Chinese, and be used in political headlines.
 
 A word's life is far longer than the thing it names.
