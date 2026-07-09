@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720" font-family="'Comic Sans MS','PingFang SC','Microsoft YaHei',cursive">
+  <rect width="1280" height="720" fill="#ffffff"/>
+  <!-- 专利证书 -->
+  <g fill="none" stroke="#111" stroke-width="3" stroke-linejoin="round">
+    <path d="M 380 180 L 820 180 L 820 470 L 380 470 Z"/>
+    <!-- 证书内框 -->
+    <path d="M 400 200 L 800 200 L 800 450 L 400 450 Z"/>
+    <!-- 证书顶部花纹 -->
+    <path d="M 580 180 q 20 -20 40 0 q 20 -20 40 0"/>
+  </g>
+  <!-- 证书标题 -->
+  <text x="600" y="245" fill="#111" font-size="34" text-anchor="middle" font-weight="bold">专利证书</text>
+  <!-- 大大的 3 和 9 -->
+  <text x="500" y="370" fill="#c53030" font-size="110" text-anchor="middle" font-weight="bold">3</text>
+  <text x="700" y="370" fill="#c53030" font-size="110" text-anchor="middle" font-weight="bold">9</text>
+  <!-- 证书小字条件 -->
+  <text x="600" y="425" fill="#2b6cb0" font-size="26" text-anchor="middle" font-style="italic">10 ÷ n 余 1</text>
+  <!-- 盖章 -->
+  <g>
+    <circle cx="770" cy="430" r="34" fill="none" stroke="#c53030" stroke-width="3"/>
+    <text x="770" y="425" fill="#c53030" font-size="16" text-anchor="middle">独家</text>
+    <text x="770" y="445" fill="#c53030" font-size="16" text-anchor="middle">窍门</text>
+  </g>
+  <!-- 小黑：举着证书 -->
+  <g>
+    <ellipse cx="600" cy="560" rx="42" ry="50" fill="#111"/>
+    <circle cx="588" cy="553" r="5" fill="#fff"/>
+    <circle cx="612" cy="553" r="5" fill="#fff"/>
+    <path d="M 588 610 L 582 645 M 612 610 L 618 645" stroke="#111" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <!-- 双手举证书 -->
+    <path d="M 560 530 L 470 470 M 640 530 L 730 470" stroke="#111" stroke-width="4" stroke-linecap="round" fill="none"/>
+  </g>
+  <!-- 被挡在门外的其他数 -->
+  <g font-size="34" text-anchor="middle" fill="#111">
+    <text x="180" y="320">2</text>
+    <text x="180" y="370">5</text>
+    <text x="180" y="420">4</text>
+    <text x="280" y="320">7</text>
+    <text x="280" y="370">11</text>
+    <text x="280" y="420">13</text>
+  </g>
+  <!-- 一道门/栏杆把其他数挡在外面 -->
+  <g stroke="#111" stroke-width="3" fill="none" stroke-linecap="round">
+    <path d="M 130 280 L 130 460"/>
+    <path d="M 330 280 L 330 460"/>
+    <path d="M 130 300 L 330 300"/>
+    <path d="M 130 360 L 330 360"/>
+    <path d="M 130 420 L 330 420"/>
+  </g>
+  <!-- 橙色禁止标记 -->
+  <g stroke="#dd6b20" stroke-width="4" fill="none">
+    <circle cx="230" cy="370" r="70"/>
+    <path d="M 180 320 L 280 420"/>
+  </g>
+  <!-- 批注 -->
+  <g fill="#c53030" font-size="30" font-style="italic">
+    <text x="930" y="200">只有 3 和 9</text>
+    <text x="930" y="240">有"加数字"窍门</text>
+  </g>
+  <g fill="#2b6cb0" font-size="26" font-style="italic">
+    <text x="930" y="300">因为 10 − 1 = 9</text>
+    <text x="930" y="340">9 的因数只有</text>
+    <text x="930" y="375">1、3、9</text>
+  </g>
+  <g fill="#111" font-size="24" font-style="italic">
+    <text x="130" y="250">别的数：没这福气</text>
+  </g>
+</svg>

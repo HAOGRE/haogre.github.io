@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720" font-family="'Comic Sans MS','PingFang SC','Microsoft YaHei',cursive">
+  <rect width="1280" height="720" fill="#ffffff"/>
+  <!-- 台阶，从右下向左上升高 -->
+  <g fill="none" stroke="#111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 1110 600 L 1110 540 L 990 540 L 990 600 Z"/>
+    <path d="M 990 600 L 990 470 L 870 470 L 870 600 Z"/>
+    <path d="M 870 600 L 870 400 L 750 400 L 750 600 Z"/>
+    <path d="M 750 600 L 750 330 L 630 330 L 630 600 Z"/>
+  </g>
+  <!-- 台阶标签 -->
+  <g fill="#111" font-size="30" text-anchor="middle">
+    <text x="1050" y="580">1</text>
+    <text x="930" y="510">10</text>
+    <text x="810" y="440">100</text>
+    <text x="690" y="370">1000</text>
+  </g>
+  <!-- 位数标签 蓝色 -->
+  <g fill="#2b6cb0" font-size="26" text-anchor="middle" font-style="italic">
+    <text x="1050" y="635">个位</text>
+    <text x="930" y="635">十位</text>
+    <text x="810" y="635">百位</text>
+    <text x="690" y="635">千位</text>
+  </g>
+  <!-- ×10 箭头 橙色 -->
+  <g stroke="#dd6b20" stroke-width="3" fill="none" stroke-linecap="round">
+    <path d="M 1010 555 L 960 505" marker-end="url(#ar)"/>
+    <path d="M 890 490 L 840 440" marker-end="url(#ar)"/>
+    <path d="M 770 425 L 720 375" marker-end="url(#ar)"/>
+  </g>
+  <g fill="#dd6b20" font-size="24" text-anchor="middle">
+    <text x="1000" y="548">×10</text>
+    <text x="880" y="483">×10</text>
+    <text x="760" y="418">×10</text>
+  </g>
+  <defs>
+    <marker id="ar" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L7,3 L0,6 z" fill="#dd6b20"/>
+    </marker>
+  </defs>
+  <!-- 小黑：站在最高台阶上，吃力地搬一个方块 -->
+  <g>
+    <!-- 身体：黑色实心椭圆 -->
+    <ellipse cx="690" cy="285" rx="42" ry="50" fill="#111"/>
+    <!-- 白点眼 -->
+    <circle cx="678" cy="278" r="4" fill="#fff"/>
+    <circle cx="702" cy="278" r="4" fill="#fff"/>
+    <!-- 细腿 -->
+    <path d="M 678 333 L 672 365 M 702 333 L 708 365" stroke="#111" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <!-- 手臂举起搬方块 -->
+    <path d="M 650 270 L 615 250 M 730 270 L 765 250" stroke="#111" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <!-- 头顶的方块（代表"东西"） -->
+    <rect x="595" y="228" width="40" height="40" fill="none" stroke="#111" stroke-width="3"/>
+    <rect x="745" y="228" width="40" height="40" fill="none" stroke="#111" stroke-width="3"/>
+    <!-- 吃力的汗 红色 -->
+    <path d="M 720 245 q 6 -10 0 -18 q -6 8 0 18" fill="#c53030"/>
+  </g>
+  <!-- 批注 -->
+  <g fill="#c53030" font-size="28" font-style="italic">
+    <text x="120" y="200">每往左挪一位，就 ×10</text>
+  </g>
+  <g fill="#111" font-size="24" font-style="italic">
+    <text x="120" y="660">数字站在不同高度的台阶上</text>
+  </g>
+</svg>
