@@ -11,8 +11,11 @@
  *   5. Commit and push (GitHub Actions handles the build + deploy)
  *
  * Flags:
- *   --draft    Write files only; no commit or push.
- *   --preview  Run local build + preview server before pushing (opt-in slow path).
+ *   --stage    Translate + localize + write files (draft:false), no commit/push.
+ *              Preview with `npm run dev`, then publish with `--go`.
+ *   --go       Commit + push the previously --staged post. No LLM call.
+ *   --draft    Write files only (draft:true); no commit or push.
+ *   --preview  Run local build + preview server before pushing (needs a TTY).
  *   --yes      Skip the interactive confirmation inside --preview mode.
  *
  * API keys: set ANTHROPIC_API_KEY or DEEPSEEK_API_KEY in .env.local (gitignored)
@@ -404,6 +407,62 @@ async function localizeImages({ bodies, sourceBody, sourceFilePath, datePath, sl
   return { bodies: localizedBodies, assets: [...srcToPublicPath.values()] };
 }
 
+/**
+ * Hard-fail if any external image survived localization, or if the English
+ * body came back untranslated. Silent leftovers were the #1 recurring bug.
+ */
+function assertPublishable(bodies) {
+  const leftovers = [];
+  for (const [lang, body] of Object.entries(bodies)) {
+    for (const m of body.matchAll(/!\[[^\]]*\]\(\s*<?(https?:\/\/[^)\s>]+)/g)) {
+      leftovers.push(`${lang}: ${m[1]}`);
+    }
+    for (const m of body.matchAll(/<img\b[^>]*\bsrc\s*=\s*["'](https?:\/\/[^"']+)/gi)) {
+      leftovers.push(`${lang}: ${m[1]}`);
+    }
+  }
+  if (leftovers.length > 0) {
+    throw new Error(
+      `External images were not localized:\n  ${leftovers.join("\n  ")}\n` +
+        "If a URL contains parentheses or spaces, wrap it in <angle brackets> in the source and re-run."
+    );
+  }
+  if (detectLanguage(bodies.en) === "zh-cn") {
+    throw new Error(
+      "English body still looks Chinese — the LLM skipped the translation. Re-run, or switch provider via LLM_PROVIDER."
+    );
+  }
+}
+
+const STATE_FILE_NAME = ".publish-staged.json";
+
+function publishStaged() {
+  const stateFile = join(ROOT, STATE_FILE_NAME);
+  if (!existsSync(stateFile)) {
+    console.error("No staged post found. Run: npm run publish -- <file> --stage");
+    process.exit(1);
+  }
+  const s = JSON.parse(readFileSync(stateFile, "utf-8"));
+  for (const rel of [s.zhRel, s.enRel]) {
+    if (!existsSync(join(ROOT, rel))) {
+      console.error(`Staged file missing: ${rel}. Re-run --stage.`);
+      process.exit(1);
+    }
+  }
+
+  console.log("Committing and pushing staged post...");
+  const addPaths = [s.zhRel, s.enRel];
+  if (s.assetsDir) addPaths.push(s.assetsDir);
+  git(["add", ...addPaths]);
+  git(["commit", "-m", `add: ${s.titleZh}`]);
+  git(["push"]);
+  unlinkSync(stateFile);
+
+  console.log(`\nPushed! GitHub Actions is building the site (~2 min).`);
+  console.log(`Chinese: https://blog.haogre.com/${s.datePath}/${s.slug}/`);
+  console.log(`English: https://blog.haogre.com/en/${s.datePath}/${s.enSlug}/`);
+}
+
 function run(command, args) {
   execFileSync(command, args, { cwd: ROOT, stdio: "inherit" });
 }
@@ -494,6 +553,10 @@ async function callAnthropic({ prompt, model }) {
     ],
   });
 
+  if (resp.stop_reason === "max_tokens") {
+    throw truncatedError();
+  }
+
   return parseClaudeJson(resp.content[0].text);
 }
 
@@ -509,7 +572,8 @@ async function callDeepSeek({ prompt, model }) {
       body: JSON.stringify({
         model,
         messages: [{ role: "user", content: prompt }],
-        max_tokens: 12000,
+        max_tokens: 8192, // deepseek-chat output cap
+
         temperature: 0.2,
         response_format: { type: "json_object" },
       }),
@@ -522,6 +586,9 @@ async function callDeepSeek({ prompt, model }) {
   }
 
   const data = await resp.json();
+  if (data?.choices?.[0]?.finish_reason === "length") {
+    throw truncatedError();
+  }
   const content = data?.choices?.[0]?.message?.content;
   if (!content) {
     throw new Error("DeepSeek returned an empty response.");
@@ -530,10 +597,28 @@ async function callDeepSeek({ prompt, model }) {
   return parseClaudeJson(content);
 }
 
+function truncatedError() {
+  const err = new Error(
+    "LLM output was truncated (max_tokens hit). The article is too long for this provider — try LLM_PROVIDER=anthropic or split the post."
+  );
+  err.noRetry = true;
+  return err;
+}
+
 async function callLLM({ provider, model, title, body, sourceLang, slug, existingTags }) {
   const prompt = buildPrompt({ title, body, sourceLang, slug, existingTags });
-  if (provider === "deepseek") return callDeepSeek({ prompt, model });
-  return callAnthropic({ prompt, model });
+  const call = () =>
+    provider === "deepseek"
+      ? callDeepSeek({ prompt, model })
+      : callAnthropic({ prompt, model });
+
+  try {
+    return await call();
+  } catch (err) {
+    if (err.noRetry) throw err;
+    console.warn(`LLM call failed (${err.message}); retrying once...`);
+    return call();
+  }
 }
 
 function waitForExit(child) {
@@ -590,13 +675,19 @@ async function previewBeforePublish({ datePath, slug }) {
 async function main() {
   const args = process.argv.slice(2);
   const isDraft = args.includes("--draft");
+  const isStage = args.includes("--stage");
   const withPreview = args.includes("--preview");
   const skipPreview = args.includes("--yes"); // kept for back-compat; rarely needed now
   const fileArg = args.find(arg => !arg.startsWith("--"));
   const filePath = fileArg ? resolve(fileArg) : "";
 
+  if (args.includes("--go")) {
+    publishStaged();
+    return;
+  }
+
   if (!filePath || !existsSync(filePath)) {
-    console.error("Usage: npm run publish -- <path-to-md-file> [--draft]");
+    console.error("Usage: npm run publish -- <path-to-md-file> [--stage|--draft] | --go");
     process.exit(1);
   }
 
@@ -624,7 +715,7 @@ async function main() {
 
   console.log(`\nProcessing: "${title}"`);
   console.log(`Source language: ${sourceLang === "zh-cn" ? "Chinese" : "English"}`);
-  console.log(`Publishing mode: ${isDraft ? "draft only (no commit)" : withPreview ? "build + preview + push" : "translate → push (CI builds)"}\n`);
+  console.log(`Publishing mode: ${isDraft ? "draft only (no commit)" : isStage ? "stage for preview (no commit until --go)" : withPreview ? "build + preview + push" : "translate → push (CI builds)"}\n`);
   const existingTags = collectExistingTags();
   console.log(`Existing tags: ${existingTags.join(", ")}`);
   console.log(
@@ -660,6 +751,7 @@ async function main() {
     datePath,
     slug,
   });
+  assertPublishable(localized.bodies);
 
   const zhDir = join(POSTS_DIR, datePath);
   const enDir = join(POSTS_DIR, "en", datePath);
@@ -716,6 +808,33 @@ async function main() {
   if (isDraft) {
     console.log("\nSaved as draft. No commit or push was made.");
     console.log(`Files written to:\n  ${zhRel}\n  ${enRel}`);
+    return;
+  }
+
+  if (isStage) {
+    writeFileSync(
+      join(ROOT, STATE_FILE_NAME),
+      JSON.stringify(
+        {
+          zhRel,
+          enRel,
+          assetsDir:
+            localized.assets.length > 0
+              ? `public/uploads/${datePath}/${slug}`
+              : null,
+          titleZh,
+          datePath,
+          slug,
+          enSlug,
+        },
+        null,
+        2
+      ) + "\n"
+    );
+    console.log("\nStaged for preview (nothing committed). Preview with `npm run dev`:");
+    console.log(`  Chinese: http://localhost:4321/${datePath}/${slug}/`);
+    console.log(`  English: http://localhost:4321/en/${datePath}/${enSlug}/`);
+    console.log("Publish with: npm run publish -- --go");
     return;
   }
 

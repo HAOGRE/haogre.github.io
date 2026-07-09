@@ -19,17 +19,32 @@ DEEPSEEK_API_KEY=...
 默认优先 DeepSeek。强制某家:`LLM_PROVIDER=anthropic` 或 `deepseek`。
 模型:`ANTHROPIC_MODEL`(默认 claude-opus-4-7)/ `DEEPSEEK_MODEL`(默认 deepseek-chat)。
 
-### 发布命令
+### 标准流程:stage → 预览 → go(Claude 执行发布时用这个)
+
+用户给一篇 md 后,按这三步走,全程无需交互终端:
 
 ```bash
-# 方式 A:从草稿开始(推荐,先预览再发)
-npm run new -- "文章标题"          # 建 src/content/posts/YYYY/MM/DD/<标题>.md,draft:true
-# 编辑文件,写正文
-npm run dev                       # 本地预览
-npm run publish -- src/content/posts/YYYY/MM/DD/<标题>.md
+# 1. 暂存:翻译 + 图片本地化 + 写中英双版(draft:false),不 commit 不 push
+npm run publish -- /path/to/article.md --stage
 
-# 方式 B:直接发一个写好的 md(任意路径)
-npm run publish -- /path/to/article.md
+# 2. 后台起 dev server,把脚本打印的两个预览 URL 发给用户,等用户确认
+npm run dev
+
+# 3. 用户确认后发布(读 .publish-staged.json,commit + push,不再调 LLM)
+npm run publish -- --go
+```
+
+用户要求改内容时:直接改 `--stage` 写出的两个 md 文件,刷新预览,确认后再 `--go`。
+换文章重新 `--stage` 会覆盖暂存状态;放弃发布则删掉写出的文件和 `.publish-staged.json`。
+
+### 其他发布方式
+
+```bash
+# 人肉在交互终端发布(--preview 需要 TTY,Claude 跑会失败,用上面的 stage/go)
+npm run publish -- /path/to/article.md --preview
+
+# 从草稿开始
+npm run new -- "文章标题"          # 建 src/content/posts/YYYY/MM/DD/<标题>.md,draft:true
 ```
 
 `publish.mjs` 做的事:
@@ -41,18 +56,25 @@ npm run publish -- /path/to/article.md
 
 ### 常用 flag
 
-- `--preview`:**推荐预览方式**。push 前跑 `npm run build` + 起本地预览,交互确认后再推。中英双版都生成(`draft:false`),dev 里都能看到。
-- `--draft`:只写文件,不 commit/push(翻译仍执行)。**注意**:写的是 `draft:true`,而 postFilter 在 dev 也过滤 draft,所以 `--draft` 写的文件 dev 看不到——预览用 `--preview`,不是 `--draft`。
-- `--yes`:跳过预览确认
+- `--stage` / `--go`:上面的标准两段式,Claude 发布用这个。
+- `--preview`:交互终端里的一条龙(build + 预览 + 确认 + push),需要 TTY。
+- `--draft`:只写文件,不 commit/push(翻译仍执行)。**注意**:写的是 `draft:true`,而 postFilter 在 dev 也过滤 draft,所以 dev 里看不到——预览用 `--stage`。
+- `--yes`:跳过 `--preview` 的确认
 
-### 正确的预览流程(别手动塞文件)
+### 别手动塞文件
 
-写完一篇 md 想先看再发,**直接跑 `publish --preview`,不要手动把文件复制进 `src/content/posts/`**。手动塞文件不会触发翻译,只有中文版,且会绕过图片本地化和 frontmatter 规范。`--preview` 是脚本内置的"翻译→写双版→构建→本地预览→确认才推"一条龙。
+**永远不要手动把文件复制进 `src/content/posts/` 再 git push**。手动塞文件不会触发翻译,只有中文版,且会绕过图片本地化和 frontmatter 规范。一律走 `--stage` → `--go`。
+
+### 脚本内置校验(失败会报错退出,不会静默出错文)
+
+- 外链图片本地化后仍有残留 → 报错并列出 URL(URL 带括号/空格时,在源文件里用 `<尖括号>` 包住再重跑)
+- 英文版正文仍是中文(LLM 偷懒没翻)→ 报错
+- LLM 输出被 max_tokens 截断 → 报错提示换 `LLM_PROVIDER=anthropic` 或拆文
+- LLM 调用失败自动重试一次(截断除外)
 
 ### 不自动执行的常见原因
 
 - API key 没配 → 脚本在翻译步报 `ANTHROPIC_API_KEY is not set` 退出(DeepSeek key 同理)
-- 翻译返回非法 JSON → 检查模型/网络,或换 provider 重试
 - 同篇重发改了 slug → 脚本会按 `translationKey` 清理旧文件,无需手动删
 - **中文 slug 带了后缀** → 源文件名就是中文 URL slug,别起 `xxx-source.md` 之类的名
 

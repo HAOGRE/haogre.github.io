@@ -18,6 +18,9 @@ pnpm-debug.log*
 .env.local
 .env.production
 
+# publish staging state
+.publish-staged.json
+
 # macOS-specific files
 .DS_Store
 
