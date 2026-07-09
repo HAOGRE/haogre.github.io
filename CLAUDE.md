@@ -41,15 +41,20 @@ npm run publish -- /path/to/article.md
 
 ### 常用 flag
 
-- `--draft`:只写文件,不 commit/push(翻译仍执行)
-- `--preview`:push 前跑 `npm run build` + 起本地预览,交互确认后再推
+- `--preview`:**推荐预览方式**。push 前跑 `npm run build` + 起本地预览,交互确认后再推。中英双版都生成(`draft:false`),dev 里都能看到。
+- `--draft`:只写文件,不 commit/push(翻译仍执行)。**注意**:写的是 `draft:true`,而 postFilter 在 dev 也过滤 draft,所以 `--draft` 写的文件 dev 看不到——预览用 `--preview`,不是 `--draft`。
 - `--yes`:跳过预览确认
+
+### 正确的预览流程(别手动塞文件)
+
+写完一篇 md 想先看再发,**直接跑 `publish --preview`,不要手动把文件复制进 `src/content/posts/`**。手动塞文件不会触发翻译,只有中文版,且会绕过图片本地化和 frontmatter 规范。`--preview` 是脚本内置的"翻译→写双版→构建→本地预览→确认才推"一条龙。
 
 ### 不自动执行的常见原因
 
-- API key 没配 → 脚本在翻译步报 `ANTHROPIC_API_KEY is not set` 退出
+- API key 没配 → 脚本在翻译步报 `ANTHROPIC_API_KEY is not set` 退出(DeepSeek key 同理)
 - 翻译返回非法 JSON → 检查模型/网络,或换 provider 重试
 - 同篇重发改了 slug → 脚本会按 `translationKey` 清理旧文件,无需手动删
+- **中文 slug 带了后缀** → 源文件名就是中文 URL slug,别起 `xxx-source.md` 之类的名
 
 ## 文件结构
 
