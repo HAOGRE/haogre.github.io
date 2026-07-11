@@ -93,9 +93,7 @@ The provider then faces an uncomfortable fact. Revenue per subscriber is capped.
 
 You can describe the decision with a plain, imperfect equation:
 
-\[
-\text{contribution margin} = \text{subscription revenue} + \text{overage revenue} - \text{inference cost} - \text{support and infrastructure cost}
-\]
+> contribution margin = subscription revenue + overage revenue − inference cost − support and infrastructure cost
 
 Inference cost is not message count times a constant. It changes with input and output tokens, context length, model choice, tools, concurrency, and cache hits. The product does not show you that formula, but it has to live with it.
 
