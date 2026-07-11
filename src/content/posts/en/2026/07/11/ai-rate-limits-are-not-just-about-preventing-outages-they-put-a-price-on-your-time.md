@@ -51,7 +51,7 @@ If every account regains its allowance at midnight, users who ran out during the
 
 Distributed systems have dealt with this problem for a long time. AWS documents token-bucket throttling as a combination of a burst capacity and a sustained refill rate. A client can make a short burst, but once it empties the bucket, requests are throttled until capacity refills.[^aws-token-bucket] The same family of ideas includes fixed windows, rolling windows, leaky buckets, queues, and dynamic quotas.
 
-![A burst of requests becomes an even stream.](/uploads/2026/07/11/5小时与7天：AI 编程工具限流背后的工程算计与商业阳谋/01.png)
+![A burst of requests becomes an even stream.](/uploads/2026/07/11/5小时与7天：AI%20编程工具限流背后的工程算计与商业阳谋/01.png)
 
 The important caveat is easy to miss. A provider may advertise a five-hour usage window without disclosing whether the internal mechanism is a strict rolling window, a session bucket, a fixed period, or a more complicated dynamic system. The product rule is public. The exact implementation usually is not.
 
@@ -79,7 +79,7 @@ It is tempting to say that five hours was chosen because it matches a half-day o
 
 Weekly allowances solve another problem. A session limit handles a sprint. A weekly limit handles continuous use. Anthropic's documentation places those limits side by side and notes that usage can be shared across product surfaces.[^claude-limits] The useful mental model is a power limit plus an energy budget. One controls the immediate draw. The other controls total consumption over time.
 
-![A small clock and a weekly drum control different kinds of demand.](/uploads/2026/07/11/5小时与7天：AI 编程工具限流背后的工程算计与商业阳谋/02.png)
+![A small clock and a weekly drum control different kinds of demand.](/uploads/2026/07/11/5小时与7天：AI%20编程工具限流背后的工程算计与商业阳谋/02.png)
 
 This also gives us a reason to reject a popular but weak theory. There is no credible public evidence that a seven-day AI quota is tied to credit-card chargeback or fraud-review windows. Both systems may use a seven-day period, but that does not establish a causal link. A week is a familiar planning period, long enough to reveal sustained use and short enough to intervene before the end of a billing month.
 
@@ -107,7 +107,7 @@ The quota is not a technical feature that happens to sit beside pricing. It is h
 
 When an allowance runs out during a critical task, an upgrade or an overage option has more value than it would during idle time. Providers openly place those choices near the limit: wait, use a different capability, upgrade, or buy extra usage.[^openai-free][^claude-pro]
 
-![The same gate can be opened by waiting or by paying for more capacity.](/uploads/2026/07/11/5小时与7天：AI 编程工具限流背后的工程算计与商业阳谋/03.png)
+![The same gate can be opened by waiting or by paying for more capacity.](/uploads/2026/07/11/5小时与7天：AI%20编程工具限流背后的工程算计与商业阳谋/03.png)
 
 This is a form of price discrimination, though the phrase sounds harsher than the mechanics. Users who can wait exchange time for a lower price. Users who cannot wait pay for more capacity, priority, or predictability. Teams with steady, high-volume work move to an API or enterprise agreement with explicit quotas and service guarantees.
 
