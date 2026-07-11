@@ -13,6 +13,7 @@
  * Flags:
  *   --stage    Translate + localize + write files (draft:false), no commit/push.
  *              Preview with `npm run dev`, then publish with `--go`.
+ *   --manual-en <file>  Use a human-written English companion instead of an LLM.
  *   --go       Commit + push the previously --staged post. No LLM call.
  *   --draft    Write files only (draft:true); no commit or push.
  *   --preview  Run local build + preview server before pushing (needs a TTY).
@@ -308,7 +309,7 @@ function resolveImageSource(src, sourceImageMap, sourceFilePath) {
   if (isHttpUrl(src)) return src;
 
   const mapped = sourceImageMap.get(src) || sourceImageMap.get(getImageBasename(src));
-  if (mapped) return mapped;
+  if (mapped) return isHttpUrl(mapped) ? mapped : resolve(dirname(sourceFilePath), mapped);
 
   return resolve(dirname(sourceFilePath), src);
 }
@@ -678,7 +679,10 @@ async function main() {
   const isStage = args.includes("--stage");
   const withPreview = args.includes("--preview");
   const skipPreview = args.includes("--yes"); // kept for back-compat; rarely needed now
-  const fileArg = args.find(arg => !arg.startsWith("--"));
+  const manualEnIdx = args.indexOf("--manual-en");
+  const manualEnArg = manualEnIdx >= 0 ? args[manualEnIdx + 1] : null;
+  const isManualBilingual = Boolean(manualEnArg);
+  const fileArg = args.find((arg, index) => !arg.startsWith("--") && index !== manualEnIdx + 1);
   const filePath = fileArg ? resolve(fileArg) : "";
 
   if (args.includes("--go")) {
@@ -686,8 +690,8 @@ async function main() {
     return;
   }
 
-  if (!filePath || !existsSync(filePath)) {
-    console.error("Usage: npm run publish -- <path-to-md-file> [--stage|--draft] | --go");
+  if (!filePath || !existsSync(filePath) || (isManualBilingual && !existsSync(resolve(manualEnArg)))) {
+    console.error("Usage: npm run publish -- <path-to-md-file> [--manual-en <english-md>] [--stage|--draft] | --go");
     process.exit(1);
   }
 
@@ -703,7 +707,7 @@ async function main() {
   const sourceLang = fm.lang || detectLanguage(`${title}\n\n${cleanBody}`);
   const { datePath, iso } = getDateInfo();
 
-  if (!apiKey) {
+  if (!isManualBilingual && !apiKey) {
     const keyName =
       provider === "deepseek" ? "DEEPSEEK_API_KEY" : "ANTHROPIC_API_KEY";
     console.error(`Error: ${keyName} is not set.`);
@@ -717,20 +721,32 @@ async function main() {
   console.log(`Source language: ${sourceLang === "zh-cn" ? "Chinese" : "English"}`);
   console.log(`Publishing mode: ${isDraft ? "draft only (no commit)" : isStage ? "stage for preview (no commit until --go)" : withPreview ? "build + preview + push" : "translate → push (CI builds)"}\n`);
   const existingTags = collectExistingTags();
-  console.log(`Existing tags: ${existingTags.join(", ")}`);
-  console.log(
-    `Calling ${provider} (${model}) for translation, proofreading, and formatting...`
-  );
-
-  const meta = await callLLM({
-    provider,
-    model,
-    title,
-    body: cleanBody,
-    sourceLang,
-    slug,
-    existingTags,
-  });
+  let meta;
+  let englishSourcePath = null;
+  if (isManualBilingual) {
+    englishSourcePath = resolve(manualEnArg);
+    const englishRaw = readFileSync(englishSourcePath, "utf-8");
+    const { fm: enFm, body: enBody } = parseFrontmatter(englishRaw);
+    const englishTitle = enFm.title || extractTitle(enBody) || basename(englishSourcePath, extname(englishSourcePath));
+    const cleanEnglishBody = stripTyporaToc(enFm.title ? enBody : stripTitle(enBody));
+    const firstParagraph = value => value.replace(/^>.*$/gm, "").replace(/!\[[^\]]*\]\([^)]*\)/g, "").split(/\n\s*\n/).map(x => x.replace(/[#*_`]/g, "").trim()).find(Boolean) || value.slice(0, 120);
+    meta = {
+      title_zh: title,
+      title_en: englishTitle,
+      description_zh: fm.description || fm.subtitle || firstParagraph(cleanBody).slice(0, 80),
+      description_en: enFm.description || enFm.subtitle || firstParagraph(cleanEnglishBody).slice(0, 120),
+      tags_zh: ["AI", "编程", "商业"],
+      tags_en: ["ai", "programming", "business"],
+      body_zh: cleanBody,
+      body_en: cleanEnglishBody,
+      review_notes: ["Used human-written Chinese and English sources; skipped LLM translation."],
+    };
+    console.log("Using human-written English companion; skipping LLM translation.");
+  } else {
+    console.log(`Existing tags: ${existingTags.join(", ")}`);
+    console.log(`Calling ${provider} (${model}) for translation, proofreading, and formatting...`);
+    meta = await callLLM({ provider, model, title, body: cleanBody, sourceLang, slug, existingTags });
+  }
   const tagsZh = normalizeTags(meta.tags_zh);
   // Use LLM-provided English tags when available; fall back to known mappings
   const tagsEn = Array.isArray(meta.tags_en) && meta.tags_en.length === tagsZh.length
