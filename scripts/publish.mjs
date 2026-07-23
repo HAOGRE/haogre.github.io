@@ -5,7 +5,7 @@
  *
  * Drop any .md file here. The script will:
  *   1. Detect whether the source is Chinese or English
- *   2. Ask Claude/DeepSeek to proofread and create the bilingual version
+ *   2. Ask agy, with Codex CLI as a fallback, to proofread and create the bilingual version
  *   3. Localize images to public/uploads/
  *   4. Write Chinese and English posts to the Astro content tree
  *   5. Commit and push (GitHub Actions handles the build + deploy)
@@ -19,8 +19,8 @@
  *   --preview  Run local build + preview server before pushing (needs a TTY).
  *   --yes      Skip the interactive confirmation inside --preview mode.
  *
- * API keys: set ANTHROPIC_API_KEY or DEEPSEEK_API_KEY in .env.local (gitignored)
- * or export them in your shell. LLM_PROVIDER=deepseek|anthropic to force a provider.
+ * Translation is handled by the locally authenticated agy CLI, with Codex CLI
+ * as an automatic fallback. No API key is required.
  */
 
 import {
@@ -36,7 +36,6 @@ import { join, basename, extname, dirname, resolve } from "path";
 import { fileURLToPath } from "url";
 import { execFileSync, spawn } from "child_process";
 import { createInterface } from "readline/promises";
-import Anthropic from "@anthropic-ai/sdk";
 import slugify from "slugify";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -44,8 +43,7 @@ const ROOT = join(__dirname, "..");
 const POSTS_DIR = join(ROOT, "src/content/posts");
 const UPLOADS_DIR = join(ROOT, "public/uploads");
 
-// Auto-load .env.local (gitignored) so ANTHROPIC_API_KEY / DEEPSEEK_API_KEY
-// can be set once without exporting them in every shell session.
+// Auto-load .env.local (gitignored) for optional local CLI configuration.
 try {
   for (const line of readFileSync(join(ROOT, ".env.local"), "utf8").split(/\r?\n/)) {
     const eqIdx = line.indexOf("=");
@@ -56,8 +54,15 @@ try {
   }
 } catch { /* .env.local is optional */ }
 
-const DEEPSEEK_BASE_URL =
-  process.env.DEEPSEEK_BASE_URL || "https://api.deepseek.com";
+function readTimeout(name, fallback) {
+  const value = Number(process.env[name]);
+  return Number.isFinite(value) && value > 0 ? value : fallback;
+}
+
+const AGY_COMMAND = process.env.AGY_COMMAND || "agy";
+const CODEX_COMMAND = process.env.CODEX_COMMAND || "codex";
+const AGY_TIMEOUT_MS = readTimeout("AGY_TIMEOUT_MS", 5 * 60 * 1000);
+const CODEX_TIMEOUT_MS = readTimeout("CODEX_TIMEOUT_MS", 5 * 60 * 1000);
 
 // Tag mapping: Chinese <-> English
 const TAGS = {
@@ -208,12 +213,12 @@ function collectExistingTags() {
 
 function requiredText(value, field) {
   if (typeof value !== "string" || value.trim() === "") {
-    throw new Error(`Claude response is missing required field: ${field}`);
+    throw new Error(`Translation response is missing required field: ${field}`);
   }
   return value.trim();
 }
 
-function parseClaudeJson(text) {
+function parseTranslationJson(text) {
   const trimmed = text.trim();
   const unfenced = trimmed
     .replace(/^```(?:json)?\s*/i, "")
@@ -228,7 +233,7 @@ function parseClaudeJson(text) {
     if (start >= 0 && end > start) {
       return JSON.parse(unfenced.slice(start, end + 1));
     }
-    throw new Error("Claude did not return valid JSON.");
+    throw new Error("Translation CLI did not return valid JSON.");
   }
 }
 
@@ -430,7 +435,7 @@ function assertPublishable(bodies) {
   }
   if (detectLanguage(bodies.en) === "zh-cn") {
     throw new Error(
-      "English body still looks Chinese — the LLM skipped the translation. Re-run, or switch provider via LLM_PROVIDER."
+      "English body still looks Chinese — the translation CLI skipped the translation. Re-run after checking the source and CLI configuration."
     );
   }
 }
@@ -472,153 +477,147 @@ function git(args) {
   run("git", args);
 }
 
-function resolveProvider() {
-  const requested = process.env.LLM_PROVIDER?.toLowerCase();
-  if (requested === "anthropic" || requested === "deepseek") {
-    return requested;
-  }
-  return process.env.DEEPSEEK_API_KEY ? "deepseek" : "anthropic";
-}
-
-function getModel(provider) {
-  if (provider === "deepseek") {
-    return process.env.DEEPSEEK_MODEL || "deepseek-chat";
-  }
-  return process.env.ANTHROPIC_MODEL || "claude-opus-4-7";
-}
-
-function getApiKey(provider) {
-  return provider === "deepseek"
-    ? process.env.DEEPSEEK_API_KEY
-    : process.env.ANTHROPIC_API_KEY;
-}
-
 function buildPrompt({ title, body, sourceLang, slug, existingTags }) {
   const sourceLabel = sourceLang === "zh-cn" ? "Chinese" : "English";
 
-  return `You are the publishing editor for a bilingual personal blog at haogre.com.
-
-Source language: ${sourceLabel}
-Source title: ${title || slug}
-
-Source markdown:
-${body}
-
-Create publication-ready Chinese and English versions.
-
-Rules:
-- Return a single JSON object only. No markdown fences, no explanation.
-- Preserve Markdown structure, tables, links, images, HTML, MDX, and code fences.
-- Do not translate code blocks, URLs, file names, keyboard shortcuts, API names, product names, or shell commands.
-- Translate and polish only human-readable prose.
-- Remove obvious Typora-only artifacts such as a standalone [TOC].
-- Keep personal voice natural and restrained. Do not add facts that are not in the source.
-- For Chinese, use natural Simplified Chinese and clean spacing around English terms/numbers when useful.
-- For English, use natural blog English, not literal translation.
-- Descriptions must be concise search/social summaries, not copied opening paragraphs.
-
-Tag rules:
-- Existing tags used in this blog (prefer reusing these): ${existingTags.join(", ")}
-- Choose at least 3 Chinese tags (3-5 total). Prefer existing tags; introduce new ones only when existing tags don't fit.
-- You may introduce up to 2 new Chinese tags if the existing list doesn't cover the content well.
-- tags_en must be a parallel array with the same length as tags_zh.
-- For existing tags, use their established English forms: 随笔→musings, 碎片→fragments, 其他→miscellaneous, 病历→health-notes.
-- For any new tag, provide a clean lowercase English slug (e.g., "indie-hacker", "productivity").
-
-JSON shape:
-{
-  "title_zh": "Final Chinese title",
-  "title_en": "Final English title",
-  "description_zh": "Chinese description, <= 80 Chinese chars",
-  "description_en": "English description, <= 120 chars",
-  "tags_zh": ["随笔", "其他", "tag3"],
-  "tags_en": ["musings", "miscellaneous", "tag3-en"],
-  "body_zh": "Full Chinese markdown body",
-  "body_en": "Full English markdown body",
-  "review_notes": ["Short human-readable notes about changes or publication risks"]
-}`;
+  return [
+    "You are the publishing editor for a bilingual personal blog at haogre.com.",
+    "",
+    "Source language: " + sourceLabel,
+    "Source title: " + (title || slug),
+    "",
+    "Source markdown:",
+    body,
+    "",
+    "Create publication-ready Chinese and English versions.",
+    "",
+    "Rules:",
+    "- Return a single JSON object only. No markdown fences, no explanation.",
+    "- Preserve Markdown structure, tables, links, images, HTML, MDX, and code fences.",
+    "- Do not translate code blocks, URLs, file names, keyboard shortcuts, API names, product names, or shell commands.",
+    "- Translate and polish only human-readable prose.",
+    "- Remove obvious Typora-only artifacts such as a standalone [TOC].",
+    "- Keep personal voice natural and restrained. Do not add facts that are not in the source.",
+    "- For Chinese, use natural Simplified Chinese and clean spacing around English terms/numbers when useful.",
+    "- For English, use natural blog English, not literal translation.",
+    "- Descriptions must be concise search/social summaries, not copied opening paragraphs.",
+    "",
+    "Tag rules:",
+    "- Existing tags used in this blog (prefer reusing these): " + existingTags.join(", "),
+    "- Choose at least 3 Chinese tags (3-5 total). Prefer existing tags; introduce new ones only when existing tags don't fit.",
+    "- You may introduce up to 2 new Chinese tags if the existing list doesn't cover the content well.",
+    "- tags_en must be a parallel array with the same length as tags_zh.",
+    "- For existing tags, use their established English forms: 随笔→musings, 碎片→fragments, 其他→miscellaneous, 病历→health-notes.",
+    "- For any new tag, provide a clean lowercase English slug (e.g., \"indie-hacker\", \"productivity\").",
+    "",
+    "JSON shape:",
+    "{",
+    "  \"title_zh\": \"Final Chinese title\",",
+    "  \"title_en\": \"Final English title\",",
+    "  \"description_zh\": \"Chinese description, <= 80 Chinese chars\",",
+    "  \"description_en\": \"English description, <= 120 chars\",",
+    "  \"tags_zh\": [\"随笔\", \"其他\", \"tag3\"],",
+    "  \"tags_en\": [\"musings\", \"miscellaneous\", \"tag3-en\"],",
+    "  \"body_zh\": \"Full Chinese markdown body\",",
+    "  \"body_en\": \"Full English markdown body\",",
+    "  \"review_notes\": [\"Short human-readable notes about changes or publication risks\"]",
+    "}",
+  ].join("\n");
 }
 
-// --- LLM calls -------------------------------------------------------------
+// --- Translation CLI calls -------------------------------------------------
 
-async function callAnthropic({ prompt, model }) {
-  const client = new Anthropic();
-  const resp = await client.messages.create({
-    model,
-    max_tokens: 12000,
-    messages: [
-      {
-        role: "user",
-        content: prompt,
-      },
-    ],
+function runTranslationCli({ command, args, prompt, timeoutMs, stdin = false }) {
+  return new Promise((resolve, reject) => {
+    const child = spawn(command, args, {
+      cwd: ROOT,
+      stdio: ["pipe", "pipe", "pipe"],
+      env: process.env,
+    });
+    let stdout = "";
+    let stderr = "";
+    let timedOut = false;
+    let settled = false;
+    let timer;
+
+    const finish = (error, output) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      if (error) reject(error);
+      else resolve(output);
+    };
+
+    child.stdout.setEncoding("utf8");
+    child.stderr.setEncoding("utf8");
+    child.stdout.on("data", chunk => { stdout += chunk; });
+    child.stderr.on("data", chunk => { stderr += chunk; });
+    child.on("error", error => finish(error));
+    child.on("close", code => {
+      if (timedOut) {
+        finish(new Error(command + " timed out after " + timeoutMs + "ms"));
+        return;
+      }
+      if (code !== 0) {
+        const detail = stderr.trim() ? ": " + stderr.trim().slice(-1000) : "";
+        finish(new Error(command + " exited with code " + code + detail));
+        return;
+      }
+      if (!stdout.trim()) finish(new Error(command + " returned empty output"));
+      else finish(null, stdout);
+    });
+
+    timer = setTimeout(() => {
+      timedOut = true;
+      child.kill("SIGTERM");
+      setTimeout(() => child.kill("SIGKILL"), 1000).unref();
+    }, timeoutMs);
+
+    if (stdin) child.stdin.end(prompt);
+    else child.stdin.end();
   });
-
-  if (resp.stop_reason === "max_tokens") {
-    throw truncatedError();
-  }
-
-  return parseClaudeJson(resp.content[0].text);
 }
 
-async function callDeepSeek({ prompt, model }) {
-  const resp = await fetch(
-    `${DEEPSEEK_BASE_URL.replace(/\/+$/, "")}/chat/completions`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.DEEPSEEK_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model,
-        messages: [{ role: "user", content: prompt }],
-        max_tokens: 8192, // deepseek-chat output cap
-
-        temperature: 0.2,
-        response_format: { type: "json_object" },
-      }),
-    }
-  );
-
-  if (!resp.ok) {
-    const text = await resp.text();
-    throw new Error(`DeepSeek API error ${resp.status}: ${text}`);
-  }
-
-  const data = await resp.json();
-  if (data?.choices?.[0]?.finish_reason === "length") {
-    throw truncatedError();
-  }
-  const content = data?.choices?.[0]?.message?.content;
-  if (!content) {
-    throw new Error("DeepSeek returned an empty response.");
-  }
-
-  return parseClaudeJson(content);
+async function callAgy({ prompt }) {
+  const args = ["--print", "--print-timeout", Math.ceil(AGY_TIMEOUT_MS / 1000) + "s"];
+  if (process.env.AGY_MODEL) args.push("--model", process.env.AGY_MODEL);
+  args.push(prompt);
+  const output = await runTranslationCli({
+    command: AGY_COMMAND,
+    args,
+    prompt,
+    timeoutMs: AGY_TIMEOUT_MS,
+  });
+  return parseTranslationJson(output);
 }
 
-function truncatedError() {
-  const err = new Error(
-    "LLM output was truncated (max_tokens hit). The article is too long for this provider — try LLM_PROVIDER=anthropic or split the post."
-  );
-  err.noRetry = true;
-  return err;
+async function callCodex({ prompt }) {
+  const args = ["exec", "--ephemeral", "--skip-git-repo-check", "-s", "read-only"];
+  if (process.env.CODEX_MODEL) args.push("--model", process.env.CODEX_MODEL);
+  args.push("-");
+  const output = await runTranslationCli({
+    command: CODEX_COMMAND,
+    args,
+    prompt,
+    timeoutMs: CODEX_TIMEOUT_MS,
+    stdin: true,
+  });
+  return parseTranslationJson(output);
 }
 
-async function callLLM({ provider, model, title, body, sourceLang, slug, existingTags }) {
+async function callLLM({ title, body, sourceLang, slug, existingTags }) {
   const prompt = buildPrompt({ title, body, sourceLang, slug, existingTags });
-  const call = () =>
-    provider === "deepseek"
-      ? callDeepSeek({ prompt, model })
-      : callAnthropic({ prompt, model });
-
   try {
-    return await call();
+    console.log("Calling agy (" + AGY_COMMAND + ") for translation, proofreading, and formatting...");
+    return await callAgy({ prompt });
   } catch (err) {
-    if (err.noRetry) throw err;
-    console.warn(`LLM call failed (${err.message}); retrying once...`);
-    return call();
+    console.warn("agy failed (" + err.message + "); falling back to Codex...");
+    try {
+      console.log("Calling Codex (" + CODEX_COMMAND + ") for translation, proofreading, and formatting...");
+      return await callCodex({ prompt });
+    } catch (fallbackErr) {
+      throw new Error("agy and Codex translation failed. agy: " + err.message + "; Codex: " + fallbackErr.message);
+    }
   }
 }
 
@@ -682,7 +681,8 @@ async function main() {
   const manualEnIdx = args.indexOf("--manual-en");
   const manualEnArg = manualEnIdx >= 0 ? args[manualEnIdx + 1] : null;
   const isManualBilingual = Boolean(manualEnArg);
-  const fileArg = args.find((arg, index) => !arg.startsWith("--") && index !== manualEnIdx + 1);
+  const manualEnValueIndex = manualEnIdx >= 0 ? manualEnIdx + 1 : -1;
+  const fileArg = args.find((arg, index) => !arg.startsWith("--") && index !== manualEnValueIndex);
   const filePath = fileArg ? resolve(fileArg) : "";
 
   if (args.includes("--go")) {
@@ -695,10 +695,6 @@ async function main() {
     process.exit(1);
   }
 
-  const provider = resolveProvider();
-  const model = getModel(provider);
-  const apiKey = getApiKey(provider);
-
   const raw = readFileSync(filePath, "utf-8");
   const { fm, body } = parseFrontmatter(raw);
   const slug = basename(filePath, extname(filePath));
@@ -706,16 +702,6 @@ async function main() {
   const cleanBody = stripTyporaToc(fm.title ? body : stripTitle(body));
   const sourceLang = fm.lang || detectLanguage(`${title}\n\n${cleanBody}`);
   const { datePath, iso } = getDateInfo();
-
-  if (!isManualBilingual && !apiKey) {
-    const keyName =
-      provider === "deepseek" ? "DEEPSEEK_API_KEY" : "ANTHROPIC_API_KEY";
-    console.error(`Error: ${keyName} is not set.`);
-    console.error(
-      "Set LLM_PROVIDER=deepseek to force DeepSeek, or LLM_PROVIDER=anthropic to force Anthropic."
-    );
-    process.exit(1);
-  }
 
   console.log(`\nProcessing: "${title}"`);
   console.log(`Source language: ${sourceLang === "zh-cn" ? "Chinese" : "English"}`);
@@ -744,8 +730,7 @@ async function main() {
     console.log("Using human-written English companion; skipping LLM translation.");
   } else {
     console.log(`Existing tags: ${existingTags.join(", ")}`);
-    console.log(`Calling ${provider} (${model}) for translation, proofreading, and formatting...`);
-    meta = await callLLM({ provider, model, title, body: cleanBody, sourceLang, slug, existingTags });
+    meta = await callLLM({ title, body: cleanBody, sourceLang, slug, existingTags });
   }
   const tagsZh = normalizeTags(meta.tags_zh);
   // Use LLM-provided English tags when available; fall back to known mappings
@@ -876,7 +861,11 @@ async function main() {
   console.log(`English: https://blog.haogre.com/en/${datePath}/${enSlug}/`);
 }
 
-main().catch(err => {
-  console.error("\nError:", err.message);
-  process.exit(1);
-});
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  main().catch(err => {
+    console.error("\nError:", err.message);
+    process.exit(1);
+  });
+}
+
+export { callAgy, callCodex, runTranslationCli };

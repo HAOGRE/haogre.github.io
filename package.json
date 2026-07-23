@@ -12,6 +12,7 @@
     "new": "node scripts/new-post.mjs",
     "publish": "node scripts/publish.mjs",
     "x-post": "node scripts/x-post.mjs",
+    "test": "node --test scripts/*.test.mjs",
     "import:legacy": "node scripts/import-legacy-posts.mjs",
     "sync": "ASTRO_TELEMETRY_DISABLED=1 astro sync",
     "astro": "ASTRO_TELEMETRY_DISABLED=1 astro",
@@ -20,7 +21,6 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.100.1",
     "@astrojs/mdx": "^5.0.6",
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.2",
