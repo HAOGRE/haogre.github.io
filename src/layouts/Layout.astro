@@ -53,6 +53,14 @@ const alternateLinks = SUPPORTED_LOCALES.map(targetLocale => ({
   class="overflow-y-scroll scroll-smooth"
 >
   <head>
+    <!-- Google Analytics 4 -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-DWCLJNH8M4"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-DWCLJNH8M4");
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href={getAssetPath("favicon.ico")} />
