@@ -32,6 +32,8 @@ This gap predates AI. Enterprise software has spent decades repeating the same c
 
 Until one company decided to stop crossing the wall—and send people to the other side.
 
+![Integrating technology and business to land AI models](/uploads/2026/06/18/chapter-1-the-rise-of-the-fde/fde_rise_1_1785725003312.jpg)
+
 ## 1.2 Palantir’s Victory
 
 In 2003, Peter Thiel and several Stanford alumni founded Palantir to connect fragments scattered across classified databases and help intelligence analysts build a coherent picture.
@@ -49,6 +51,8 @@ In Iraq, Sankar worked inside a secure facility with analysts and soldiers, conn
 Palantir’s enterprise business also failed once. Metropolis gained little traction; Foundry found its breakthrough with Airbus, where Palantir engineers connected sensor data and identified the cause of a recurring A380 fuel-pump problem in two weeks.
 
 By 2016, Palantir had at times more forward-deployed engineers than traditional software engineers. Years later, its AI platform and bootcamp model demonstrated the value of the approach: field deployment was not merely a cost. It was an engine for product development, sales, and customer success.
+
+![Engineers on the frontline solving real pain points](/uploads/2026/06/18/chapter-1-the-rise-of-the-fde/fde_rise_2_1785725012734.jpg)
 
 ## 1.3 What Is an FDE?
 
@@ -95,6 +99,8 @@ The model usually depends on three mechanisms: tie commercial terms more closely
 The first step of a project is not writing code. It is agreeing on what success means—a measurable target such as reducing scheduling conflicts on one production line, rather than vaguely exploring AI for manufacturing.
 
 Once the delivery team owns the result, sales cannot overpromise, IT cannot hide behind a feature list, and FDEs cannot excuse themselves with “I built what was requested.” That is why the role is valuable—and expensive.
+
+![Delivering business value continuously instead of building PPTs](/uploads/2026/06/18/chapter-1-the-rise-of-the-fde/fde_rise_3_1785725020908.jpg)
 
 ## 1.6 The FDE’s Four Faces
 
