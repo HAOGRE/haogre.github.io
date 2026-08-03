@@ -16,7 +16,7 @@ description: "系统梳理 FDE 从问题发现、部署交付到续约增购与�
 
 在前线部署工程师（FDE，Forward Deployed Engineer）的体系中，技术不再只是写出优雅的代码，而是为了**解决正确的商业问题**。在过去的两个月里，我系统性地梳理了 FDE 的核心方法论。今天，这篇文章将作为全系列的高阶复盘，带你一览 FDE 如何在商业与技术的交汇点上创造巨大价值。
 
-![Image 1](/Users/haogre/.gemini/antigravity-cli/brain/d4dffd42-6b6d-4063-b3a3-ad5b7fc7e2fe/fde_rise_1_1785725003312.jpg)
+![Image 1](/uploads/2026/08/03/10-FDE-进阶全景指南/fde_rise_1_1785725003312.jpg)
 
 ## 一、为什么我们需要 FDE？
 
@@ -38,7 +38,7 @@ FDE 的工作贯穿企业服务的整个生命周期。基于我们在第二到�
 
 赢单只是开始，交付才是大考。部署阶段的核心在于**激活**——让系统在客户环境中真正运行起来，产生数据，并融入工作流。在这个环节，FDE 需要克服各种异构系统的对接难题，以“贴地飞行”的姿态确保价值落地。
 
-![Image 2](/Users/haogre/.gemini/antigravity-cli/brain/d4dffd42-6b6d-4063-b3a3-ad5b7fc7e2fe/ch4_1_1785725155563.jpg)
+![Image 2](/uploads/2026/08/03/10-FDE-进阶全景指南/ch4_1_1785725155563.jpg)
 
 ### 3. 守住续约，夯实护城河
 
@@ -54,7 +54,7 @@ B2B 模式的生命线在于续约。FDE 必须通过持续的数据监控和及
 
 这不仅降低了后续项目交付的边际成本，也让整个产研团队能够共享前线的战果，形成“前线打样—后方固化”的良性飞轮。
 
-![Image 3](/Users/haogre/.gemini/antigravity-cli/brain/d4dffd42-6b6d-4063-b3a3-ad5b7fc7e2fe/ch5_1_1785725248635.jpg)
+![Image 3](/uploads/2026/08/03/10-FDE-进阶全景指南/ch5_1_1785725248635.jpg)
 
 ## 四、FDE 的职业道德与底线
 

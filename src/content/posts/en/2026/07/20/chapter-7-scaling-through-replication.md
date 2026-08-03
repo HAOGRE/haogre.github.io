@@ -44,7 +44,7 @@ Turning failure into organizational assets requires three mechanisms.
 
 - **Blameless postmortems:** The only rule for a postmortem is to focus on the work, not the person. Once postmortems are tied to performance reviews, people start polishing the story—and polished failures have no teaching value. Blamelessness does not mean refusing accountability. It means redefining accountability as whether the team extracted the lessons honestly and completely. A project lead who conducts an honest postmortem may contribute more to the organization than someone whose project succeeded by luck.
 
-![Image 1](/Users/haogre/.gemini/antigravity-cli/brain/d4dffd42-6b6d-4063-b3a3-ad5b7fc7e2fe/ch3_3_1785725147343.jpg)
+![Image 1](/uploads/2026/07/20/chapter-7-scaling-through-replication/ch3_3_1785725147343.jpg)
 
 - **Structured lessons:** A postmortem cannot end with “pay more attention next time.” Its output must be searchable and actionable knowledge: What are the high-risk signals for this customer type? Which integration assumption was disproved? Which evaluation metric was designed incorrectly? These conclusions should enter the “danger zones” section of the playbook and the due-diligence checklist for new projects, so the next team arrives with historical lessons already in hand. **A failure has only truly been learned from when the lesson is written into the process.**
 
@@ -76,7 +76,7 @@ Together, the three circles form a flywheel: delivery creates stories, stories s
 
 ## 7.5 Product-Built Virality
 
-![Image 2](/Users/haogre/.gemini/antigravity-cli/brain/d4dffd42-6b6d-4063-b3a3-ad5b7fc7e2fe/ch4_1_1785725155563.jpg)
+![Image 2](/uploads/2026/07/20/chapter-7-scaling-through-replication/ch4_1_1785725155563.jpg)
 
 Good products spread on their own. “Sent from [company] email” in an email signature was one of the earliest examples of self-propagating product design. FDE-delivered systems can also contain “built-in expansion mechanisms,” allowing the system itself to become the salesperson.
 
@@ -110,7 +110,7 @@ Harvey’s expansion into top-tier law firms is a classic lesson in organization
 
 ## 7.7 Capturing Replication Efficiency in the Playbook
 
-![Image 3](/Users/haogre/.gemini/antigravity-cli/brain/d4dffd42-6b6d-4063-b3a3-ad5b7fc7e2fe/ch4_2_1785725164757.jpg)
+![Image 3](/uploads/2026/07/20/chapter-7-scaling-through-replication/ch4_2_1785725164757.jpg)
 
 At the beginning of this chapter, the playbook was identified as the first level of leverage. This section covers its engineering details because most teams turn their playbooks into document graveyards that die the moment they are written.
 

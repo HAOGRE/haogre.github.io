@@ -17,7 +17,7 @@ description: "A practical overview of how FDEs create value—from problem disco
 
 For a Forward Deployed Engineer (FDE), technology is no longer about writing elegant code for its own sake. It exists to **solve the right business problems**. Over the past two months, I have systematically mapped out the core FDE methodology. This article serves as an advanced review of the series, offering a panoramic view of how FDEs create significant value at the intersection of business and technology.
 
-![Image 1](/Users/haogre/.gemini/antigravity-cli/brain/d4dffd42-6b6d-4063-b3a3-ad5b7fc7e2fe/fde_rise_1_1785725003312.jpg)
+![Image 1](/uploads/2026/08/03/the-advanced-fde-guide-from-solving-the-right-problems-to-scaling-what-works/fde_rise_1_1785725003312.jpg)
 
 ## 1. Why Do We Need FDEs?
 
@@ -39,7 +39,7 @@ Avoid getting trapped in technical self-indulgence. An FDE’s first job is to u
 
 Winning the deal is only the beginning; delivery is the real test. The heart of deployment is **activation**—getting the system running in the customer’s environment, generating data, and integrating it into existing workflows. At this stage, FDEs must overcome the challenges of connecting heterogeneous systems and stay close to the ground to ensure that value becomes real.
 
-![Image 2](/Users/haogre/.gemini/antigravity-cli/brain/d4dffd42-6b6d-4063-b3a3-ad5b7fc7e2fe/ch4_1_1785725155563.jpg)
+![Image 2](/uploads/2026/08/03/the-advanced-fde-guide-from-solving-the-right-problems-to-scaling-what-works/ch4_1_1785725155563.jpg)
 
 ### 3. Protect renewals and strengthen the moat
 
@@ -55,7 +55,7 @@ Individual success matters, but team success is what unlocks the business model.
 
 This not only lowers the marginal cost of delivering future projects; it also allows the broader product and engineering organization to share the frontline’s wins, creating a healthy flywheel: the frontline proves what works, and the back office turns it into a repeatable system.
 
-![Image 3](/Users/haogre/.gemini/antigravity-cli/brain/d4dffd42-6b6d-4063-b3a3-ad5b7fc7e2fe/ch5_1_1785725248635.jpg)
+![Image 3](/uploads/2026/08/03/the-advanced-fde-guide-from-solving-the-right-problems-to-scaling-what-works/ch5_1_1785725248635.jpg)
 
 ## 4. FDE Ethics and Red Lines
 

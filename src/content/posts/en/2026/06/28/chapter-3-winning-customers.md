@@ -54,7 +54,7 @@ The destination of dumb work is not to remain dumb forever. Chapter 7 will expla
 
 Enterprise procurement is a market with extreme information asymmetry and extremely high failure costs. Decision-makers rank information sharply: vendor marketing ranks below analyst reports; analyst reports below public peer case studies; public case studies below private peer recommendations. The final tier—“Someone I know used them and says they really work”—crushes every other channel in conversion. The FDE model is precisely the best machine for producing private-recommendation material. You are not delivering a software license; you are creating the sentence a customer executive says at a dinner with peers: “They really understand our business.”
 
-![Image 1](/Users/haogre/.gemini/antigravity-cli/brain/d4dffd42-6b6d-4063-b3a3-ad5b7fc7e2fe/ch4_1_1785725155563.jpg)
+![Image 1](/uploads/2026/06/28/chapter-3-winning-customers/ch4_1_1785725155563.jpg)
 
 Mine this deposit at three levels.
 
@@ -118,7 +118,7 @@ Third, never promise parallel work beyond capacity. It is better to sell a full 
 
 Turn what you do well into open-source tools and demos so target customers’ engineers can use them first. Executives initiate enterprise purchases, but engineers often hold technical veto power. Early technical adoption plants a vote of trust inside the buying chain.
 
-![Image 3](/Users/haogre/.gemini/antigravity-cli/brain/d4dffd42-6b6d-4063-b3a3-ad5b7fc7e2fe/ch4_3_1785725175383.jpg)
+![Image 3](/uploads/2026/06/28/chapter-3-winning-customers/ch4_3_1785725175383.jpg)
 
 There are three typical vehicles: open-source tools and components, self-serve technical showcases, and a sustained presence in engineering communities. The spread of a standard is the accumulation of trust. A quick-start package that lets an engineer connect sample data and get running in an afternoon is the best sales engineer you can build. Recruiting and acquisition converge here: the best candidate pool and the best customer leads often come from the same community.
 

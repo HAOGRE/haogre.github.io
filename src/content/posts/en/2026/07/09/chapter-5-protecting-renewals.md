@@ -37,7 +37,7 @@ Now consider how to measure retention. Consumer products look at retention rate.
 
 What does excellence look like? Palantir’s fourth-quarter 2025 earnings report offered three numbers: 139% net revenue retention, meaning existing customers grew by nearly 40% on their own; a 145% increase in remaining deal value, meaning the next few years are well supplied with business; and quarterly bookings of $4.26 billion, an all-time record. Management highlighted one detail: the 139% did not include revenue from customers newly signed in the previous twelve months. It represented only “existing customer trust compounding.” Palantir was once mocked for being project-based with no repeat business. Two decades later, the same customer base demonstrates the point: if hands-on delivery keeps creating value, renewal is not a sales problem. It is a matter of time. (See Appendix C.)
 
-![Image 1](/Users/haogre/.gemini/antigravity-cli/brain/d4dffd42-6b6d-4063-b3a3-ad5b7fc7e2fe/fde_rise_3_1785725020908.jpg)
+![Image 1](/uploads/2026/07/09/chapter-5-protecting-renewals/fde_rise_3_1785725020908.jpg)
 
 The remaining five sections address the five causes of churn: performance and stability to prevent quality drift; the art of trade-offs to prevent cost backfire; onboarding and training to prevent usage decay; organizational resilience to reduce champion risk; and reactivation mechanisms to prevent value evaporation.
 
@@ -62,7 +62,7 @@ FDE teams protect reliability with four lines of defense.
 
 “Graceful degradation” is a concept in internet product design: in extreme conditions, deliberately reduce service quality to preserve core value. In the FDE context, the idea has a deeper variation. It concerns the eternal tension between customization and standardization. I call it “the art of restraint.”
 
-![Image 2](/Users/haogre/.gemini/antigravity-cli/brain/d4dffd42-6b6d-4063-b3a3-ad5b7fc7e2fe/ch2_1_1785725049130.jpg)
+![Image 2](/uploads/2026/07/09/chapter-5-protecting-renewals/ch2_1_1785725049130.jpg)
 
 Every FDE team encounters the same gravitational pull: with a customer comes demand; with demand, customization never stops. Look back three months later and the deployment is covered in custom features, half of them used by only three people, while all the maintenance costs land on you. Let it continue and you inherit a mountain of customization debt. It eats your profit as maintenance consumes contract revenue, and ties your hands because every platform upgrade may trigger a custom-feature landmine.
 
@@ -88,7 +88,7 @@ Enterprise onboarding is fundamentally different from consumer onboarding. Consu
 
 Two examples of person-to-person training at scale are worth comparing. When BBVA rolled the system out to 120,000 people in Spain, it did not rely on a vendor training team. It relied on two internal groups: a company-wide “AI champions” network that ran workshops and discovered use cases across business units, and advanced users known by colleagues as “AI geeks,” who coached people around them one by one. Accenture’s partnership with Anthropic operated at another scale: 30,000 consultants received systematic Claude training and formed one of the world’s largest networks of AI practitioners. Accenture then brought that network to its own clients. (See Appendix C.) The scale differed by three orders of magnitude, but the structure was the same: **vendors do not really train “users.” They train people who will train others.**
 
-![Image 3](/Users/haogre/.gemini/antigravity-cli/brain/d4dffd42-6b6d-4063-b3a3-ad5b7fc7e2fe/ch2_2_1785725071997.jpg)
+![Image 3](/uploads/2026/07/09/chapter-5-protecting-renewals/ch2_2_1785725071997.jpg)
 
 - **Documentation and self-service:** Most enterprise documentation is ignored as soon as it is written, unless it meets two standards: it is organized around tasks rather than features—“How do I handle an unusual refund?” rather than “Refund module feature guide”—and it is embedded in the product rather than existing separately, appearing exactly where the user gets stuck. Documentation is both a handoff artifact for the customer and a scaling asset for you. Seventy percent of the training system for the next similar customer can be inherited.
 

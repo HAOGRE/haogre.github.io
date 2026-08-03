@@ -59,7 +59,7 @@ The camps compressed enterprise-software sales cycles from nine to twelve months
 
 Commercial growth and major government contracts validated the idea that field work could function as R&D. The U.S. Navy used Foundry and AIP to modernize submarine industrial bases, while the U.S. Army consolidated scattered service contracts into a long-term framework. Government trust was the compound interest earned through two decades in the field.
 
-![Image 1](/Users/haogre/.gemini/antigravity-cli/brain/d4dffd42-6b6d-4063-b3a3-ad5b7fc7e2fe/ch4_3_1785725175383.jpg)
+![Image 1](/uploads/2026/07/25/chapter-8-complete-case-studies/ch4_3_1785725175383.jpg)
 
 An engineer who spent a full year embedded in Toulouse worked four days a week on the assembly floor with manufacturing workers, writing software for the A350 line. He called it “Asana for building airplanes.” That is the plainest possible definition of forward deployment.
 
@@ -107,7 +107,7 @@ Anthropic’s FDE function sits within applied AI. Its deployments must meet sta
 
 In regulated industries, explaining every AI decision to a regulator is not a bonus. It is an admission ticket. Anthropic also makes knowledge transfer part of the goal: customers should eventually be able to build and extend their own agents.
 
-![Image 2](/Users/haogre/.gemini/antigravity-cli/brain/d4dffd42-6b6d-4063-b3a3-ad5b7fc7e2fe/ch5_1_1785725248635.jpg)
+![Image 2](/uploads/2026/07/25/chapter-8-complete-case-studies/ch5_1_1785725248635.jpg)
 
 ### Variation Two: Sierra and Decagon—Delivery as Product
 

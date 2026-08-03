@@ -45,7 +45,7 @@ First, the pain test: is this a specific person’s specific pain? “Improve cu
 
 Second, the economics test: what is this problem worth? How many person-hours does it consume each week? What labor cost does that represent? What does one error cost? What could the freed capacity accomplish? Many companies fund impressive front-office demonstrations while the returns accumulate in unglamorous back-office work such as contract review, procurement, and risk control.
 
-![Image 1](/Users/haogre/.gemini/antigravity-cli/brain/d4dffd42-6b6d-4063-b3a3-ad5b7fc7e2fe/ch3_1_1785725126077.jpg)
+![Image 1](/uploads/2026/06/25/chapter-2-solve-the-right-problem/ch3_1_1785725126077.jpg)
 
 Third, the feasibility test: what can we actually do with our current capabilities and the customer’s data reality? Where is the data, and what condition is it in? It may be scattered across seven systems, inconsistent across three versions, or stored in the private spreadsheet of a veteran employee. What accuracy threshold does the problem require? “90% accurate with human review” may be the optimal answer where “99% usable” would require an order of magnitude more engineering.
 
@@ -79,7 +79,7 @@ MVP validates whether the market wants a product. MVD—Minimum Viable Deploymen
 
 MVD has three rules. Use real data, without exception. Narrow the scope, not the ambition: do not build a crippled version of a grand solution; choose a small slice with a high density of visible value. And set a deadline measured in weeks, not months.
 
-![Image 2](/Users/haogre/.gemini/antigravity-cli/brain/d4dffd42-6b6d-4063-b3a3-ad5b7fc7e2fe/ch3_2_1785725138373.jpg)
+![Image 2](/uploads/2026/06/25/chapter-2-solve-the-right-problem/ch3_2_1785725138373.jpg)
 
 ### The Bootcamp: Industrializing MVD
 

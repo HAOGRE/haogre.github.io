@@ -45,7 +45,7 @@ description: "Deployment is only the beginning: real delivery builds lasting usa
 >
 > Third, ask at the end of every day: what moment tomorrow will be smoother because of today’s change? This turns the team from merely responding to requests into actively removing every point of friction between the user and the system. A fix is not just defect removal. Every fix is a deliberate activation design: another friction point dismantled. The list is hidden in the process map from the initial discovery work and in daily observation.
 >
-> ![Image 1](/Users/haogre/.gemini/antigravity-cli/brain/d4dffd42-6b6d-4063-b3a3-ad5b7fc7e2fe/ch5_1_1785725248635.jpg)
+> ![Image 1](/uploads/2026/07/02/chapter-4-activating-deployment/ch5_1_1785725248635.jpg)
 >
 > OpenAI’s FDE working method has a corresponding rhythm: early co-creation, with on-site whiteboard alignment; validation, through an evaluation system; and delivery, through several days of on-site building. Notice that delivery is still organized around “multiple days on site.” The speed comes from having people stay close to the problem.
 >
@@ -79,7 +79,7 @@ description: "Deployment is only the beginning: real delivery builds lasting usa
 >
 > Second: activation is hidden in defaults. A new user facing a blank system immediately asks, “What now?” Most drop-off happens in those three seconds. The FDE solution is to pre-build the first use: preloaded templates, prefilled examples based on the customer’s own data, and guided onboarding with a personal task waiting when the user opens the system for the first time. On day one, the system should understand what the user is likely to do better than the user does. The things observed during those first days of shadowing now become useful.
 >
-> ![Image 2](/Users/haogre/.gemini/antigravity-cli/brain/d4dffd42-6b6d-4063-b3a3-ad5b7fc7e2fe/fde_rise_1_1785725003312.jpg)
+> ![Image 2](/uploads/2026/07/02/chapter-4-activating-deployment/fde_rise_1_1785725003312.jpg)
 >
 > Third: translate “ask AI” into “click a button.” Enterprise users’ comfort with conversing with AI varies far more than people imagine. Asking users to formulate their own prompts transfers engineering work to the people least equipped to carry it. Mature implementations package frequent scenarios into one-click actions: “Generate last week’s exception report,” “Check this batch of invoices,” or “Draft this customer letter.” Behind each button is a complete, evaluated prompt and workflow. Conversational interaction is for exploration; buttons are for daily work.
 >
@@ -113,7 +113,7 @@ description: "Deployment is only the beginning: real delivery builds lasting usa
 >
 > In the FDE context, change management centers on three groups of people.
 >
-> ![Image 3](/Users/haogre/.gemini/antigravity-cli/brain/d4dffd42-6b6d-4063-b3a3-ad5b7fc7e2fe/fde_rise_2_1785725012734.jpg)
+> ![Image 3](/uploads/2026/07/02/chapter-4-activating-deployment/fde_rise_2_1785725012734.jpg)
 >
 > - **Champions | Your internal allies:** Behind every successful deployment is a customer-side champion who genuinely believes in the work and is willing to stake their reputation on clearing the path. David Wakeling, head of market innovation at A&O Shearman, is a typical example: he was Harvey’s internal counterpart, advocate, and shield. The principles are simple: give the champion material they can tell as a story, give them wins that turn their foresight into a career highlight, and give them safety by standing in front when things fail. One well-supported champion is worth more than ten product presentations.
 >

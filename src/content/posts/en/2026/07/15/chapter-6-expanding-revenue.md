@@ -44,7 +44,7 @@ The transition from free to paid requires five switches to be designed in advanc
 
 - **Switch three:** Turn the internal champion into a salesperson. After validation succeeds, the person who actually knocks on the budget door is not your salesperson, but the customer-side champion who witnessed the value firsthand. Your job is to equip them: a one-page value report with numbers, comparisons, and colleague testimony; a Q&A pack for finance objections; and a clear statement of the opportunity cost of not continuing. The internal trust of an internal advocate is something an outsider can never fully reach.
 
-![Image 1](/Users/haogre/.gemini/antigravity-cli/brain/d4dffd42-6b6d-4063-b3a3-ad5b7fc7e2fe/ch2_3_1785725081346.jpg)
+![Image 1](/uploads/2026/07/15/chapter-6-expanding-revenue/ch2_3_1785725081346.jpg)
 
 - **Switch four:** Plant the price anchor early. Talk about value during the free period: “This system freed up roughly 120 person-hours for you this month.” When the value narrative runs through the free period, the customer already has an anchor when the quote arrives. If the free period discusses only features and never value, the quote feels like a sudden shock.
 
@@ -78,7 +78,7 @@ For readers in China, one realistic footnote is necessary: enterprise customers 
 
 ## 6.4 Deepening Existing Accounts: From One Department to a Network
 
-![Image 2](/Users/haogre/.gemini/antigravity-cli/brain/d4dffd42-6b6d-4063-b3a3-ad5b7fc7e2fe/ch3_1_1785725126077.jpg)
+![Image 2](/uploads/2026/07/15/chapter-6-expanding-revenue/ch3_1_1785725126077.jpg)
 
 Enterprise markets follow an iron law: **the greatest revenue growth does not come from new customers, but from inside existing ones**. The industry measures this through net revenue retention. Strong FDE-driven companies routinely maintain NRR above 120%: without signing a single new deal, their existing revenue grows by 20%. Palantir’s commercial story is fundamentally a story of deepening existing accounts: from one intelligence team to an entire institution, from one factory to an entire group, from government departments to a commercial empire.
 
@@ -112,7 +112,7 @@ Move four: amplify through the ecosystem. On the same day the FIS case was annou
 
 Finally, the hidden card in the game: CIO vigilance. A technology publication aimed at enterprise IT leaders quoted a strategy executive at a consulting firm warning that “the most structural question in this model is who is paying for the cost of frontline deployment—this is what CIOs should ask, but most have not.” Gartner analysts, meanwhile, predicted that by 2028, 70% of enterprises would abandon such solutions because of vendor costs and hollowed-out internal skills. This is a reminder that FDE revenue design contains a long-term balance: **the value you create must remain greater than the cost and dependency created by your presence. Capture the spread on value and the business lasts; charge rent on dependency and it will eventually turn against you**.
 
-![Image 3](/Users/haogre/.gemini/antigravity-cli/brain/d4dffd42-6b6d-4063-b3a3-ad5b7fc7e2fe/ch3_2_1785725138373.jpg)
+![Image 3](/uploads/2026/07/15/chapter-6-expanding-revenue/ch3_2_1785725138373.jpg)
 
 ## 6.6 Turn Penalties into Rewards: The Pricing Psychology of Usage and Expansion
 

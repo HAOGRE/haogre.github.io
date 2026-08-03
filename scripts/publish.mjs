@@ -118,7 +118,7 @@ function detectLanguage(text) {
 }
 
 function getDateInfo() {
-  const now = new Date();
+  const now = process.env.FAKE_DATE ? new Date(process.env.FAKE_DATE) : new Date();
   const y = now.getFullYear();
   const mo = String(now.getMonth() + 1).padStart(2, "0");
   const d = String(now.getDate()).padStart(2, "0");
