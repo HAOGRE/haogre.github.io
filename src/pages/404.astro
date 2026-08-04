@@ -1,14 +1,26 @@
 ---
+import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
+import Card from "@/components/Card.astro";
 import LinkButton from "@/components/LinkButton.astro";
 import { getRelativeLocaleUrl } from "astro:i18n";
+import { getSortedPosts } from "@/utils/getSortedPosts";
 import { useTranslations } from "@/i18n";
 import config from "@/config";
 
 const locale = Astro.currentLocale ?? config.site.lang;
 const t = useTranslations(locale);
+const isEnLocale = locale === "en";
+const posts = await getCollection(
+  "posts",
+  ({ data }) => isEnLocale ? data.lang === "en" : data.lang !== "en"
+);
+const recentPosts = getSortedPosts(posts).slice(0, 3);
+const homePath = getRelativeLocaleUrl(locale, "");
+const searchPath = getRelativeLocaleUrl(locale, "search");
+const postsPath = getRelativeLocaleUrl(locale, "posts");
 ---
 
 <Layout title={`${t.notFound.title} | ${config.site.title}`}>
@@ -22,12 +34,39 @@ const t = useTranslations(locale);
       <h1 class="text-accent text-9xl font-bold">404</h1>
       <span aria-hidden="true"> ¯\_(ツ)_/¯ </span>
       <p class="mt-4 text-2xl sm:text-3xl">{t.notFound.message}</p>
+      <div class="my-6 flex flex-wrap justify-center gap-x-6 gap-y-2 text-lg">
+        <LinkButton
+          href={searchPath}
+          class="underline decoration-dashed underline-offset-8"
+        >
+          {t.notFound.searchPosts}
+        </LinkButton>
+        <LinkButton
+          href={postsPath}
+          class="underline decoration-dashed underline-offset-8"
+        >
+          {t.notFound.allPosts}
+        </LinkButton>
+      </div>
       <LinkButton
-        href={getRelativeLocaleUrl(locale, "")}
+        href={homePath}
         class="my-6 text-lg underline decoration-dashed underline-offset-8"
       >
         {t.notFound.goHome}
       </LinkButton>
+
+      {
+        recentPosts.length > 0 && (
+          <section class="mt-10 w-full max-w-2xl text-left">
+            <h2 class="border-border border-b pb-3 text-2xl font-semibold tracking-wide">
+              {t.notFound.recentPosts}
+            </h2>
+            <ul>
+              {recentPosts.map(post => <Card variant="h3" {...post} />)}
+            </ul>
+          </section>
+        )
+      }
     </div>
   </main>
 

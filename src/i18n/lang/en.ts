@@ -74,5 +74,8 @@ export default {
     title: "404 Not Found",
     message: "Page Not Found",
     goHome: "Go back home",
+    searchPosts: "Search posts",
+    recentPosts: "You may also like",
+    allPosts: "View all posts",
   },
 } satisfies UIStrings;

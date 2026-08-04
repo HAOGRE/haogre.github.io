@@ -74,5 +74,8 @@ export default {
     title: "404 Not Found",
     message: "页面不存在",
     goHome: "返回首页",
+    searchPosts: "搜索文章",
+    recentPosts: "也许你会感兴趣",
+    allPosts: "查看全部文章",
   },
 } satisfies UIStrings;

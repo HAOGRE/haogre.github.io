@@ -71,5 +71,8 @@ export interface UIStrings {
     title: string;
     message: string;
     goHome: string;
+    searchPosts: string;
+    recentPosts: string;
+    allPosts: string;
   };
 }
