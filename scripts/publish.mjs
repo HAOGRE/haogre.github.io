@@ -579,7 +579,10 @@ function runTranslationCli({ command, args, prompt, timeoutMs, stdin = false }) 
 }
 
 async function callAgy({ prompt }) {
-  const args = ["--print", "--print-timeout", Math.ceil(AGY_TIMEOUT_MS / 1000) + "s"];
+  // Some agy versions expose --print-timeout in help but treat the flag as
+  // prompt text when invoked non-interactively. The parent process already
+  // enforces AGY_TIMEOUT_MS, so keep the CLI invocation portable.
+  const args = ["--print"];
   if (process.env.AGY_MODEL) args.push("--model", process.env.AGY_MODEL);
   args.push(prompt);
   const output = await runTranslationCli({
