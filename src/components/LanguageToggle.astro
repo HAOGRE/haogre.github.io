@@ -62,6 +62,9 @@ const ariaLabel =
   class="focus-outline hover:text-accent relative size-8"
   aria-label={ariaLabel}
   title={ariaLabel}
+  data-analytics-event="language_switch"
+  data-from-language={locale}
+  data-to-language={targetLocale}
 >
   <IconWorld class="absolute top-1/2 left-1/2 size-5 -translate-x-1/2 -translate-y-1/2" />
   <span class="sr-only">{ariaLabel}</span>

@@ -28,6 +28,7 @@ const postsPath = getRelativeLocaleUrl(locale, "posts");
 
   <main
     id="main-content"
+    data-page-type="404"
     class="app-layout flex flex-1 items-center justify-center"
   >
     <div class="mb-14 flex flex-col items-center justify-center">
@@ -38,12 +39,16 @@ const postsPath = getRelativeLocaleUrl(locale, "posts");
         <LinkButton
           href={searchPath}
           class="underline decoration-dashed underline-offset-8"
+          data-analytics-event="not_found_cta_click"
+          data-cta="search"
         >
           {t.notFound.searchPosts}
         </LinkButton>
         <LinkButton
           href={postsPath}
           class="underline decoration-dashed underline-offset-8"
+          data-analytics-event="not_found_cta_click"
+          data-cta="all_posts"
         >
           {t.notFound.allPosts}
         </LinkButton>
@@ -51,6 +56,8 @@ const postsPath = getRelativeLocaleUrl(locale, "posts");
       <LinkButton
         href={homePath}
         class="my-6 text-lg underline decoration-dashed underline-offset-8"
+        data-analytics-event="not_found_cta_click"
+        data-cta="home"
       >
         {t.notFound.goHome}
       </LinkButton>

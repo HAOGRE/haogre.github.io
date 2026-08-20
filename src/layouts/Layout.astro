@@ -59,7 +59,7 @@ const alternateLinks = SUPPORTED_LOCALES.map(targetLocale => ({
       window.dataLayer = window.dataLayer || [];
       function gtag() { window.dataLayer.push(arguments); }
       gtag("js", new Date());
-      gtag("config", "G-DWCLJNH8M4");
+      gtag("config", "G-DWCLJNH8M4", { send_page_view: false });
     </script>
     <!-- Google AdSense -->
     <script
@@ -152,6 +152,9 @@ const alternateLinks = SUPPORTED_LOCALES.map(targetLocale => ({
     class="bg-background font-app text-foreground selection:bg-accent/75 selection:text-accent-foreground flex min-h-svh flex-col"
   >
     <slot />
+    <script>
+      import "@/scripts/analytics";
+    </script>
     <script>
       import "@/scripts/theme";
     </script>

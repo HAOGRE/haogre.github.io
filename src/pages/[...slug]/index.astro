@@ -132,6 +132,8 @@ if (post.data.translationKey) {
 
   <main
     id="main-content"
+    data-page-type="article"
+    data-content-id={post.data.translationKey ?? post.id}
     class:list={["app-layout", { "mt-8": !config.features.showBackButton }]}
     data-pagefind-body
   >
@@ -257,6 +259,7 @@ if (post.data.translationKey) {
 
       const copyButton = document.createElement("button");
       copyButton.className = `copy-code absolute end-3 ${topClass} rounded bg-muted border border-muted px-2 py-1 text-xs leading-4 text-foreground font-medium`;
+      copyButton.type = "button";
       copyButton.innerHTML = copyButtonLabel;
       codeBlock.setAttribute("tabindex", "0");
       codeBlock.appendChild(copyButton);

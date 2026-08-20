@@ -5,10 +5,16 @@ import config from "@/config";
 type Props = {
   pageTitle: string | [string, string];
   pageDesc?: string;
+  pageType?: string;
   class?: string;
 };
 
-const { pageTitle, pageDesc, class: className } = Astro.props;
+const {
+  pageTitle,
+  pageDesc,
+  pageType = "page",
+  class: className,
+} = Astro.props;
 
 const locale = Astro.currentLocale ?? config.site.lang;
 const backUrl = config.features.showBackButton
@@ -18,6 +24,7 @@ const backUrl = config.features.showBackButton
 
 <main
   data-backUrl={backUrl}
+  data-page-type={pageType}
   id="main-content"
   class:list={["app-layout pb-4", className]}
 >
