@@ -1,20 +1,44 @@
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
-import { fontData, experimental_getFontFileURL } from "astro:assets";
+import { createRequire } from "node:module";
+import { readFile } from "node:fs/promises";
 import satori from "satori";
 import sharp from "sharp";
-import { getFontPathByWeight } from "@/utils/getFontPathByWeight";
 import { getPostSlug } from "@/utils/getPostPaths";
 import config from "@/config";
 
-export async function getStaticPaths() {
+const require = createRequire(import.meta.url);
+const regularFontPath =
+  require.resolve("@fontsource/noto-sans-sc/files/noto-sans-sc-chinese-simplified-400-normal.woff");
+const boldFontPath =
+  require.resolve("@fontsource/noto-sans-sc/files/noto-sans-sc-chinese-simplified-700-normal.woff");
+
+export async function getDynamicOgImagePaths(locale: "zh-cn" | "en") {
   if (!config.features.dynamicOgImage) {
     return [];
   }
 
-  const posts = await getCollection("posts").then(p =>
-    p.filter(({ data }) => !data.draft && !data.ogImage)
+  const allPosts = await getCollection("posts");
+  const englishTranslationKeys = new Set(
+    allPosts
+      .filter(({ data }) => data.lang === "en" && data.translationKey)
+      .map(({ data }) => data.translationKey)
   );
+  const posts = allPosts.filter(({ data }) => {
+    const isVisible = !data.draft && !data.ogImage;
+    if (!isVisible) return false;
+
+    if (locale === "en") {
+      return (
+        data.lang === "en" ||
+        !(
+          data.translationKey && englishTranslationKeys.has(data.translationKey)
+        )
+      );
+    }
+
+    return data.lang !== "en";
+  });
 
   return posts.map(post => ({
     params: { slug: getPostSlug(post.id, post.filePath) },
@@ -22,26 +46,25 @@ export async function getStaticPaths() {
   }));
 }
 
-export const GET: APIRoute = async ({ props, url }) => {
+export async function getStaticPaths() {
+  return getDynamicOgImagePaths("zh-cn");
+}
+
+export const GET: APIRoute = async ({ props }) => {
   if (!config.features.dynamicOgImage) {
     return new Response(null, { status: 404, statusText: "Not found" });
   }
 
-  const fonts = fontData["--font-google-sans-code"];
-  const regularFontPath = getFontPathByWeight(fonts, 400);
-  const boldFontPath = getFontPathByWeight(fonts, 700);
-
-  if (regularFontPath === undefined || boldFontPath === undefined) {
-    throw new Error("Cannot find the font path.");
-  }
+  const limit = (value: string, max: number) =>
+    value.length > max ? `${value.slice(0, max - 1)}…` : value;
+  const title = limit(props.data.title, 48);
+  const description = limit(props.data.description, 112);
+  const language = props.data.lang === "en" ? "ENGLISH ARTICLE" : "中文文章";
+  const tags = props.data.tags.slice(0, 3).join("  ·  ");
 
   const [regularData, boldData] = await Promise.all([
-    fetch(experimental_getFontFileURL(regularFontPath, url)).then(res =>
-      res.arrayBuffer()
-    ),
-    fetch(experimental_getFontFileURL(boldFontPath, url)).then(res =>
-      res.arrayBuffer()
-    ),
+    readFile(regularFontPath),
+    readFile(boldFontPath),
   ]);
 
   const svg = await satori(
@@ -49,12 +72,11 @@ export const GET: APIRoute = async ({ props, url }) => {
       type: "div",
       props: {
         style: {
-          background: "#fefbfb",
+          background: "#f7f7f2",
           width: "100%",
           height: "100%",
           display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          position: "relative",
         },
         children: [
           {
@@ -62,17 +84,13 @@ export const GET: APIRoute = async ({ props, url }) => {
             props: {
               style: {
                 position: "absolute",
-                top: "-1px",
-                right: "-1px",
-                border: "4px solid #000",
-                background: "#ecebeb",
-                opacity: "0.9",
-                borderRadius: "4px",
-                display: "flex",
-                justifyContent: "center",
-                margin: "2.5rem",
-                width: "88%",
-                height: "80%",
+                top: 42,
+                right: 42,
+                width: 112,
+                height: 112,
+                border: "4px solid #111",
+                background: "#dbe8ff",
+                transform: "rotate(12deg)",
               },
             },
           },
@@ -80,88 +98,135 @@ export const GET: APIRoute = async ({ props, url }) => {
             type: "div",
             props: {
               style: {
-                border: "4px solid #000",
-                background: "#fefbfb",
-                borderRadius: "4px",
+                position: "absolute",
+                top: 28,
+                right: 28,
+                bottom: 28,
+                left: 28,
+                border: "4px solid #111",
+                background: "#fff",
                 display: "flex",
-                justifyContent: "center",
-                margin: "2rem",
-                width: "88%",
-                height: "80%",
+                flexDirection: "column",
+                padding: "54px 62px 42px",
               },
-              children: {
-                type: "div",
-                props: {
-                  style: {
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                    margin: "20px",
-                    width: "90%",
-                    height: "90%",
+              children: [
+                {
+                  type: "div",
+                  props: {
+                    style: {
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      width: "100%",
+                    },
+                    children: [
+                      {
+                        type: "span",
+                        props: {
+                          style: {
+                            color: "#2f64d6",
+                            fontSize: 24,
+                            fontWeight: "bold",
+                            letterSpacing: 2,
+                          },
+                          children: language,
+                        },
+                      },
+                      {
+                        type: "span",
+                        props: {
+                          style: {
+                            color: "#555",
+                            fontSize: 24,
+                            fontWeight: "bold",
+                          },
+                          children: config.site.title,
+                        },
+                      },
+                    ],
                   },
-                  children: [
-                    {
-                      type: "p",
-                      props: {
-                        style: {
-                          fontSize: 72,
-                          fontWeight: "bold",
-                          maxHeight: "84%",
-                          overflow: "hidden",
-                        },
-                        children: props.data.title,
-                      },
-                    },
-                    {
-                      type: "div",
-                      props: {
-                        style: {
-                          display: "flex",
-                          justifyContent: "space-between",
-                          width: "100%",
-                          marginBottom: "8px",
-                          fontSize: 28,
-                        },
-                        children: [
-                          {
-                            type: "span",
-                            props: {
-                              children: [
-                                "by ",
-                                {
-                                  type: "span",
-                                  props: {
-                                    style: { color: "transparent" },
-                                    children: '"',
-                                  },
-                                },
-                                {
-                                  type: "span",
-                                  props: {
-                                    style: {
-                                      overflow: "hidden",
-                                      fontWeight: "bold",
-                                    },
-                                    children: props.data.author,
-                                  },
-                                },
-                              ],
-                            },
-                          },
-                          {
-                            type: "span",
-                            props: {
-                              style: { overflow: "hidden", fontWeight: "bold" },
-                              children: config.site.title,
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
                 },
-              },
+                {
+                  type: "div",
+                  props: {
+                    style: {
+                      display: "flex",
+                      flexDirection: "column",
+                      marginTop: 44,
+                      maxWidth: "92%",
+                    },
+                    children: [
+                      {
+                        type: "p",
+                        props: {
+                          style: {
+                            color: "#111",
+                            fontSize: 64,
+                            fontWeight: "bold",
+                            lineHeight: 1.14,
+                            margin: 0,
+                            maxHeight: 170,
+                            overflow: "hidden",
+                          },
+                          children: title,
+                        },
+                      },
+                      {
+                        type: "p",
+                        props: {
+                          style: {
+                            color: "#555",
+                            fontSize: 25,
+                            lineHeight: 1.35,
+                            margin: "28px 0 0",
+                            maxHeight: 72,
+                            overflow: "hidden",
+                          },
+                          children: description,
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  type: "div",
+                  props: {
+                    style: {
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      borderTop: "2px solid #ddd",
+                      marginTop: "auto",
+                      paddingTop: 22,
+                      width: "100%",
+                    },
+                    children: [
+                      {
+                        type: "span",
+                        props: {
+                          style: {
+                            color: "#777",
+                            fontSize: 22,
+                            overflow: "hidden",
+                          },
+                          children: tags,
+                        },
+                      },
+                      {
+                        type: "span",
+                        props: {
+                          style: {
+                            color: "#111",
+                            fontSize: 24,
+                            fontWeight: "bold",
+                          },
+                          children: `by ${props.data.author}`,
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
             },
           },
         ],
@@ -173,13 +238,13 @@ export const GET: APIRoute = async ({ props, url }) => {
       embedFont: true,
       fonts: [
         {
-          name: "Google Sans Code",
+          name: "Noto Sans SC",
           data: regularData,
           weight: 400,
           style: "normal",
         },
         {
-          name: "Google Sans Code",
+          name: "Noto Sans SC",
           data: boldData,
           weight: 700,
           style: "normal",
