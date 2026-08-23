@@ -10,7 +10,7 @@
 
 ## Global Constraints
 
-- Keep all 82 existing posts public and unchanged.
+- Keep all existing posts public and unchanged.
 - Do not change `https://blog.haogre.com/`, existing post URLs, or the AdSense publisher ID.
 - Do not add ad placements while the site is under review.
 - Do not submit AdSense review until production output and the deployed pages are verified.
@@ -183,7 +183,7 @@ Expected: Astro check, Astro build, and Pagefind complete successfully.
 
 - [ ] **Step 4: Inspect generated routes and preserve post count**
 
-Run: `test -f dist/ads.txt && test -f dist/about/index.html && test -f dist/privacy/index.html && test -f dist/contact/index.html && test -f dist/en/privacy/index.html && test -f dist/en/contact/index.html && test "$(find src/content/posts -type f -name '*.md' ! -path '*/node_modules/*' | wc -l | tr -d ' ')" = "82" && git diff --exit-code 389de3ac6 -- src/content/posts`
+Run: `test -f dist/ads.txt && test -f dist/about/index.html && test -f dist/privacy/index.html && test -f dist/contact/index.html && test -f dist/en/privacy/index.html && test -f dist/en/contact/index.html && test "$(find src/content/posts -type f -name '*.md' ! -path '*/node_modules/*' | wc -l | tr -d ' ')" = "94" && git diff --exit-code origin/master -- src/content/posts`
 
 Expected: exit code 0.
 
