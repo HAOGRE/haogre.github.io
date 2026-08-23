@@ -31,7 +31,7 @@ export default {
     socialLinks: "Social Links",
     featured: "Featured",
     intro:
-      "Notes on systems, life, and the occasional rabbit hole. The old Hexo site now runs on AstroPaper with archives, tags, search, and legacy links preserved.",
+      "A personal blog by HAOGRE about technical practice, AI and business, family life, and the occasional rabbit hole.",
     archivePrompt: "Start with recent posts, or browse the",
     archiveLink: "archives",
     archiveSuffix: ".",
@@ -41,6 +41,9 @@ export default {
   footer: {
     copyright: "Copyright",
     allRightsReserved: "All rights reserved.",
+    siteLinks: "Site links",
+    privacy: "Privacy",
+    contact: "Contact",
   },
   pages: {
     tagTitle: "Tag",

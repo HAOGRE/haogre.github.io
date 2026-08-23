@@ -1,0 +1,28 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import config from "@/config";
+import { useTranslations } from "@/i18n";
+
+const locale = Astro.currentLocale ?? config.site.lang;
+const t = useTranslations(locale);
+
+const links = [
+  { href: getRelativeLocaleUrl(locale, "about"), label: t.nav.about },
+  { href: getRelativeLocaleUrl(locale, "privacy"), label: t.footer.privacy },
+  { href: getRelativeLocaleUrl(locale, "contact"), label: t.footer.contact },
+];
+---
+
+<nav aria-label={t.footer.siteLinks}>
+  <ul class="flex flex-wrap justify-center gap-x-4 gap-y-1 text-sm">
+    {
+      links.map(({ href, label }) => (
+        <li>
+          <a href={href} class="underline-offset-4 hover:underline">
+            {label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>

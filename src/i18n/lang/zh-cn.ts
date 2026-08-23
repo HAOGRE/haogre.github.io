@@ -31,7 +31,7 @@ export default {
     socialLinks: "链接",
     featured: "精选",
     intro:
-      "就是生活的全部",
+      "HAOGRE 的个人博客，记录技术实践、AI 与商业思考、家庭生活，以及一些持续好奇的事情。",
     archivePrompt: "可以从最近文章开始，也可以直接看",
     archiveLink: "归档",
     archiveSuffix: "。",
@@ -41,6 +41,9 @@ export default {
   footer: {
     copyright: "Copyright",
     allRightsReserved: "All rights reserved.",
+    siteLinks: "站点链接",
+    privacy: "隐私政策",
+    contact: "联系我",
   },
   pages: {
     tagTitle: "标签",
