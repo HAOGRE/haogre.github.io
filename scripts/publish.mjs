@@ -291,6 +291,10 @@ function sanitizeFileName(name) {
   return `${stem || "image"}${ext || ".png"}`;
 }
 
+function buildPublicUploadPath(datePath, slug) {
+  return encodeURI(`/uploads/${datePath}/${slug}`);
+}
+
 function slugifyRouteSegment(value, fallback) {
   const slug = slugify(value, {
     lower: true,
@@ -359,7 +363,7 @@ async function materializeImage({ resolvedSrc, outputPath }) {
 async function localizeImages({ bodies, sourceBody, sourceFilePath, datePath, slug }) {
   const sourceImageMap = buildSourceImageMap(sourceBody);
   const uploadDir = join(UPLOADS_DIR, datePath, slug);
-  const publicPrefix = `/uploads/${datePath}/${slug}`;
+  const publicPrefix = buildPublicUploadPath(datePath, slug);
   const srcToPublicPath = new Map();
   const usedNames = new Set();
 
@@ -871,4 +875,4 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   });
 }
 
-export { callAgy, callCodex, runTranslationCli };
+export { buildPublicUploadPath, callAgy, callCodex, runTranslationCli };
