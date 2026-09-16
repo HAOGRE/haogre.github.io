@@ -3,7 +3,7 @@ author: "HAOGRE"
 pubDatetime: 2026-09-16T12:07:26.206Z
 title: "让 AI 排查问题，别停在听起来合理的答案"
 featured: false
-draft: false
+draft: true
 translationKey: "让AI排查问题别停在听起来合理的答案"
 tags:
   - "AI"

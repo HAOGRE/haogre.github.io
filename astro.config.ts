@@ -1,8 +1,4 @@
-import {
-  defineConfig,
-  envField,
-  svgoOptimizer,
-} from "astro/config";
+import { defineConfig, envField, svgoOptimizer } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
@@ -19,6 +15,16 @@ import config from "./astro-paper.config";
 export default defineConfig({
   site: config.site.url,
   trailingSlash: "always",
+  redirects: {
+    "/2026/09/16/视频播放失败先分清下载封装和解码/":
+      "/2026/09/16/同样是H265为什么一个视频能播另一个不能/",
+    "/2026/09/16/让AI排查问题别停在听起来合理的答案/":
+      "/2026/09/16/同样是H265为什么一个视频能播另一个不能/",
+    "/en/2026/09/16/video-playback-failures-start-with-downloading-demuxing-or-decoding/":
+      "/en/2026/09/16/same-hevc-codec-different-playback-results/",
+    "/en/2026/09/16/ask-ai-to-debug-beyond-a-plausible-answer/":
+      "/en/2026/09/16/same-hevc-codec-different-playback-results/",
+  },
   integrations: [
     mdx(),
     sitemap({

@@ -3,7 +3,7 @@ author: "HAOGRE"
 pubDatetime: 2026-09-16T12:07:26.206Z
 title: "Ask AI to Debug Beyond a Plausible Answer"
 featured: false
-draft: false
+draft: true
 lang: en
 translationKey: "让AI排查问题别停在听起来合理的答案"
 tags:
