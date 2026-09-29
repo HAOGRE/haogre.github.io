@@ -2,6 +2,7 @@
 author: "HAOGRE"
 pubDatetime: 2026-09-29T08:31:56.309Z
 title: "CLI and MCP: Who Pays the Integration Cost?"
+modDatetime: 2026-09-29T08:48:41.597539+00:00
 featured: false
 draft: false
 lang: en
@@ -58,6 +59,11 @@ This is what I like about the CLI approach. Programs can handle deterministic wo
 
 There is a cost hidden in that convenience. An environment being ready does not mean it was free to prepare. The developer has already paid for it in time and effort.
 
+<figure>
+  <img src="/uploads/2026/09/29/CLI%E4%B8%8EMCP%E8%B0%81%E6%9D%A5%E6%89%BF%E6%8B%85%E6%8E%A5%E5%85%A5%E6%88%90%E6%9C%AC/01-hidden-cost.webp" alt="Xiaohei lifts a workbench to reveal long receipts folded into its legs." width="1536" height="864" loading="lazy" decoding="async" />
+  <figcaption>Figure 1. A ready-to-use environment still had a setup cost.</figcaption>
+</figure>
+
 Give the same workflow to a colleague unfamiliar with terminals, or to hundreds of users with different identities, permissions, and devices, and installation, authentication, upgrades, and diagnosis become visible again. A platform can preinstall CLIs and manage containers and credentials. Doing so means building integration infrastructure of its own.
 
 **CLI has a low incremental cost inside an established development environment. Extending that conclusion to every user can make previously paid costs disappear from the accounting.**
@@ -92,6 +98,11 @@ Anthropic's [Code execution with MCP](https://www.anthropic.com/engineering/code
 
 That example changed how I think about the comparison. MCP can connect the services, code can handle loops and filtering, and the model can receive only the information that needs its judgment. The composition style associated with CLI workflows can coexist with MCP integration.
 
+<figure>
+  <img src="/uploads/2026/09/29/CLI%E4%B8%8EMCP%E8%B0%81%E6%9D%A5%E6%89%BF%E6%8B%85%E6%8E%A5%E5%85%A5%E6%88%90%E6%9C%AC/02-process-before-context.webp" alt="Xiaohei turns a crank to reduce a long strip of records to a few result cards." width="1536" height="864" loading="lazy" decoding="async" />
+  <figcaption>Figure 2. Connecting services and processing data can happen in different layers.</figcaption>
+</figure>
+
 A code execution layer still needs sandboxing, resource limits, and state management. For one tool and one query, an extra orchestration layer may not be worthwhile. The savings reported in that article also belong to specific examples; they are not a universal performance guarantee.
 
 A useful comparison should hold the task, model, permissions, and returned data volume constant, then measure success rate, elapsed time, context consumption, and recovery cost. Comparing MCP calls that route every step through the model with a carefully composed CLI script changes both the protocol and the execution strategy. The result cannot be attributed to MCP alone.
@@ -110,6 +121,11 @@ This is my analysis of incentives, not a claim that every platform has the same 
 
 I would ask one more question: once the tool definitions can move, can the user's workflows, authorization relationships, and execution records move with them? That reveals more about switching costs than a “supports MCP” label.
 
+<figure>
+  <img src="/uploads/2026/09/29/CLI%E4%B8%8EMCP%E8%B0%81%E6%9D%A5%E6%89%BF%E6%8B%85%E6%8E%A5%E5%85%A5%E6%88%90%E6%9C%AC/03-portable-handle.webp" alt="Xiaohei carries an MCP handle while the suitcase remains tied to authorization and history folders." width="1536" height="864" loading="lazy" decoding="async" />
+  <figcaption>Figure 3. A portable interface does not make the whole workflow portable.</figcaption>
+</figure>
+
 My working hypothesis about the apparent resurgence is that, as discussion expands from personal coding environments to AI products serving many users, the people bearing the costs change. So do the criteria used to evaluate an interface. Testing that hypothesis requires evidence of active integrations, repeated use, and maintenance investment. Support announcements, server directories, and social posts are insufficient.
 
 ## A shared protocol leaves the hardest guarantees unfinished
@@ -119,6 +135,11 @@ Following these five questions also led me to a counterexample: a tool can have 
 Consider a tool for refunding a customer. It accepts an order number, an amount, and a reason. Correct types establish the shape of the request. They do not establish whether the order has already been refunded, whether the amount exceeds the payment, whether the user has permission, or whether retrying after a timeout will issue a second refund.
 
 The business implementation must enforce those constraints. Idempotency keys, state validation, permission checks, traceable operation identifiers, and explicit approval states do not appear automatically when an interface changes.
+
+<figure>
+  <img src="/uploads/2026/09/29/CLI%E4%B8%8EMCP%E8%B0%81%E6%9D%A5%E6%89%BF%E6%8B%85%E6%8E%A5%E5%85%A5%E6%88%90%E6%9C%AC/04-retry-once.webp" alt="Xiaohei blocks a duplicate refund so two requests leave only one coin in the tray." width="1536" height="864" loading="lazy" decoding="async" />
+  <figcaption>Figure 4. Retrying a request must not issue a second refund.</figcaption>
+</figure>
 
 CLI tools face the same problem. A JSON-capable command that returns only “operation failed” on errors, or mixes progress messages into successful output, is hard for an agent to handle reliably. An MCP tool named `execute`, accepting arbitrary commands and unrestricted parameters, can erase the boundaries that its interface seemed to establish.
 
