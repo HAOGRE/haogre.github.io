@@ -9,7 +9,7 @@ translationKey: "二百三十一吨，禁止上楼"
 tags:
   - "gaming"
   - "minecraft"
-  - "adventure"
+  - "block-world-stories"
 description: "Steve adopts a small cow weighing 231 tonnes. Getting it home costs a boat and requires some serious roadwork."
 ---
 

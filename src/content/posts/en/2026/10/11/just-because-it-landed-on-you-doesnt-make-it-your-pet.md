@@ -7,10 +7,9 @@ draft: false
 lang: en
 translationKey: "宠物不是按掉落顺序分的"
 tags:
-  - "block-world-stories"
   - "gaming"
   - "minecraft"
-  - "block-stories"
+  - "block-world-stories"
 description: "Steve, Pangpang, and Alex each get a pet. Now comes the hard part: leaving camp without them."
 ---
 

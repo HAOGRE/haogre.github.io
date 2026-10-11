@@ -7,10 +7,9 @@ draft: false
 lang: en
 translationKey: "这条矿脉，全村来挖"
 tags:
-  - "block-world-stories"
-  - "minecraft"
   - "gaming"
-  - "adventure"
+  - "minecraft"
+  - "block-world-stories"
 description: "A vast diamond vein brings the whole village underground, where roads come first and Pangpang finds more by accident."
 ---
 

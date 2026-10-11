@@ -7,10 +7,9 @@ draft: false
 lang: en
 translationKey: "胖胖的蓝色潜影盒"
 tags:
-  - "block-world-stories"
-  - "minecraft"
   - "gaming"
-  - "block-stories"
+  - "minecraft"
+  - "block-world-stories"
 description: "Pangpang keeps their shared supplies safe in a blue shulker box. Steve and Alex decide it needs a ledger, too."
 ---
 

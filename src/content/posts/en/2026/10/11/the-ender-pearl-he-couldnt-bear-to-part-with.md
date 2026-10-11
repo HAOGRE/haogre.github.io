@@ -7,9 +7,9 @@ draft: false
 lang: en
 translationKey: "那颗舍不得扔的末影珍珠"
 tags:
-  - "musings"
   - "gaming"
-  - "Minecraft"
+  - "minecraft"
+  - "block-world-stories"
 description: "Pangpang uses his treasured ender pearl to escape a swarm of creepers, only to find his friends already home."
 ---
 

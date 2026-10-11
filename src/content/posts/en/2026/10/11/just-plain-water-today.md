@@ -8,8 +8,8 @@ lang: en
 translationKey: "今天只喝白水"
 tags:
   - "gaming"
-  - "Minecraft"
-  - "musings"
+  - "minecraft"
+  - "block-world-stories"
 description: "Three tons of free cola leave Steve, Alex, and Pangpang short on space in this Minecraft story."
 ---
 

@@ -7,10 +7,9 @@ draft: false
 lang: en
 translationKey: "半套合金甲，也得想办法"
 tags:
-  - "block-world-stories"
   - "gaming"
-  - "Minecraft"
-  - "adventure"
+  - "minecraft"
+  - "block-world-stories"
 description: "Steve, Alex, and Pangpang win gear with an ambush, but full netherite armor only gets them so far."
 ---
 

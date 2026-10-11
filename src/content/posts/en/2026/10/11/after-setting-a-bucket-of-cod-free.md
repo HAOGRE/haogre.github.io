@@ -7,10 +7,9 @@ draft: false
 lang: en
 translationKey: "放走一桶鳕鱼以后"
 tags:
-  - "block-world-stories"
   - "gaming"
-  - "Minecraft"
-  - "musings"
+  - "minecraft"
+  - "block-world-stories"
 description: "A cod brings gifts, then a river takes them back. Three Minecraft players try to work out the rules."
 ---
 

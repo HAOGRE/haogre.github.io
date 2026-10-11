@@ -7,10 +7,9 @@ draft: false
 lang: en
 translationKey: "六根胡萝卜换来的房子"
 tags:
-  - "block-world-stories"
   - "gaming"
-  - "Minecraft"
-  - "block-stories"
+  - "minecraft"
+  - "block-world-stories"
 description: "Six carrots buy Steve, Alex, and Pangpang a tiny house. When it gets torn down, they build a new home underground."
 ---
 

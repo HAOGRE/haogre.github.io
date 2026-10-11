@@ -7,9 +7,9 @@ draft: false
 lang: en
 translationKey: "胖胖的厨房，今天暂不营业"
 tags:
-  - "musings"
   - "gaming"
   - "minecraft"
+  - "block-world-stories"
 description: "Pangpang tries a cooking mod: the pasta works, the cocoa dish fails, and a cup of coffee earns its place."
 ---
 

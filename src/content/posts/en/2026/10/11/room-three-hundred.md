@@ -9,7 +9,7 @@ translationKey: "第三百个房间"
 tags:
   - "gaming"
   - "minecraft"
-  - "adventure"
+  - "block-world-stories"
 description: "Steve, Alex, and Pangpang follow a trail through hundreds of rooms. What if “three hundred” means more than distance?"
 ---
 

@@ -9,7 +9,7 @@ translationKey: "铁傀儡的赔偿单"
 tags:
   - "gaming"
   - "minecraft"
-  - "adventure"
+  - "block-world-stories"
 description: "Steve and Alex take the hits. Pangpang gets the house and pearls. Then a bell falls from the sky."
 ---
 
