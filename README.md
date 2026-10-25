@@ -10,6 +10,7 @@ npm run import:legacy
 npm run dev
 npm run build
 npm run preview
+npm run images:optimize # Optional: warm the image cache and report byte savings
 ```
 
 ## Content
@@ -37,3 +38,24 @@ Install and log in to both CLIs before publishing. Optional configuration:
 
 Use `--yes` only when you intentionally want to skip the interactive preview
 confirmation.
+
+## Image optimization and performance
+
+Markdown images and HTML `<img>` tags pointing to `/uploads/` are automatically
+converted at build/dev time with the open-source [Sharp](https://sharp.pixelplumbing.com/)
+library. No manual compression step or external image service is required.
+The existing stage → preview → go publishing workflow continues to work.
+
+- WebP quality 80, with widths up to 480 / 768 / 1536 px, without upscaling.
+- Responsive `srcset` and `sizes`, dimensions to reserve layout space, asynchronous
+  decoding, and lazy loading after the first image.
+- Original uploads, SVGs, and animated images are preserved. Derivatives live in
+  the ignored `public/_images/` directory and are copied into the deployment.
+- Content hashes invalidate image URLs when pixels or encoding settings change.
+  Bump `VERSION` in `scripts/image-optimizer.mjs` when changing encoding options.
+  GitHub Actions caches derivatives to avoid recompressing unchanged images.
+- Analytics events queue immediately; Google Analytics and AdSense scripts load
+  after a three-second delay and an idle callback (at most two additional seconds).
+  Very brief visits may end before the analytics queue is sent.
+
+See [the performance audit and hosting recommendations](docs/performance.md).

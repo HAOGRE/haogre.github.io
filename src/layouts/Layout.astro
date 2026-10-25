@@ -53,21 +53,15 @@ const alternateLinks = SUPPORTED_LOCALES.map(targetLocale => ({
   class="overflow-y-scroll scroll-smooth"
 >
   <head>
-    <!-- Google Analytics 4 -->
-    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-DWCLJNH8M4"></script>
+    <!-- Queue analytics immediately; load third-party code after the first render. -->
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
-      function gtag() { window.dataLayer.push(arguments); }
+      function gtag() {
+        window.dataLayer.push(arguments);
+      }
       gtag("js", new Date());
       gtag("config", "G-DWCLJNH8M4", { send_page_view: false });
     </script>
-    <!-- Google AdSense -->
-    <script
-      is:inline
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6427878095783791"
-      crossorigin="anonymous"
-    ></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href={getAssetPath("favicon.ico")} />
@@ -154,6 +148,7 @@ const alternateLinks = SUPPORTED_LOCALES.map(targetLocale => ({
     <slot />
     <script>
       import "@/scripts/analytics";
+      import "@/scripts/third-party";
     </script>
     <script>
       import "@/scripts/theme";

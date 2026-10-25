@@ -5,8 +5,24 @@ import config from "@/config";
 
 export const BLOG_PATH = "src/content/posts";
 
+function imageAwareGlob(options: Parameters<typeof glob>[0]) {
+  const loader = glob(options);
+  const load = loader.load;
+  loader.load = async context => {
+    // Public uploads aren't part of Astro's Markdown digest. Re-render on startup
+    // so replaced originals or a deleted image cache cannot leave stale srcsets.
+    // The image optimizer still reuses its disk cache for unchanged pixels.
+    context.store.clear();
+    await load(context);
+  };
+  return loader;
+}
+
 const posts = defineCollection({
-  loader: glob({ pattern: "**/[^_]*.{md,mdx}", base: `./${BLOG_PATH}` }),
+  loader: imageAwareGlob({
+    pattern: "**/[^_]*.{md,mdx}",
+    base: `./${BLOG_PATH}`,
+  }),
   schema: ({ image }) =>
     z.object({
       author: z.string().default(config.site.author),
@@ -27,7 +43,10 @@ const posts = defineCollection({
 });
 
 const pages = defineCollection({
-  loader: glob({ pattern: "**/[^_]*.{md,mdx}", base: "./src/content/pages" }),
+  loader: imageAwareGlob({
+    pattern: "**/[^_]*.{md,mdx}",
+    base: "./src/content/pages",
+  }),
   schema: z.object({
     title: z.string(),
     description: z.string().optional(),

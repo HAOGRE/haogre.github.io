@@ -73,6 +73,17 @@ npm run new -- "文章标题"          # 建 src/content/posts/YYYY/MM/DD/<标�
 - 同篇重发改了 slug → 脚本会按 `translationKey` 清理旧文件,无需手动删
 - **中文 slug 带了后缀** → 源文件名就是中文 URL slug,别起 `xxx-source.md` 之类的名
 
+## 图片自动压缩（后续 agent 必须遵循）
+
+- 发布仍走 `--stage` → 预览 → 用户确认 → `--go`。图片由发布脚本本地化到 `public/uploads/`，文章使用 `/uploads/...` 引用。
+- `npm run dev` 和 `npm run build` 会通过 `scripts/rehype-responsive-images.mjs` 自动调用 Sharp，为本地文章图片生成 WebP 压缩版和响应式尺寸。**不需要 agent 记得额外运行压缩命令，也不要绕过这条自动处理链路。**
+- 默认 WebP quality 80，生成最大宽度 480 / 768 / 1536 px 的版本，不放大小图；自动补充 `srcset`、`sizes`、宽高和异步解码，首图之外使用懒加载。Markdown 图片和 HTML `<img>` 都适用。
+- 保留 `public/uploads/` 原图及原 URL；SVG 和动画保留原格式。不要为了压缩覆盖原图，也不要把文章引用手动改成生成的哈希路径。
+- `public/_images/` 是自动生成、已忽略的缓存，**不要提交到 Git**；生产构建会将其复制到部署产物，GitHub Actions 会复用压缩缓存。
+- 可选执行 `npm run images:optimize`，预热缓存并查看体积统计。修改编码参数时同步更新 `scripts/image-optimizer.mjs` 的 `VERSION`，避免旧缓存继续生效。
+- 修改图片处理代码后运行 `npm test` 和 `npm run build`，确认文章图片及 `srcset` 指向的资源都存在。替换原图后若 dev 预览未更新，重启 dev server。
+- 性能数据、缓存机制和 CDN 建议见 `docs/performance.md`。图片压缩发生在预览／构建阶段，不能把 `publish --stage` 本地化原图本身称为已经压缩。
+
 ## 文件结构
 
 - `src/content/posts/<年>/<月>/<日>/<标题>.md`:中文文章,路径即 URL

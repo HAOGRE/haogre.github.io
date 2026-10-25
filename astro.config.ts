@@ -4,6 +4,10 @@ import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
+import rehypeRaw from "rehype-raw";
+import responsiveImages from "./scripts/rehype-responsive-images.mjs";
+import { cp, mkdir } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
 import {
   transformerNotationDiff,
   transformerNotationHighlight,
@@ -26,6 +30,17 @@ export default defineConfig({
       "/en/2026/09/16/same-hevc-codec-different-playback-results/",
   },
   integrations: [
+    {
+      name: "responsive-article-images",
+      hooks: {
+        "astro:build:done": async ({ dir }) => {
+          // Markdown rendering can generate images after Vite copies public/.
+          const source = new URL("./public/_images/", import.meta.url);
+          await mkdir(source, { recursive: true });
+          await cp(source, new URL("_images/", dir), { recursive: true });
+        },
+      },
+    },
     mdx(),
     sitemap({
       filter: page =>
@@ -41,6 +56,13 @@ export default defineConfig({
   },
   markdown: {
     remarkPlugins: [remarkToc, [remarkCollapse, { test: "Table of contents" }]],
+    rehypePlugins: [
+      rehypeRaw,
+      [
+        responsiveImages,
+        { publicDir: fileURLToPath(new URL("./public/", import.meta.url)) },
+      ],
+    ],
     shikiConfig: {
       themes: { light: "min-light", dark: "night-owl" },
       defaultColor: false,
