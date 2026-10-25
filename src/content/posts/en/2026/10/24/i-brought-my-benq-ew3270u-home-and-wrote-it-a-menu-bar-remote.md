@@ -1,6 +1,7 @@
 ---
 author: "HAOGRE"
 pubDatetime: 2026-10-24T02:54:43.762Z
+modDatetime: 2026-10-25T02:40:00.000Z
 title: "I Brought My BenQ EW3270U Home and Wrote It a Menu Bar Remote"
 featured: false
 draft: false
@@ -35,6 +36,7 @@ Open the DMG and drag MonitorLight to Applications. The app isn't notarized by A
 ## What it does
 
 - **Brightness and volume:** Control Center–style sliders you can drag, click or scroll. Presets for Soft (35%), Normal (60%) and Bright (85%) make dimming for the evening a single click. Mute remembers the previous volume.
+- **Input switching:** pick DisplayPort, USB-C, HDMI 1 or HDMI 2 from the main panel; the switch is confirmed by reading it back. (New in 2.2.1)
 - **Keyboard:** the Mac's brightness keys control the display directly, and global shortcuts cover the rest: ⌃⌥↑↓ for brightness, ⌃⌥←→ for volume.
 - **Picture settings:** picture mode, low blue light scenes (Multimedia, Web Surfing, Office, Reading), sharpness, AMA and scaling, without opening the display's menu.
 - **Menu bar icon:** the ring of dots around the sun is a brightness gauge; a full ring means 100%. You can switch it to show the number instead, and scrolling over the icon adjusts brightness.
@@ -79,6 +81,27 @@ The menu bar icon went through several rounds. The first version showed the numb
 The final icons: the brightness gauge on the left and the percentage on the right, on light and dark menu bars.
 
 ![Final menu bar icons](/uploads/2026/10/24/显示器搬回家后，我给它写了个菜单栏遥控器/menu-bar-icons.png)
+
+## Update: 2.2.2 fixes a CPU-hogging bug (2026-10-25)
+
+The next morning I found MonitorLight using 100% CPU, and the whole Mac was so sluggish I had to force-quit it. A menu bar utility like this should use almost no CPU, with at most a blip while you change something.
+
+macOS had saved a CPU report overnight, and every hot frame was in UI animation. Two problems compounded each other:
+
+- **Animations piled up.** A small dot next to the panel title pulses while the app connects. Every time the connection state changed, the code started another endless animation and never stopped the old one. Each display sleep/wake added one more, so by morning they filled a core, even with the panel closed.
+- **SwiftUI animations are expensive.** On macOS 27, as long as any SwiftUI animation is running, even a 6pt dot in a hidden window, the process uses a full CPU core. A single brightness key press cost about 130 ms of CPU across the on-screen indicator and the hidden panel.
+
+The fix hands looping animations, and anything that animates on every key press, to Core Animation, which the system's render server drives without per-frame work in the app. The panel turns animations off while hidden, and when the display is asleep the app backs off from checking every 5 seconds to at most once a minute.
+
+| Scenario | Before | After |
+|---|---|---|
+| Idle in the background (after many display sleep/wake cycles) | ~100% | 0% |
+| Panel open while connecting | ~105% | 0–3% |
+| Holding the brightness key | ~130 ms per press | ~6 ms per press |
+
+<!--PERF_EN-->
+
+[Version 2.2.2](https://github.com/HAOGRE/MonitorLight/releases/latest/download/MonitorLight.dmg) is out, and it also includes the input switching added in 2.2.1.
 
 ## What it can't do yet
 
