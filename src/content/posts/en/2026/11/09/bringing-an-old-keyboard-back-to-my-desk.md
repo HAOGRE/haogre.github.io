@@ -1,5 +1,6 @@
 ---
 author: "HAOGRE"
+modDatetime: 2026-11-09T04:45:18.146571Z
 pubDatetime: 2026-11-08T23:44:57.389Z
 title: "Bringing an Old Keyboard Back to My Desk"
 featured: false
@@ -139,6 +140,34 @@ The chart lets me start using the keyboard and glance at a reminder occasionally
 By the end, the keyboard had not become an HHKB, and not every feature had been used. It kept its original arrow keys, several Fn positions remained without extra assignments, and the magnetic-switch parameters were untouched.
 
 I could finally stop looking at boxes in the driver and start writing. The next worthwhile change should come from something that bothers me while I type.
+
+## Download and try the configuration
+
+If you use an **IQUNIX EZ63 with macOS**, this layout is available as a starting point. Public version 1.0 was shared on November 9, 2026, from firmware 3.1.3.
+
+- [Download the configuration ZIP](/downloads/ez63-mac-hhkb-v1/ez63-mac-hhkb-v1.zip): two-layer JSON, a per-key CSV, seven macro action sequences, and bilingual recovery instructions.
+- [Read the import and recovery instructions](/downloads/ez63-mac-hhkb-v1/README.md).
+- [Download the per-key CSV](/downloads/ez63-mac-hhkb-v1/keymap.csv).
+
+**Temporary official import code: `7URSPMZB`.** Open the [IQUNIX driver](https://ez.iqunix.com/) in Chrome, connect the EZ63, and choose My Profiles → Import Configuration Code. Back up your existing configuration, inspect the imported profile, and select the intended onboard slot.
+
+The public export omits lighting and performance settings, so it does not carry this keyboard's switch selection or actuation depth. The official data still includes six empty advanced-function lists. If you use custom SOCD, DKS, or other advanced key functions, back them up first; their preservation cannot be assumed.
+
+**The code includes M0–M6 key bindings, but not the macro actions.** Record the following macros separately, using single execution and fixed 50ms intervals. Press keys in the listed order, then release every key in reverse order. Use left-side modifiers.
+
+| Slot | Recorded combination | Assigned position |
+|---|---|---|
+| M0 | Command + Space | Fn+Space, launcher |
+| M1 | Command + Shift + 4 | Fn+P, area screenshot |
+| M2 | Command + Shift + 5 | Fn+O, screenshot toolbar |
+| M3 | Control + Command + Space | Fn+E, emoji and symbols |
+| M4 | Control + Up | Fn+W, Mission Control |
+| M5 | Command + Option + Shift + V | Fn+V, paste and match style |
+| M6 | Control + Command + Q | Fn+Q, lock screen |
+
+My SUPER/F18 behavior and Control+H/J/K/L navigation come from Karabiner and **are not included in this profile**. Without those rules, right Shift remains right Shift. Fn+Space sends Command+Space; the launcher it opens depends on your Mac's settings.
+
+IQUNIX calls the code a temporary credential without displaying an exact expiry date. The ZIP is a lasting reference backup, but **its JSON and CSV are not official import files**. If the code expires, use the per-key list and macro table to rebuild the layout manually. The public export was checked against the final saved keymap; importing it into a second keyboard has not been tested.
 
 ## References
 

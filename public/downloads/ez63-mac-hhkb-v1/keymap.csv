@@ -1,0 +1,65 @@
+﻿physical_key,matrix_position,base_layer,fn_layer
+Esc,00 00,Esc,~ .
+1_,00 01,1 !,F1
+2_,00 02,2 @,F2
+3well_no,00 03,3 #,F3
+4_,00 04,4 $,F4
+5percent_sign,00 05,5 %,F5
+6_,00 06,6 ^,F6
+7_,00 07,7 &,F7
+8xingx,00 08,8 *,F8
+9left_parenthesis,00 09,9 (,F9
+0right_parenthesis,00 0A,0 ),F10
+-_,00 0B,- _,F11
+=+,00 0C,= +,F12
+Backspace,00 0D,Backspace,▿
+Tab,01 00,Tab,▿
+Q,01 01,Q,M6
+W,01 02,W,M4
+E,01 03,E,M3
+R,01 04,R,▿
+T,01 05,T,Effect Speed -
+Y,01 06,Y,Effect Speed +
+U,01 07,U,▿
+I,01 08,I,▿
+O,01 09,O,M2
+P,01 0A,P,M1
+[,01 0B,[,▿
+],01 0C,],▿
+left_slash,01 0D,\,▿
+L-Ctrl,02 00,L-Ctrl,▿
+A,02 01,A,Vol -
+S,02 02,S,Vol +
+D,02 03,D,Mute
+F,02 04,F,Play/Pause
+G,02 05,G,Previous
+H,02 06,H,Next
+J,02 07,J,▿
+K,02 08,K,Home
+L,02 09,L,Page Up
+;,02 0A,;,▿
+doublequotationsiglequotation,02 0B,""" '",▿
+Enter,02 0C,Enter,RGB Mode +
+L-Shift,03 00,L-Shift,▿
+Z,03 01,Z,BL Toggle
+X,03 02,X,Bright -
+C,03 03,C,Bright +
+V,03 04,V,M5
+B,03 05,B,Hue +
+N,03 06,N,▿
+M,03 07,M,IQUNIX
+",",03 08,",",End
+period,03 09,.,Page Down
+right_slashques,03 0A,/ ?,▿
+R-Shift,03 0B,R-Shift,▿
+↑,03 0C,↑,▿
+Delete,03 0D,Delete,Insert
+Fn1,04 00,MO(1),▿
+L-Alt,04 01,L-Alt,▿
+L-Win,04 02,L-Win,▿
+Space,04 03,Space,M0
+R-Win,04 04,R-Win,▿
+R-Alt,04 05,R-Alt,▿
+←,04 06,←,▿
+↓,04 07,↓,▿
+→,04 08,→,▿

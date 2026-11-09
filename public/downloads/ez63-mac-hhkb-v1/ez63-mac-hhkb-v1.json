@@ -1,0 +1,938 @@
+{
+  "schema": "ez63-mac-hhkb-public-v1",
+  "version": "1.0",
+  "exportDate": "2026-11-09",
+  "device": {
+    "name": "IQUNIX EZ63",
+    "vendorId": 14441,
+    "productId": 25344,
+    "firmware": "3.1.3"
+  },
+  "name": "Mac · HHKB",
+  "keymap": {
+    "layer0": [
+      {
+        "position": "00 00",
+        "label": "Esc"
+      },
+      {
+        "position": "00 01",
+        "label": "1 !"
+      },
+      {
+        "position": "00 02",
+        "label": "2 @"
+      },
+      {
+        "position": "00 03",
+        "label": "3 #"
+      },
+      {
+        "position": "00 04",
+        "label": "4 $"
+      },
+      {
+        "position": "00 05",
+        "label": "5 %"
+      },
+      {
+        "position": "00 06",
+        "label": "6 ^"
+      },
+      {
+        "position": "00 07",
+        "label": "7 &"
+      },
+      {
+        "position": "00 08",
+        "label": "8 *"
+      },
+      {
+        "position": "00 09",
+        "label": "9 ("
+      },
+      {
+        "position": "00 0A",
+        "label": "0 )"
+      },
+      {
+        "position": "00 0B",
+        "label": "- _"
+      },
+      {
+        "position": "00 0C",
+        "label": "= +"
+      },
+      {
+        "position": "00 0D",
+        "label": "Backspace"
+      },
+      {
+        "position": "01 00",
+        "label": "Tab"
+      },
+      {
+        "position": "01 01",
+        "label": "Q"
+      },
+      {
+        "position": "01 02",
+        "label": "W"
+      },
+      {
+        "position": "01 03",
+        "label": "E"
+      },
+      {
+        "position": "01 04",
+        "label": "R"
+      },
+      {
+        "position": "01 05",
+        "label": "T"
+      },
+      {
+        "position": "01 06",
+        "label": "Y"
+      },
+      {
+        "position": "01 07",
+        "label": "U"
+      },
+      {
+        "position": "01 08",
+        "label": "I"
+      },
+      {
+        "position": "01 09",
+        "label": "O"
+      },
+      {
+        "position": "01 0A",
+        "label": "P"
+      },
+      {
+        "position": "01 0B",
+        "label": "["
+      },
+      {
+        "position": "01 0C",
+        "label": "]"
+      },
+      {
+        "position": "01 0D",
+        "label": "\\"
+      },
+      {
+        "position": "02 00",
+        "label": "L-Ctrl"
+      },
+      {
+        "position": "02 01",
+        "label": "A"
+      },
+      {
+        "position": "02 02",
+        "label": "S"
+      },
+      {
+        "position": "02 03",
+        "label": "D"
+      },
+      {
+        "position": "02 04",
+        "label": "F"
+      },
+      {
+        "position": "02 05",
+        "label": "G"
+      },
+      {
+        "position": "02 06",
+        "label": "H"
+      },
+      {
+        "position": "02 07",
+        "label": "J"
+      },
+      {
+        "position": "02 08",
+        "label": "K"
+      },
+      {
+        "position": "02 09",
+        "label": "L"
+      },
+      {
+        "position": "02 0A",
+        "label": ";"
+      },
+      {
+        "position": "02 0B",
+        "label": "\" '"
+      },
+      {
+        "position": "02 0C",
+        "label": "Enter"
+      },
+      {
+        "position": "02 0D",
+        "label": "▿"
+      },
+      {
+        "position": "03 00",
+        "label": "L-Shift"
+      },
+      {
+        "position": "03 01",
+        "label": "Z"
+      },
+      {
+        "position": "03 02",
+        "label": "X"
+      },
+      {
+        "position": "03 03",
+        "label": "C"
+      },
+      {
+        "position": "03 04",
+        "label": "V"
+      },
+      {
+        "position": "03 05",
+        "label": "B"
+      },
+      {
+        "position": "03 06",
+        "label": "N"
+      },
+      {
+        "position": "03 07",
+        "label": "M"
+      },
+      {
+        "position": "03 08",
+        "label": ","
+      },
+      {
+        "position": "03 09",
+        "label": "."
+      },
+      {
+        "position": "03 0A",
+        "label": "/ ?"
+      },
+      {
+        "position": "03 0B",
+        "label": "R-Shift"
+      },
+      {
+        "position": "03 0C",
+        "label": "↑"
+      },
+      {
+        "position": "03 0D",
+        "label": "Delete"
+      },
+      {
+        "position": "04 00",
+        "label": "MO(1)"
+      },
+      {
+        "position": "04 01",
+        "label": "L-Alt"
+      },
+      {
+        "position": "04 02",
+        "label": "L-Win"
+      },
+      {
+        "position": "04 03",
+        "label": "Space"
+      },
+      {
+        "position": "04 04",
+        "label": "R-Win"
+      },
+      {
+        "position": "04 05",
+        "label": "R-Alt"
+      },
+      {
+        "position": "04 06",
+        "label": "←"
+      },
+      {
+        "position": "04 07",
+        "label": "↓"
+      },
+      {
+        "position": "04 08",
+        "label": "→"
+      },
+      {
+        "position": "04 09",
+        "label": "▿"
+      },
+      {
+        "position": "04 0A",
+        "label": "▿"
+      },
+      {
+        "position": "04 0B",
+        "label": "▿"
+      },
+      {
+        "position": "04 0C",
+        "label": "▿"
+      },
+      {
+        "position": "04 0D",
+        "label": "▿"
+      }
+    ],
+    "layer1": [
+      {
+        "position": "00 00",
+        "label": "~ ."
+      },
+      {
+        "position": "00 01",
+        "label": "F1"
+      },
+      {
+        "position": "00 02",
+        "label": "F2"
+      },
+      {
+        "position": "00 03",
+        "label": "F3"
+      },
+      {
+        "position": "00 04",
+        "label": "F4"
+      },
+      {
+        "position": "00 05",
+        "label": "F5"
+      },
+      {
+        "position": "00 06",
+        "label": "F6"
+      },
+      {
+        "position": "00 07",
+        "label": "F7"
+      },
+      {
+        "position": "00 08",
+        "label": "F8"
+      },
+      {
+        "position": "00 09",
+        "label": "F9"
+      },
+      {
+        "position": "00 0A",
+        "label": "F10"
+      },
+      {
+        "position": "00 0B",
+        "label": "F11"
+      },
+      {
+        "position": "00 0C",
+        "label": "F12"
+      },
+      {
+        "position": "00 0D",
+        "label": "▿"
+      },
+      {
+        "position": "01 00",
+        "label": "▿"
+      },
+      {
+        "position": "01 01",
+        "label": "M6"
+      },
+      {
+        "position": "01 02",
+        "label": "M4"
+      },
+      {
+        "position": "01 03",
+        "label": "M3"
+      },
+      {
+        "position": "01 04",
+        "label": "▿"
+      },
+      {
+        "position": "01 05",
+        "label": "Effect Speed -"
+      },
+      {
+        "position": "01 06",
+        "label": "Effect Speed +"
+      },
+      {
+        "position": "01 07",
+        "label": "▿"
+      },
+      {
+        "position": "01 08",
+        "label": "▿"
+      },
+      {
+        "position": "01 09",
+        "label": "M2"
+      },
+      {
+        "position": "01 0A",
+        "label": "M1"
+      },
+      {
+        "position": "01 0B",
+        "label": "▿"
+      },
+      {
+        "position": "01 0C",
+        "label": "▿"
+      },
+      {
+        "position": "01 0D",
+        "label": "▿"
+      },
+      {
+        "position": "02 00",
+        "label": "▿"
+      },
+      {
+        "position": "02 01",
+        "label": "Vol -"
+      },
+      {
+        "position": "02 02",
+        "label": "Vol +"
+      },
+      {
+        "position": "02 03",
+        "label": "Mute"
+      },
+      {
+        "position": "02 04",
+        "label": "Play/Pause"
+      },
+      {
+        "position": "02 05",
+        "label": "Previous"
+      },
+      {
+        "position": "02 06",
+        "label": "Next"
+      },
+      {
+        "position": "02 07",
+        "label": "▿"
+      },
+      {
+        "position": "02 08",
+        "label": "Home"
+      },
+      {
+        "position": "02 09",
+        "label": "Page Up"
+      },
+      {
+        "position": "02 0A",
+        "label": "▿"
+      },
+      {
+        "position": "02 0B",
+        "label": "▿"
+      },
+      {
+        "position": "02 0C",
+        "label": "RGB Mode +"
+      },
+      {
+        "position": "02 0D",
+        "label": "▿"
+      },
+      {
+        "position": "03 00",
+        "label": "▿"
+      },
+      {
+        "position": "03 01",
+        "label": "BL Toggle"
+      },
+      {
+        "position": "03 02",
+        "label": "Bright -"
+      },
+      {
+        "position": "03 03",
+        "label": "Bright +"
+      },
+      {
+        "position": "03 04",
+        "label": "M5"
+      },
+      {
+        "position": "03 05",
+        "label": "Hue +"
+      },
+      {
+        "position": "03 06",
+        "label": "▿"
+      },
+      {
+        "position": "03 07",
+        "label": "IQUNIX"
+      },
+      {
+        "position": "03 08",
+        "label": "End"
+      },
+      {
+        "position": "03 09",
+        "label": "Page Down"
+      },
+      {
+        "position": "03 0A",
+        "label": "▿"
+      },
+      {
+        "position": "03 0B",
+        "label": "▿"
+      },
+      {
+        "position": "03 0C",
+        "label": "▿"
+      },
+      {
+        "position": "03 0D",
+        "label": "Insert"
+      },
+      {
+        "position": "04 00",
+        "label": "▿"
+      },
+      {
+        "position": "04 01",
+        "label": "▿"
+      },
+      {
+        "position": "04 02",
+        "label": "▿"
+      },
+      {
+        "position": "04 03",
+        "label": "M0"
+      },
+      {
+        "position": "04 04",
+        "label": "▿"
+      },
+      {
+        "position": "04 05",
+        "label": "▿"
+      },
+      {
+        "position": "04 06",
+        "label": "▿"
+      },
+      {
+        "position": "04 07",
+        "label": "▿"
+      },
+      {
+        "position": "04 08",
+        "label": "▿"
+      },
+      {
+        "position": "04 09",
+        "label": "▿"
+      },
+      {
+        "position": "04 0A",
+        "label": "▿"
+      },
+      {
+        "position": "04 0B",
+        "label": "▿"
+      },
+      {
+        "position": "04 0C",
+        "label": "▿"
+      },
+      {
+        "position": "04 0D",
+        "label": "▿"
+      }
+    ]
+  },
+  "macros": [
+    {
+      "id": "M0",
+      "name": "M0",
+      "actions": [
+        {
+          "type": "keydown",
+          "keyCode": 227
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keydown",
+          "keyCode": 44
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keyup",
+          "keyCode": 44
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keyup",
+          "keyCode": 227
+        }
+      ],
+      "description": "宏键 0"
+    },
+    {
+      "id": "M1",
+      "name": "M1",
+      "actions": [
+        {
+          "type": "keydown",
+          "keyCode": 227
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keydown",
+          "keyCode": 225
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keydown",
+          "keyCode": 33
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keyup",
+          "keyCode": 33
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keyup",
+          "keyCode": 225
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keyup",
+          "keyCode": 227
+        }
+      ],
+      "description": "宏键 1"
+    },
+    {
+      "id": "M2",
+      "name": "M2",
+      "actions": [
+        {
+          "type": "keydown",
+          "keyCode": 227
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keydown",
+          "keyCode": 225
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keydown",
+          "keyCode": 34
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keyup",
+          "keyCode": 34
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keyup",
+          "keyCode": 225
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keyup",
+          "keyCode": 227
+        }
+      ],
+      "description": "宏键 2"
+    },
+    {
+      "id": "M3",
+      "name": "M3",
+      "actions": [
+        {
+          "type": "keydown",
+          "keyCode": 224
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keydown",
+          "keyCode": 227
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keydown",
+          "keyCode": 44
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keyup",
+          "keyCode": 44
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keyup",
+          "keyCode": 227
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keyup",
+          "keyCode": 224
+        }
+      ],
+      "description": "宏键 3"
+    },
+    {
+      "id": "M4",
+      "name": "M4",
+      "actions": [
+        {
+          "type": "keydown",
+          "keyCode": 224
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keydown",
+          "keyCode": 82
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keyup",
+          "keyCode": 82
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keyup",
+          "keyCode": 224
+        }
+      ],
+      "description": "宏键 4"
+    },
+    {
+      "id": "M5",
+      "name": "M5",
+      "actions": [
+        {
+          "type": "keydown",
+          "keyCode": 227
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keydown",
+          "keyCode": 226
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keydown",
+          "keyCode": 225
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keydown",
+          "keyCode": 25
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keyup",
+          "keyCode": 25
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keyup",
+          "keyCode": 225
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keyup",
+          "keyCode": 226
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keyup",
+          "keyCode": 227
+        }
+      ],
+      "description": "宏键 5"
+    },
+    {
+      "id": "M6",
+      "name": "M6",
+      "actions": [
+        {
+          "type": "keydown",
+          "keyCode": 224
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keydown",
+          "keyCode": 227
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keydown",
+          "keyCode": 20
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keyup",
+          "keyCode": 20
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keyup",
+          "keyCode": 227
+        },
+        {
+          "type": "delay",
+          "duration": 50
+        },
+        {
+          "type": "keyup",
+          "keyCode": 224
+        }
+      ],
+      "description": "宏键 6"
+    }
+  ],
+  "officialImportCode": "7URSPMZB",
+  "officialCodeIsTemporary": true,
+  "officialPayloadSections": [
+    "keymap",
+    "rs",
+    "socd",
+    "dks",
+    "mt",
+    "tgl",
+    "lt"
+  ],
+  "notes": [
+    "JSON is a reference backup, not an official import file.",
+    "Official code omits lighting and performance, but includes empty rs/socd/dks/mt/tgl/lt lists; back up custom advanced functions before applying.",
+    "Official code has macro bindings only. Record macro actions M0–M6 separately.",
+    "Existing system remappings are not included."
+  ]
+}
